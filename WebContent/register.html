@@ -12,16 +12,28 @@
 
     <!-- Javascript function -->
     <script>
-    function validateFormLogin() {
+    function validateFormRegister() {
         // Error message form
         var error_messages = [];
 
         // This function extracts the variables email and password and sends it to the Java backend for validation
-        var email = document.forms["loginForm"]["Email"].value;
-        var password = document.forms["loginForm"]["Password"].value;
+        var email = document.forms["registrationForm"]["Email"].value;
+        var password = document.forms["registrationForm"]["Password"].value;
+        var confirmPassword = document.forms["registrationForm"]["ConfirmPassword"].value;
+        if (password != confirmPassword){
+            alert("Passwords need to match!");
+        }
 
         console.log(email);
         console.log(password);
+        console.log(confirmPassword);
+
+        // Retrieve list of errors 
+
+        if (error_messages==[]){
+            
+        }
+
         return false;
       }
     </script>
@@ -43,8 +55,8 @@
         <div class="login-reg-panel">
             <div class="white-panel">
                 <div class="login-show text-center">
-                    <form name="loginForm" method="POST" onsubmit = "return validateFormLogin()">
-                        <h2>Login </h2>
+                    <form name="registrationForm" method="POST" onsubmit = "return validateFormRegister()">
+                        <h2>Registration </h2>
                         Email address:
                         <br>
                         <input type="Email" name="Email" placeholder="Email">
@@ -53,30 +65,18 @@
                         <br>
                         <input type="password" name ="Password" placeholder="Password">
                         <br>
+                        Confirm Password:
+                        <br>
+                        <input type="password" name ="ConfirmPassword" placeholder="Confirm Password">
+                        <br>
                         <br>
                         <input type="submit" value="Login">
                     </form>
                 </div>
             </div>
         </div>
-
-    <!-- Password reset -->
-    </form>
-    <br>
-    <h2 class= "text-center">To register, click here:</h2>
-    <br>
-    <input type="button" onclick="location.href='register.html'" value="Register" />
-    <br>
-    <!-- Password reset -->
-    </form>
-        <br>
-        <h2 class= "text-center">To reset your password, please click on the link below:</h2>
-        <br>
-        <input type="button" onclick="location.href='reset_password'" value="Reset Password" />
     </div>
 
-        
-</div>
     
 
     <!-- Bootstrap code  -->
