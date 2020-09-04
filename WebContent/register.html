@@ -28,10 +28,34 @@
         console.log(password);
         console.log(confirmPassword);
 
-        // Retrieve list of errors 
+        // Check if email is blank
+        if (email == ""){
+            alert("Email cannot be blank!");
+            window.location.replace("register.html");
+            error_messages.push("Email cannot be blank!");
+        }
 
-        if (error_messages==[]){
-            
+        // Check if password is blank
+        // Check if email is blank
+        if (password == ""){
+            alert("Password cannot be blank!");
+            window.location.replace("register.html");
+            error_messages.push("Password cannot be blank!");
+        }
+
+        // Check if email is blank
+        if (confirmPassword == ""){
+            alert("Password Confirmation cannot be blank!");
+            window.location.replace("register.html");
+            error_messages.push("Password Confirmation cannot be blank!");
+        }
+
+        // Retrieve list of errors 
+        // Enter code here
+
+        if (error_messages.length == 0){
+            alert("Your account has been registered!");
+            window.location.replace("index.html");
         }
 
         return false;

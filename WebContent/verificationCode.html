@@ -12,38 +12,26 @@
 
     <!-- Javascript function -->
     <script>
-    function validateFormLogin() {
+    function validateFormVerificationCode() {
         // Error message form
         var error_messages = [];
 
         // This function extracts the variables email and password and sends it to the Java backend for validation
-        var email = document.forms["loginForm"]["Email"].value;
-        var password = document.forms["loginForm"]["Password"].value;
+        var verificationCode = document.forms["verificationCodeForm"]["verificationCode"].value;
 
-        // Check if email is blank
-        if (email == ""){
-            alert("Email cannot be blank!");
-            window.location.replace("index.html");
-            error_messages.push("Email cannot be blank!");
+        console.log(verificationCode);
+
+        // Check if email exists on the database
+        // Retrieve list of errors 
+        // Enter code here
+
+        if (error_messages.length == 0){
+            alert("No code added please try again");
+            window.location.replace("verificationCode.html");
         }
 
-        // Check if password is blank
-        // Check if email is blank
-        if (password == ""){
-            alert("Password cannot be blank!");
-            window.location.replace("index.html");
-            error_messages.push("Password cannot be blank!");
-        }
-
-        console.log(email);
-        console.log(password);
         return false;
       }
-
-    //   Populate error message
-        if(error_messages.length == 0){
-            window.location.replace("main.html");
-        }
     </script>
 
 </head>
@@ -63,40 +51,20 @@
         <div class="login-reg-panel">
             <div class="white-panel">
                 <div class="login-show text-center">
-                    <form name="loginForm" method="POST" onsubmit = "return validateFormLogin()">
-                        <h2>Login </h2>
-                        Email address:
-                        <br>
-                        <input type="Email" name="Email" placeholder="Email">
-                        <br>
-                        Password:
-                        <br>
-                        <input type="password" name ="Password" placeholder="Password">
+                    <form name="verificationCodeForm" method="POST" onsubmit = "return validateFormVerificationCode()">
+                        <h2>Reset Password </h2>
+                        Please enter your email address below:
                         <br>
                         <br>
-                        <input type="submit" value="Login">
+                        <input name="verificationCode" placeholder="verificationCode">
+                        <br><br>
+                        <input type="submit" value="submit">
                     </form>
                 </div>
             </div>
         </div>
-
-    <!-- Password reset -->
-    </form>
-    <br>
-    <h2 class= "text-center">To register, click here:</h2>
-    <br>
-    <input type="button" onclick="location.href='register.html'" value="Register" />
-    <br>
-    <!-- Password reset -->
-    </form>
-        <br>
-        <h2 class= "text-center">To reset your password, please click on the link below:</h2>
-        <br>
-        <input type="button" onclick="location.href='reset_password.html'" value="Reset Password" />
     </div>
 
-        
-</div>
     
 
     <!-- Bootstrap code  -->
