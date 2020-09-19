@@ -1,0 +1,1 @@
+java -cp class;lib/* DatabaseB/src/Main
