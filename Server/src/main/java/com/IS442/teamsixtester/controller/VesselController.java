@@ -15,7 +15,7 @@ public class VesselController {
     VesselService service;
 
     @RequestMapping(value="/vessel/{id}", method= RequestMethod.GET)
-    public ResponseEntity<Vessel> getVesselById(@PathVariable Long id) {
+    public ResponseEntity<Vessel> getVesselById(@PathVariable Integer id) {
         return new ResponseEntity<Vessel>(service.findById(id), HttpStatus.OK);
     }
 
@@ -31,7 +31,7 @@ public class VesselController {
     }
 
     @RequestMapping(value="/update/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<String> updateVessel(@PathVariable Long id, @RequestBody Vessel updatedVessel) {
+    public ResponseEntity<String> updateVessel(@PathVariable Integer id, @RequestBody Vessel updatedVessel) {
         if (service.findById(id) == null) {
             return new ResponseEntity<String>("Account not found", HttpStatus.NOT_FOUND);
         }
@@ -40,7 +40,7 @@ public class VesselController {
     }
 
     @RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<String> deleteVessel(@PathVariable long id) {
+    public ResponseEntity<String> deleteVessel(@PathVariable Integer id) {
         if (service.findById(id) == null) {
             return new ResponseEntity<String>("Account not found", HttpStatus.NOT_FOUND);
         }
