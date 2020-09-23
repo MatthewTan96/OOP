@@ -9,11 +9,11 @@ public class Vessel {
     String berthTimeRequired;
     String expectedDateTimeDeparture;
     String berthNumber;
-    String status; 
+    String status;
 
-    public Vessel(String vesselShortName,String incomingVoyageNumber,String outgoingVoyageNumber,
-    String berthTimeRequired,String expectedDateTimeDeparture,String berthNumber,String status){
-        
+    public Vessel(String vesselShortName, String incomingVoyageNumber, String outgoingVoyageNumber,
+            String berthTimeRequired, String expectedDateTimeDeparture, String berthNumber, String status) {
+
         this.vesselShortName = vesselShortName;
         this.incomingVoyageNumber = incomingVoyageNumber;
         this.outgoingVoyageNumber = outgoingVoyageNumber;
@@ -23,42 +23,39 @@ public class Vessel {
         this.status = status;
     }
 
-    public String getVesselShortName(){
+    public String getVesselShortName() {
         return this.vesselShortName;
     }
 
-    public String getIncomingVoyageNumber(){
+    public String getIncomingVoyageNumber() {
         return this.incomingVoyageNumber;
     }
 
-    public String outgoingVoyageNumber(){
+    public String outgoingVoyageNumber() {
         return this.outgoingVoyageNumber;
     }
 
-    public String getBerthTimeRequired(){
+    public String getBerthTimeRequired() {
         return this.berthTimeRequired;
     }
 
-    public String getExpectedDateTimeDeparture(){
+    public String getExpectedDateTimeDeparture() {
         return this.getExpectedDateTimeDeparture();
     }
 
-    public String getBerthNumber(){
+    public String getBerthNumber() {
         return this.berthNumber;
     }
 
-    public String status(){
+    public String status() {
         return this.status;
     }
 
-    public String toString(){
-        return "{"+
-            "vesselShortName: " + this.vesselShortName +','
-            + "incomingVoyageNumber" + this.incomingVoyageNumber+','
-            + "outgoingVoyageNumber" + this.outgoingVoyageNumber+','
-            + "berthTimeRequired" + this.berthTimeRequired+','
-            + "expectedDateTimeDeparture" + this.expectedDateTimeDeparture+','
-            + "berthNumber" + this.berthNumber+','
-            + "status" + this.status+ "}";
+    public String toString() {
+        return "{" + "vesselShortName: " + this.vesselShortName + ',' + "incomingVoyageNumber"
+                + this.incomingVoyageNumber + ',' + "outgoingVoyageNumber" + this.outgoingVoyageNumber + ','
+                + "berthTimeRequired" + this.berthTimeRequired + ',' + "expectedDateTimeDeparture"
+                + this.expectedDateTimeDeparture + ',' + "berthNumber" + this.berthNumber + ',' + "status" + this.status
+                + "}";
     }
 }

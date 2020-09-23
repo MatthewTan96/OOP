@@ -1,1 +1,1 @@
-java -classpath lib/gson;target/classes/ src/main/java/PullFromAPI.java
+java -cp target/classes:lib/gson-2.8.6.jar main.java.PullFromAPI
