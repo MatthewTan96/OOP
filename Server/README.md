@@ -1,6 +1,6 @@
 I'm using Flyway for DB migrations to have some form of version control on our DB. Each of the class variables in the Vessel class will be mapped to a column in the DB. I have Set up DAO to handle the mapping of class variables to column name.
 
-Just pull my branch and open the Server/pom.xml as a project in IntelliJ and it should resolve all the dependencies for you. Run the TeeamsixtesterApplication src file to start the programme.
+Just pull my branch and open the Server/pom.xml as a project in IntelliJ and it should resolve all the dependencies for you. Run the TeamsixtesterApplication src file to start the programme.
 
 Some notes:
 
