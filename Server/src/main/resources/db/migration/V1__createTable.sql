@@ -1,6 +1,6 @@
 CREATE TABLE shipping_info (
-        vessel_id SERIAL PRIMARY KEY NOT NULL,
-        vessel_short_name VARCHAR(20),
+        vessel_id UUID PRIMARY KEY NOT NULL,
+        vessel_short_name VARCHAR(20) NOT NULL,
         incoming_voyage_number VARCHAR(20),
         outgoing_voyage_number VARCHAR(20),
         berth_time_required VARCHAR(30),
