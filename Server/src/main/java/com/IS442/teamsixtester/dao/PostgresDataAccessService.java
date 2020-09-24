@@ -30,16 +30,16 @@ public class PostgresDataAccessService implements VesselDao{
         return jdbcTemplate.update(
                 sql,
                 id,
-                vessel.getVesselShortName(),
-                vessel.getIncomingVoyageNumber(),
-                vessel.getOutgoingVoyageNumber(),
-                vessel.getBerthTimeRequired(),
-                vessel.getExpectedDatetimeDeparture(),
-                vessel.getBerthNumber(),
+                vessel.getAbbrVslM(),
+                vessel.getInVoyN(),
+                vessel.getOutVoyN(),
+                vessel.getBtrDt(),
+                vessel.getEtdDt(),
+                vessel.getBerthN(),
                 vessel.getStatus(),
                 vessel.getChangeCount(),
                 vessel.getDegreeChange(),
-                vessel.getBerthTimeRequired()
+                vessel.getBtrDt()
         );
     }
 
@@ -59,7 +59,7 @@ public class PostgresDataAccessService implements VesselDao{
             resultVessel = jdbcTemplate.queryForObject(sql, new Object[]{name, incoming}, mapVesselFromDB());
         }
         catch (EmptyResultDataAccessException e){
-            return null;
+            return Optional.empty();
         }
         return Optional.ofNullable(resultVessel);
     }
@@ -74,14 +74,15 @@ public class PostgresDataAccessService implements VesselDao{
             resultVessel = jdbcTemplate.queryForObject(sql, new Object[]{name, outgoing}, mapVesselFromDB());
         }
         catch (EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
         return Optional.ofNullable(resultVessel);
     }
 
     @Override
     public int deleteVesselById(UUID id) {
-        return 0;
+        String sql = "DELETE FROM shipping_info WHERE vessel_id = ?";
+        return jdbcTemplate.update(sql, id);
     }
 
     @Override

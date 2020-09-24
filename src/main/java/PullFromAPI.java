@@ -23,16 +23,15 @@ public class PullFromAPI {
      */
 
     // private static final String USER_AGENT = "Mozilla/5.0";
-    private static final String targeturl = "https://api.pntestbox.com/vsspp/pp/bizfn/berthingSchedule/retrieveByBerthingDate/v1.2";
 
-    public static void sendJson(final String json) throws MalformedURLException, IOException {
-
+    public static JsonArray sendJson(final String json) throws MalformedURLException, IOException {
+        String targeturl = "https://api.pntestbox.com/vsspp/pp/bizfn/berthingSchedule/retrieveByBerthingDate/v1.2";
         // Creating empty string
         String output = "";
         // method call for generating json
 
-        final URL myurl = new URL(targeturl);
-        final HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
+        URL myurl = new URL(targeturl);
+        HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
         con.setDoOutput(true);
         con.setDoInput(true);
 
@@ -40,12 +39,12 @@ public class PullFromAPI {
         con.setRequestProperty("Accept", "application/json,text/plain");
         con.setRequestProperty("Method", "POST");
         con.setRequestProperty("Apikey", "d0ceb61c5edd48ce964d65bffacf3274");
-        final OutputStream os = con.getOutputStream();
+        OutputStream os = con.getOutputStream();
         os.write(json.toString().getBytes("UTF-8"));
         os.close();
 
-        final StringBuilder sb = new StringBuilder();
-        final int HttpResult = con.getResponseCode();
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
         if (HttpResult == HttpURLConnection.HTTP_OK) {
             final BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
 
@@ -64,35 +63,55 @@ public class PullFromAPI {
 
         JsonObject JSONObject = new Gson().fromJson(output, JsonObject.class);
         JsonArray results = JSONObject.get("results").getAsJsonArray(); // returns type object
-        System.out.println(results.size());
-
-        Vessel toSend;
-
-        // Iterating through the different vessel information and adding it into the
-        // class
-        for (int i = 0; i < results.size(); i++) {
-            JsonElement result = results.get(i);
-            System.out.println(results.get(i));
-            JsonObject vesselInformation = result.getAsJsonObject();
-            // System.out.println(vesselInformation.toString());
-            String vesselShortName = vesselInformation.get("abbrVslM").getAsString();
-            String incomingVoyageNumber = vesselInformation.get("inVoyN").getAsString();
-            String outgoingVoyageNumber = vesselInformation.get("outVoyN").getAsString();
-            String berthTimeRequired = vesselInformation.get("bthgDt").getAsString();
-            String expectedDateTimeDeparture = vesselInformation.get("unbthgDt").getAsString();
-            String berthNumber = vesselInformation.get("berthN").getAsString();
-            String status = vesselInformation.get("status").getAsString();
-            toSend = new Vessel(vesselShortName, incomingVoyageNumber, outgoingVoyageNumber, berthTimeRequired,
-                    expectedDateTimeDeparture, berthNumber, status);
-            System.out.println(toSend.toString());
-            // break;
-        }
-
+        //System.out.println(results.size());
+        return results;
     }
+
+    public static void SendtoDatabase(JsonArray results) throws MalformedURLException, IOException{
+        String targeturl = "http://localhost:8080/create/";
+        for (int i = 0; i < results.size(); i++) {
+        //JsonElement result = results.get(i);
+            String jsonMessage = results.get(i).toString();
+            System.out.println(jsonMessage); //JSON string you are sending
+
+        //Sending over to database API
+            URL myurl = new URL(targeturl);
+            HttpURLConnection con = (HttpURLConnection)myurl.openConnection();
+            con.setDoOutput(true);
+            con.setDoInput(true);
+
+            con.setRequestProperty("Content-Type", "application/json;");
+            con.setRequestProperty("Accept", "application/json,text/plain");
+            con.setRequestProperty("Method", "POST");
+            OutputStream os = con.getOutputStream();
+            os.write(jsonMessage.toString().getBytes("UTF-8"));
+            os.close();
+ 
+ 
+            StringBuilder sb = new StringBuilder();  
+            int HttpResult =con.getResponseCode();
+            if(HttpResult ==HttpURLConnection.HTTP_OK){
+            BufferedReader br = new BufferedReader(new   InputStreamReader(con.getInputStream(),"utf-8"));  
+ 
+            String line = null;
+            while ((line = br.readLine()) != null) {  
+            sb.append(line + "\n");  
+            }
+             br.close(); 
+             System.out.println(""+sb.toString());  
+ 
+        }else{
+            System.out.println(con.getResponseCode());
+            System.out.println(con.getResponseMessage());  
+        }
+    }  
+}
 
     public static void main(final String[] args) {
         try {
-            PullFromAPI.sendJson("{\"dateFrom\":\"2020-07-14\" , \"dateTo\":\"2020-07-14\"}");
+            JsonArray results = PullFromAPI.sendJson("{\"dateFrom\":\"2020-07-14\" , \"dateTo\":\"2020-07-14\"}");
+            // Sending to database 
+            SendtoDatabase(results);
         } catch (final MalformedURLException e) {
             e.printStackTrace();
         } catch (final IOException e) {

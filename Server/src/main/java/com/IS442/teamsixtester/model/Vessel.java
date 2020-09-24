@@ -9,17 +9,17 @@ public class Vessel {
 
     private UUID vesselId;
     @NotBlank
-    private String vesselShortName;
+    private String abbrVslM;
 
-    private String incomingVoyageNumber;
+    private String inVoyN;
 
-    private String outgoingVoyageNumber;
+    private String outVoyN;
 
-    private String berthTimeRequired;
+    private String btrDt;
 
-    private String expectedDatetimeDeparture;
+    private String etdDt;
 
-    private String berthNumber;
+    private String berthN;
 
     private String status;
 
@@ -32,41 +32,41 @@ public class Vessel {
     public Vessel() {
     }
 
-    public Vessel(UUID vesselId, @JsonProperty("vesselShortName") String vesselShortName,
-                  @JsonProperty("incomingVoyageNumber") String incomingVoyageNumber,
-                  @JsonProperty("outgoingVoyageNumber") String outgoingVoyageNumber,
-                  @JsonProperty("berthTimeRequired") String berthTimeRequired,
-                  @JsonProperty("expectedDatetimeDeparture") String expectedDatetimeDeparture,
-                  @JsonProperty("berthNumber") String berthNumber,
+    public Vessel(UUID vesselId, @JsonProperty("abbrVslM") String abbrVslM,
+                  @JsonProperty("inVoyN") String inVoyN,
+                  @JsonProperty("outVoyN") String outVoyN,
+                  @JsonProperty("btrDt") String btrDt,
+                  @JsonProperty("etdDt") String etdDt,
+                  @JsonProperty("berthN") String berthN,
                   @JsonProperty("status") String status) {
         this.vesselId = vesselId;
-        this.vesselShortName = vesselShortName;
-        this.incomingVoyageNumber = incomingVoyageNumber;
-        this.outgoingVoyageNumber = outgoingVoyageNumber;
-        this.berthTimeRequired = berthTimeRequired;
-        this.expectedDatetimeDeparture = expectedDatetimeDeparture;
-        this.berthNumber = berthNumber;
+        this.abbrVslM = abbrVslM;
+        this.inVoyN = inVoyN;
+        this.outVoyN = outVoyN;
+        this.btrDt = btrDt;
+        this.etdDt = etdDt;
+        this.berthN = berthN;
         this.status = status;
         this.changeCount = 0;
         this.degreeChange = 0;
-        this.firstBerthTime = berthTimeRequired;
+        this.firstBerthTime = btrDt;
     }
 
-    public Vessel(UUID vesselId, @JsonProperty("vesselShortName") String vesselShortName,
-                  @JsonProperty("incomingVoyageNumber")String incomingVoyageNumber,
-                  @JsonProperty("outgoingVoyageNumber") String outgoingVoyageNumber,
-                  @JsonProperty("berthTimeRequired") String berthTimeRequired,
-                  @JsonProperty("expectedDatetimeDeparture") String expectedDatetimeDeparture,
-                  @JsonProperty("berthNumber") String berthNumber,
+    public Vessel(UUID vesselId, @JsonProperty("abbrVslM") String abbrVslM,
+                  @JsonProperty("inVoyN")String inVoyN,
+                  @JsonProperty("outVoyN") String outVoyN,
+                  @JsonProperty("btrDt") String btrDt,
+                  @JsonProperty("etdDt") String etdDt,
+                  @JsonProperty("berthN") String berthN,
                   @JsonProperty("status") String status,
                   int changeCount, double degreeChange, String firstBerthTime) {
         this.vesselId = vesselId;
-        this.vesselShortName = vesselShortName;
-        this.incomingVoyageNumber = incomingVoyageNumber;
-        this.outgoingVoyageNumber = outgoingVoyageNumber;
-        this.berthTimeRequired = berthTimeRequired;
-        this.expectedDatetimeDeparture = expectedDatetimeDeparture;
-        this.berthNumber = berthNumber;
+        this.abbrVslM = abbrVslM;
+        this.inVoyN = inVoyN;
+        this.outVoyN = outVoyN;
+        this.btrDt = btrDt;
+        this.etdDt = etdDt;
+        this.berthN = berthN;
         this.status = status;
         this.changeCount = changeCount;
         this.degreeChange = degreeChange;
@@ -81,52 +81,52 @@ public class Vessel {
         this.vesselId = vesselId;
     }
 
-    public String getVesselShortName() {
-        return vesselShortName;
+    public String getAbbrVslM() {
+        return abbrVslM;
     }
 
-    public void setVesselShortName(String vesselShortName) {
-        this.vesselShortName = vesselShortName;
+    public void setAbbrVslM(String abbrVslM) {
+        this.abbrVslM = abbrVslM;
     }
 
-    public String getIncomingVoyageNumber() {
-        return incomingVoyageNumber;
+    public String getInVoyN() {
+        return inVoyN;
     }
 
-    public void setIncomingVoyageNumber(String incomingVoyageNumber) {
-        this.incomingVoyageNumber = incomingVoyageNumber;
+    public void setInVoyN(String inVoyN) {
+        this.inVoyN = inVoyN;
     }
 
-    public String getOutgoingVoyageNumber() {
-        return outgoingVoyageNumber;
+    public String getOutVoyN() {
+        return outVoyN;
     }
 
-    public void setOutgoingVoyageNumber(String outgoingVoyageNumber) {
-        this.outgoingVoyageNumber = outgoingVoyageNumber;
+    public void setOutVoyN(String outVoyN) {
+        this.outVoyN = outVoyN;
     }
 
-    public String getBerthTimeRequired() {
-        return berthTimeRequired;
+    public String getBtrDt() {
+        return btrDt;
     }
 
-    public void setBerthTimeRequired(String berthTimeRequired) {
-        this.berthTimeRequired = berthTimeRequired;
+    public void setBtrDt(String btrDt) {
+        this.btrDt = btrDt;
     }
 
-    public String getExpectedDatetimeDeparture() {
-        return expectedDatetimeDeparture;
+    public String getEtdDt() {
+        return etdDt;
     }
 
-    public void setExpectedDatetimeDeparture(String expectedDatetimeDeparture) {
-        this.expectedDatetimeDeparture = expectedDatetimeDeparture;
+    public void setEtdDt(String etdDt) {
+        this.etdDt = etdDt;
     }
 
-    public String getBerthNumber() {
-        return berthNumber;
+    public String getBerthN() {
+        return berthN;
     }
 
-    public void setBerthNumber(String berthNumber) {
-        this.berthNumber = berthNumber;
+    public void setBerthN(String berthN) {
+        this.berthN = berthN;
     }
 
     public String getStatus() {
@@ -165,12 +165,12 @@ public class Vessel {
     public String toString() {
         return "Vessel{" +
                 "vesselId=" + vesselId +
-                ", vesselShortName='" + vesselShortName + '\'' +
-                ", incomingVoyageNumber='" + incomingVoyageNumber + '\'' +
-                ", outgoingVoyageNumber='" + outgoingVoyageNumber + '\'' +
-                ", berthTimeRequired='" + berthTimeRequired + '\'' +
-                ", expectedDatetimeDeparture='" + expectedDatetimeDeparture + '\'' +
-                ", berthNumber='" + berthNumber + '\'' +
+                ", vesselShortName='" + abbrVslM + '\'' +
+                ", incomingVoyageNumber='" + inVoyN + '\'' +
+                ", outgoingVoyageNumber='" + outVoyN + '\'' +
+                ", berthTimeRequired='" + btrDt + '\'' +
+                ", expectedDatetimeDeparture='" + etdDt + '\'' +
+                ", berthNumber='" + berthN + '\'' +
                 ", status='" + status + '\'' +
                 ", changeCount=" + changeCount +
                 ", degreeChange=" + degreeChange +
