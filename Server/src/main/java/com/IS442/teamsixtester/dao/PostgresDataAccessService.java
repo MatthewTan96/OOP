@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository("postgres")
-public class PostgresDataAccessService implements VesselDao{
+public class PostgresDataAccessService implements Dao {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -33,13 +33,13 @@ public class PostgresDataAccessService implements VesselDao{
                 vessel.getAbbrVslM(),
                 vessel.getInVoyN(),
                 vessel.getOutVoyN(),
-                vessel.getBtrDt(),
-                vessel.getEtdDt(),
+                vessel.getBthgDt(),
+                vessel.getUnbthgDt(),
                 vessel.getBerthN(),
                 vessel.getStatus(),
                 vessel.getChangeCount(),
                 vessel.getDegreeChange(),
-                vessel.getBtrDt()
+                vessel.getBthgDt()
         );
     }
 

@@ -1,12 +1,13 @@
 package com.IS442.teamsixtester.dao;
 
+import com.IS442.teamsixtester.model.Account;
 import com.IS442.teamsixtester.model.Vessel;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface VesselDao {
+public interface Dao {
     int insertVessel(UUID id, Vessel vessel);
 
     default int insertVessel(Vessel vessel) {
@@ -23,4 +24,4 @@ public interface VesselDao {
     int deleteVesselById(UUID id);
 
     int updateVessel(UUID id, Vessel vessel);
-}
+    }

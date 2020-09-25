@@ -15,9 +15,9 @@ public class Vessel {
 
     private String outVoyN;
 
-    private String btrDt;
+    private String bthgDt;
 
-    private String etdDt;
+    private String unbthgDt;
 
     private String berthN;
 
@@ -35,28 +35,28 @@ public class Vessel {
     public Vessel(UUID vesselId, @JsonProperty("abbrVslM") String abbrVslM,
                   @JsonProperty("inVoyN") String inVoyN,
                   @JsonProperty("outVoyN") String outVoyN,
-                  @JsonProperty("btrDt") String btrDt,
-                  @JsonProperty("etdDt") String etdDt,
+                  @JsonProperty("bthgDt") String bthgDt,
+                  @JsonProperty("unbthgDt") String unbthgDt,
                   @JsonProperty("berthN") String berthN,
                   @JsonProperty("status") String status) {
         this.vesselId = vesselId;
         this.abbrVslM = abbrVslM;
         this.inVoyN = inVoyN;
         this.outVoyN = outVoyN;
-        this.btrDt = btrDt;
-        this.etdDt = etdDt;
+        this.bthgDt = bthgDt;
+        this.unbthgDt = unbthgDt;
         this.berthN = berthN;
         this.status = status;
         this.changeCount = 0;
         this.degreeChange = 0;
-        this.firstBerthTime = btrDt;
+        this.firstBerthTime = bthgDt;
     }
 
     public Vessel(UUID vesselId, @JsonProperty("abbrVslM") String abbrVslM,
                   @JsonProperty("inVoyN")String inVoyN,
                   @JsonProperty("outVoyN") String outVoyN,
-                  @JsonProperty("btrDt") String btrDt,
-                  @JsonProperty("etdDt") String etdDt,
+                  @JsonProperty("bthgDt") String bthgDt,
+                  @JsonProperty("unbthgDt") String unbthgDt,
                   @JsonProperty("berthN") String berthN,
                   @JsonProperty("status") String status,
                   int changeCount, double degreeChange, String firstBerthTime) {
@@ -64,8 +64,8 @@ public class Vessel {
         this.abbrVslM = abbrVslM;
         this.inVoyN = inVoyN;
         this.outVoyN = outVoyN;
-        this.btrDt = btrDt;
-        this.etdDt = etdDt;
+        this.bthgDt = bthgDt;
+        this.unbthgDt = unbthgDt;
         this.berthN = berthN;
         this.status = status;
         this.changeCount = changeCount;
@@ -105,20 +105,20 @@ public class Vessel {
         this.outVoyN = outVoyN;
     }
 
-    public String getBtrDt() {
-        return btrDt;
+    public String getBthgDt() {
+        return bthgDt;
     }
 
-    public void setBtrDt(String btrDt) {
-        this.btrDt = btrDt;
+    public void setBthgDt(String bthgDt) {
+        this.bthgDt = bthgDt;
     }
 
-    public String getEtdDt() {
-        return etdDt;
+    public String getUnbthgDt() {
+        return unbthgDt;
     }
 
-    public void setEtdDt(String etdDt) {
-        this.etdDt = etdDt;
+    public void setUnbthgDt(String unbthgDt) {
+        this.unbthgDt = unbthgDt;
     }
 
     public String getBerthN() {
@@ -168,8 +168,8 @@ public class Vessel {
                 ", vesselShortName='" + abbrVslM + '\'' +
                 ", incomingVoyageNumber='" + inVoyN + '\'' +
                 ", outgoingVoyageNumber='" + outVoyN + '\'' +
-                ", berthTimeRequired='" + btrDt + '\'' +
-                ", expectedDatetimeDeparture='" + etdDt + '\'' +
+                ", berthTimeRequired='" + bthgDt + '\'' +
+                ", expectedDatetimeDeparture='" + unbthgDt + '\'' +
                 ", berthNumber='" + berthN + '\'' +
                 ", status='" + status + '\'' +
                 ", changeCount=" + changeCount +
