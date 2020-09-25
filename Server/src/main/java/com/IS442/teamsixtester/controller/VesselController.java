@@ -27,6 +27,16 @@ public class VesselController {
 
     @RequestMapping(value="/postVessel/", method=RequestMethod.POST)
     public ResponseEntity<String> addVessel(@RequestBody Vessel vessel) {
+        String incoming = vessel.getInVoyN();
+        Optional<Vessel> queryVessel = Optional.empty();
+        if (incoming == null || incoming.isBlank()){
+            queryVessel = vesselService.getOutgoingVessel(vessel.getAbbrVslM(), vessel.getOutVoyN());
+        } else {
+            queryVessel = vesselService.getIncomingVessel(vessel.getAbbrVslM(), vessel.getInVoyN());
+        }
+        if (queryVessel.isPresent()) {
+            return new ResponseEntity<String>("Vessel exists", HttpStatus.BAD_REQUEST);
+        }
         vesselService.addVessel(vessel);
         return new ResponseEntity<String>("created", HttpStatus.CREATED);
     }
