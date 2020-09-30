@@ -24,7 +24,7 @@ public class PullFromAPI {
 
     // private static final String USER_AGENT = "Mozilla/5.0";
 
-    public static JsonArray sendJson(final String json) throws MalformedURLException, IOException {
+    public static JsonArray sendJson(final String json, final String apiKey) throws MalformedURLException, IOException {
         String targeturl = "https://api.pntestbox.com/vsspp/pp/bizfn/berthingSchedule/retrieveByBerthingDate/v1.2";
         // Creating empty string
         String output = "";
@@ -38,7 +38,7 @@ public class PullFromAPI {
         con.setRequestProperty("Content-Type", "application/json;");
         con.setRequestProperty("Accept", "application/json,text/plain");
         con.setRequestProperty("Method", "POST");
-        con.setRequestProperty("Apikey", "d0ceb61c5edd48ce964d65bffacf3274");
+        con.setRequestProperty("Apikey", apiKey);
         OutputStream os = con.getOutputStream();
         os.write(json.toString().getBytes("UTF-8"));
         os.close();
@@ -68,7 +68,7 @@ public class PullFromAPI {
     }
 
     public static void SendtoDatabase(JsonArray results) throws MalformedURLException, IOException{
-        String targeturl = "http://localhost:8080/create/";
+        String targeturl = "http://localhost:8080/postVessel/";
         for (int i = 0; i < results.size(); i++) {
         //JsonElement result = results.get(i);
             String jsonMessage = results.get(i).toString();
@@ -103,19 +103,7 @@ public class PullFromAPI {
         }else{
             System.out.println(con.getResponseCode());
             System.out.println(con.getResponseMessage());  
-        }
-    }  
-}
-
-    public static void main(final String[] args) {
-        try {
-            JsonArray results = PullFromAPI.sendJson("{\"dateFrom\":\"2020-07-14\" , \"dateTo\":\"2020-07-14\"}");
-            // Sending to database 
-            SendtoDatabase(results);
-        } catch (final MalformedURLException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+            }
+        }  
     }
 }

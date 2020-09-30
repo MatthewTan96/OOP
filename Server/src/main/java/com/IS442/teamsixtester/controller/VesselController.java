@@ -42,8 +42,8 @@ public class VesselController {
     }
 
     @RequestMapping(value="/getAllVessels/", method=RequestMethod.GET)
-    public List<Vessel> getAllVessels() {
-        return vesselService.getAllVessels();
+    public ResponseEntity<List<Vessel>> getAllVessels() {
+        return new ResponseEntity<List<Vessel>>(vesselService.getAllVessels(), HttpStatus.OK) ;
     }
 
     @RequestMapping(value="/getVessel/", method=RequestMethod.GET)
