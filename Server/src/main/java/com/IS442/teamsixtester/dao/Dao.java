@@ -1,6 +1,5 @@
 package com.IS442.teamsixtester.dao;
 
-import com.IS442.teamsixtester.model.Account;
 import com.IS442.teamsixtester.model.Vessel;
 
 import java.util.List;
