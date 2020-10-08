@@ -3,6 +3,7 @@ package com.IS442.teamsixtester.model.Vessel;
 import com.IS442.teamsixtester.model.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.UUID;
@@ -46,19 +47,19 @@ public class VesselDTO implements Serializable, DTO {
         this.firstBerthTime = bthgDt;
     }
 
-    public VesselDTO(String abbrVslM, String inVoyN, String outVoyN, String bthgDt, String unbthgDt, String berthN,
-                     String status, int changeCount, double degreeChange, String firstBerthTime) {
-        this.abbrVslM = abbrVslM;
-        this.inVoyN = inVoyN;
-        this.outVoyN = outVoyN;
-        this.bthgDt = bthgDt;
-        this.unbthgDt = unbthgDt;
-        this.berthN = berthN;
-        this.status = status;
-        this.changeCount = changeCount;
-        this.degreeChange = degreeChange;
-        this.firstBerthTime = firstBerthTime;
-    }
+//    public VesselDTO(String abbrVslM, String inVoyN, String outVoyN, String bthgDt, String unbthgDt, String berthN,
+//                     String status, int changeCount, double degreeChange, String firstBerthTime) {
+//        this.abbrVslM = abbrVslM;
+//        this.inVoyN = inVoyN;
+//        this.outVoyN = outVoyN;
+//        this.bthgDt = bthgDt;
+//        this.unbthgDt = unbthgDt;
+//        this.berthN = berthN;
+//        this.status = status;
+//        this.changeCount = changeCount;
+//        this.degreeChange = degreeChange;
+//        this.firstBerthTime = firstBerthTime;
+//    }
 
     public String getAbbrVslM() {
         return abbrVslM;
@@ -157,7 +158,7 @@ public class VesselDTO implements Serializable, DTO {
     }
 
     @Override
-    public  Vessel toTrueClass() {
+    public Vessel toTrueClass() {
         return new Vessel(UUID.randomUUID(),
                 this.abbrVslM, this.inVoyN, this.outVoyN, this.bthgDt, this.unbthgDt, this.berthN, this.status,
                 this.changeCount, this.degreeChange, this.firstBerthTime);

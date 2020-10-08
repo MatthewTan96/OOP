@@ -1,37 +1,50 @@
 package com.IS442.teamsixtester.model.Vessel;
 
-import org.springframework.data.annotation.Id;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
+@Entity
+@Table(name = "shipping_info")
 public class Vessel implements Serializable {
 
     @Id
     @NotNull
+    @Column(name = "vessel_id")
     private UUID vesselId;
 
     @NotBlank
+    @Column(name = "vessel_short_name")
     private String abbrVslM;
 
+    @Column(name = "incoming_voyage_number")
     private String inVoyN;
 
+    @Column(name = "outgoing_voyage_number")
     private String outVoyN;
 
+    @Column(name = "berth_time_required")
     private String bthgDt;
 
+    @Column(name = "expected_datetime_departure")
     private String unbthgDt;
 
+    @Column(name = "berth_number")
     private String berthN;
 
+    @Column(name = "status")
     private String status;
 
+    @Column(name = "change_count")
     private int changeCount;
 
+    @Column(name = "degree_change")
     private double degreeChange;
 
+    @Column(name = "first_berth_time")
     private String firstBerthTime;
 
     public Vessel() {
