@@ -17,6 +17,9 @@ public class Account {
     @Column(name = "verified")
     private int verified;
 
+    public Account() {
+    }
+
     public Account(String email, String password) {
         this.email = email;
         this.password = password;

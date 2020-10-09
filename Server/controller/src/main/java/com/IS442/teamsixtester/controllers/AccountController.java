@@ -19,12 +19,12 @@ public class AccountController {
 
 //    @Override
     @PostMapping(value="/postAccount")
-    public ResponseEntity accountPost(Account account){
-        String email = account.getEmail();
-        Account checkIfExist1 = accountService.getAccountByEmail(email);
-        if (checkIfExist1 != null) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity accountPost(@RequestBody Account account){
+//        String email = account.getEmail();
+//        Account checkIfExist1 = accountService.getAccountByEmail(email);
+//        if (checkIfExist1 != null) {
+//            return ResponseEntity.badRequest().build();
+//        }
         Account newAccount = accountService.addAccount(account);
         return ResponseEntity.ok(newAccount);
     }

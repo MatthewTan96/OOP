@@ -11,9 +11,15 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Account addAccount(Account account) {return accountRepository.save(account);}
+    public Account addAccount(Account account) {
+        return accountRepository.save(account);
+    }
 
-    public void deleteAccount(Account account) { accountRepository.delete(account);}
+    public void deleteAccount(Account account) {
+        accountRepository.delete(account);
+    }
 
-    public Account getAccountByEmail(String email){ return accountRepository.findAccountByEmail(email);}
+    public Account getAccountByEmail(String email){
+        return accountRepository.findTopByEmail(email);
+    }
 }

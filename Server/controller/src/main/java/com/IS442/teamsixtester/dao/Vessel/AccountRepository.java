@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface AccountRepository extends CrudRepository<Account,String> {
-    Account findAccountByEmail(String email);
+    Account findTopByEmail(String email);
 }
