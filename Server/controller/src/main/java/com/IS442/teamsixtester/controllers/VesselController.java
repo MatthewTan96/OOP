@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @RestController
-@CrossOrigin(origins = "*") // CrossOrigin allows front end to use data from Java
 public class VesselController implements VesselAPI {
 
     @Autowired

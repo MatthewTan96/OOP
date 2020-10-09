@@ -2,6 +2,7 @@ package com.IS442.teamsixtester.model.Vessel;
 
 import com.IS442.teamsixtester.model.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;

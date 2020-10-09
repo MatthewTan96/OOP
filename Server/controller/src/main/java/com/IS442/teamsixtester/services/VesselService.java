@@ -6,6 +6,7 @@ import com.IS442.teamsixtester.model.Vessel.Vessel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class VesselService {
         return repository.save(vessel);
     }
 
+    @CrossOrigin
     public List<Vessel> getAllVessels() {
         List<Vessel> vessels = new ArrayList<>();
         repository.findAll().forEach((vessels::add));

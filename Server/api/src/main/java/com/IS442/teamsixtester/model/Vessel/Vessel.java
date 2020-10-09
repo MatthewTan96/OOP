@@ -1,6 +1,7 @@
 package com.IS442.teamsixtester.model.Vessel;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

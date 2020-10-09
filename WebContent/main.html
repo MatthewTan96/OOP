@@ -79,6 +79,9 @@
             <th scope="col"> Berthing Time </th>
             <th scope="col"> Departure time </th>
             <th scope="col"> Berth Number </th>
+            <th scope="col"> Change Count </th>
+            <th scope="col"> Degree Change </th>
+            <th scope="col"> First Berth Time </th>
             <th scope="col"> Status </th>
             <th scope="col"> Favourites </th>
             <th scope="col"> Subscript </th>
@@ -109,48 +112,52 @@
         document.getElementById("userNamePlaceholder").innerHTML = sessionStorage.getItem("username"); // need to chnage later. 
       }
 
-      getShips();
+      getShips(userid);
 
     });
 
     
     // Get all Ships function 
-    function getShips() {
+    function getShips(userid) {
             var request = new XMLHttpRequest();
             request.onreadystatechange = function(){
                 if (this.readyState == 4 && this.status == 200) {
                     try { 
+                        console.log(this.responseText);
                         dataObj = JSON.parse(this.responseText);
+                        if(dataObj == []){
+                          console.log("nothing in Database")
+                        } else {
                         var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
                         for(var ship of dataObj){
                           var newRow = tableRef.insertRow(tableRef.rows.length);
-
+                          /*
                           var cell01  = newRow.insertCell(0);
-                          var input01  = document.createTextNode(ship["id"])
+                          var input01  = document.createTextNode(ship["vesselId"])
                           cell01.appendChild(input01);
 
                           var cell02  = newRow.insertCell(1);
-                          var input02  = document.createTextNode(ship["berthNo"])
+                          var input02  = document.createTextNode(ship["abbrVslM"])
                           cell02.appendChild(input02);
 
                           var cell03  = newRow.insertCell(2);
-                          var input03  = document.createTextNode(ship["berthingTime"])
+                          var input03  = document.createTextNode(ship["inVoyN"])
                           cell03.appendChild(input03);
 
                           var cell04  = newRow.insertCell(3);
-                          var input04  = document.createTextNode(ship["departureTime"])
+                          var input04  = document.createTextNode(ship["outVoyN"])
                           cell04.appendChild(input04);
 
                           var cell05  = newRow.insertCell(4);
-                          var input05  = document.createTextNode(ship["incomingVoyage"])
+                          var input05  = document.createTextNode(ship["bthgDt"])
                           cell05.appendChild(input05);
 
                           var cell06  = newRow.insertCell(5);
-                          var input06  = document.createTextNode(ship["name"])
+                          var input06  = document.createTextNode(ship["unbthgDt"])
                           cell06.appendChild(input06);
 
                           var cell07  = newRow.insertCell(6);
-                          var input07  = document.createTextNode(ship["outcomingVoyage"])
+                          var input07  = document.createTextNode(ship["berthN"])
                           cell07.appendChild(input07);
 
                           var cell08  = newRow.insertCell(7);
@@ -170,27 +177,101 @@
                           subBtn.setAttribute("onclick", "addToSubscribe('"+ ship["id"] +"')")
                           subBtn.innerHTML = "Sub";
                           cell09.appendChild(subBtn);
-                        }
+                          */
+                          // Save the vessel id
+                          var vessl_id  = ship["vesselId"];
 
+                          var cell01  = newRow.insertCell(0);
+                          var input01  = document.createTextNode(ship["abbrVslM"])
+                          cell01.appendChild(input01);
+
+                          var cell02  = newRow.insertCell(1);
+                          var input02  = document.createTextNode(ship["inVoyN"])
+                          cell02.appendChild(input02);
+
+                          var cell03  = newRow.insertCell(2);
+                          var input03  = document.createTextNode(ship["outVoyN"])
+                          cell03.appendChild(input03);
+
+                          var cell04  = newRow.insertCell(3);
+                          var input04  = document.createTextNode(ship["btrDt"])
+                          cell04.appendChild(input04);
+
+                          var cell05  = newRow.insertCell(4);
+                          var input05  = document.createTextNode(ship["etdDt"])
+                          cell05.appendChild(input05);
+
+                          var cell06  = newRow.insertCell(5);
+                          var input06  = document.createTextNode(ship["berthN"])
+                          cell06.appendChild(input06);
+
+                          var cell07  = newRow.insertCell(6);
+                          var input07  = document.createTextNode(ship["changeCount"])
+                          cell07.appendChild(input07);
+
+                          var cell08  = newRow.insertCell(7);
+                          var input08  = document.createTextNode(ship["degreeChange"])
+                          cell08.appendChild(input08);
+
+                          var cell09  = newRow.insertCell(8);
+                          var input09  = document.createTextNode(ship["firstBerthTime"])
+                          cell09.appendChild(input09);
+
+                          var cell10  = newRow.insertCell(9);
+                          var input10  = document.createTextNode(ship["status"])
+                          cell10.appendChild(input10);
+
+                          var cell11  = newRow.insertCell(10);
+                          var addBtn  = document.createElement("BUTTON")
+                          addBtn.setAttribute("type", "button")
+                          addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                          addBtn.setAttribute("class", "btn btn-primary")
+                          addBtn.setAttribute("onclick", "addToFavourites('"+ userid +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          addBtn.innerHTML = "Add";
+                          cell11.appendChild(addBtn);
+
+                          var cell12  = newRow.insertCell(11);
+                          var subBtn  = document.createElement("BUTTON")
+                          subBtn.setAttribute("type", "button")
+                          subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                          subBtn.setAttribute("class", "btn btn-info")
+                          subBtn.setAttribute("onclick", "addToSubscribe('"+ userid +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          subBtn.innerHTML = "Sub";
+                          cell12.appendChild(subBtn);
+
+                          // if degree of change is more than 1 the row becomes red. 
+                          if(ship["degreeChange"] > 1.0){
+                            newRow.setAttribute("class", "table-danger")
+                          }
+                        
+
+                        }
+                      }
                     } catch(err){
                         console.log("error");
                     }
             }
         }
-        request.open("GET", "http://localhost:8080/v1/vessel", true);
+        //request.open("GET", "http://localhost:8080/v1/vessel", true);
+        request.open("GET", "http://localhost:8080/getAllVessels", true);
         request.send();  
     }
     // End of get all ship function 
 
-  function addToFavourites( ShipID, incomingVoyage, outcomingVoyage){
-    console.log("Hello World");
+  function addToFavourites( userid, ShipID, incomingVoyage, outcomingVoyage){
+    console.log("ADD!!");
+    console.log(userid);
     console.log(ShipID);
     console.log(incomingVoyage);
     console.log(outcomingVoyage);
   }
 
-  function addtestFavourites(){
-    console.log("test");
+  function addToSubscribe(userid, ShipID, incomingVoyage, outcomingVoyage){
+    console.log("SUB!!");
+    console.log(userid);
+    console.log(ShipID);
+    console.log(incomingVoyage);
+    console.log(outcomingVoyage);
   }
 
 
@@ -224,11 +305,12 @@
         console.log("Success :)");
       }
     }
-    request.open("POST", "http://localhost:8080/v1/vessel", true);
+    request.open("POST", "http://localhost:8080/postVessel", true);
     request.setRequestHeader("Content-type", "application/json");
     //request.send(name,incomingVoyage,outcomingVoyage,berthingTime,departureTime,berthNo,status);
     request.send(
       JSON.stringify({
+        /*
         name: inputName, 
         incomingVoyage: inputIncomingVoyage,
         outcomingVoyage: inputOutcomingVoyage,
@@ -236,6 +318,15 @@
         departureTime: inputDepartureTime,
         berthNo: intputBerthNo,
         status: intputStatus
+        */
+        abbrVslM: "ship9",
+        inVoyN: "231",
+        outVoyN: "011",
+        btrDt: "2020-08-04T11:11:30",
+        etdDt: "2020-08-04T23:11:30",
+        berthN: "40",
+        status: "okay",
+        degreeChange: "70"
       }));
   }
 
