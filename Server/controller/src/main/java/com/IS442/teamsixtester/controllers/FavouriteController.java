@@ -37,14 +37,9 @@ public class FavouriteController {
     ){
 
         Vessel vesselToAdd = vesselService.getVesselByIncoming(vesselShortName, incoming);
-        Account accountToAdd = accountService.getAccountByEmail(email);
+        Account account = accountService.getAccountByEmail(email);
 
-        Set<Vessel> oldSetVessel = accountToAdd.getVessels();
-        Set<Account> oldSetAccount = vesselToAdd.getAccounts();
-//
-//        favouriteService.addFavourite(vesselToAdd,account);
-        favouriteService.addFavourite(oldSetVessel,oldSetAccount,vesselToAdd,accountToAdd);
-
+        favouriteService.addFavourite(vesselToAdd,account);
         return new ResponseEntity<>("okay", HttpStatus.OK);
     }
 

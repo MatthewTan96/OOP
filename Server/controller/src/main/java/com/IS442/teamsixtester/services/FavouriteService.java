@@ -21,30 +21,10 @@ public class FavouriteService {
     private AccountRepository accountrepository;
 
 
-
-//    public void addFavourite(Vessel vessel, Account account) {
-//        Set<Vessel> currentVessels = account.getVessels();
-//        currentVessels.add(vessel);
-//
-//    }
-
-    public void addFavourite(Set<Vessel> oldSetVessel, Set<Account> oldSetAccount,Vessel vessel, Account account) {
-        Set<Vessel> newSetVessel = new HashSet<Vessel>();
-        for (Vessel oldVessel : oldSetVessel) {
-            newSetVessel.add(oldVessel);
-        }
-        newSetVessel.add(vessel);
-
-        account.setVessels(newSetVessel);
-
-        Set<Account> newSetAccount = new HashSet<Account>();
-        for (Account oldAccount : oldSetAccount) {
-            newSetAccount.add(oldAccount);
-        }
-        newSetAccount.add(account);
-        vessel.setAccounts(newSetAccount);
-
-        vesselrepository.save(vessel);
+    public void addFavourite(Vessel vessel, Account account) {
+        Set<Vessel> currentVessels = account.getVessels();
+        currentVessels.add(vessel);
+        account.setVessels(currentVessels);
         accountrepository.save(account);
     }
 
