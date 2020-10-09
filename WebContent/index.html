@@ -65,10 +65,18 @@
         http.onreadystatechange = function() {//Call a function when the state changes.
             if(http.readyState == 4 && http.status == 200) {
                 // Perform authentication
+                console.log(http.responseText);
                 var response = JSON.parse(http.responseText);
                 console.log(response["password"]);
                 if (response["password"] == password){
                     window.location.replace("main.html");
+
+                    // Check if verified 
+                    if (response["verified"] == 0){
+                        alert("Please verify your account and try again");
+                        location.reload();
+                    }
+
                 } else {
                     alert("Wrong credentials! Please try again!");
                 }
