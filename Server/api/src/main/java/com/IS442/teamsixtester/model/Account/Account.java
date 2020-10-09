@@ -1,12 +1,20 @@
 package com.IS442.teamsixtester.model.Account;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
+@Entity
 public class Account {
-    @NotBlank
+    @Id
+    @Column(name = "email")
     private String email;
-    @NotBlank
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "verified")
     private int verified;
 
     public Account(String email, String password) {

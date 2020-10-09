@@ -44,7 +44,6 @@ public class VesselDTO implements Serializable, DTO {
         this.status = status;
         this.changeCount = 0;
         this.degreeChange = 0;
-        this.firstBerthTime = bthgDt;
     }
 
 //    public VesselDTO(String abbrVslM, String inVoyN, String outVoyN, String bthgDt, String unbthgDt, String berthN,
@@ -159,6 +158,7 @@ public class VesselDTO implements Serializable, DTO {
 
     @Override
     public Vessel toTrueClass() {
+        firstBerthTime = this.getBthgDt();
         return new Vessel(UUID.randomUUID(),
                 this.abbrVslM, this.inVoyN, this.outVoyN, this.bthgDt, this.unbthgDt, this.berthN, this.status,
                 this.changeCount, this.degreeChange, this.firstBerthTime);
