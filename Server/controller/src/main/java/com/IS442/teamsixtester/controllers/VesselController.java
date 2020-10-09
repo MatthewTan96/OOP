@@ -28,7 +28,7 @@ public class VesselController implements VesselAPI {
 
 
     @Override
-    @PostMapping(VESSEL_BASE_PATH)
+    @PostMapping(value = "/postVessel")
     public ResponseEntity<Vessel> vesselPost(
             @Valid @RequestBody VesselDTO vesselDTO) {
         Vessel checkIfExist1 = vesselService.getVesselByOutgoing(vesselDTO.getAbbrVslM(), vesselDTO.getOutVoyN());
@@ -43,13 +43,13 @@ public class VesselController implements VesselAPI {
     }
 
     @Override
-    @GetMapping(VESSEL_BASE_PATH)
+    @GetMapping(value = "/getAllVessels")
     public ResponseEntity<List<Vessel>> vesselGetAll() {
         return ResponseEntity.ok(vesselService.getAllVessels());
     }
 
     @Override
-    @GetMapping(VESSEL_FILTER_PATH)
+    @GetMapping(value = "/getVessel")
     public ResponseEntity vesselGet(@Valid @RequestBody VesselQueryDTO vesselQueryDTO) {
         String name = vesselQueryDTO.getAbbrVslM();
         String incoming = vesselQueryDTO.getInVoyN();
@@ -64,7 +64,7 @@ public class VesselController implements VesselAPI {
     }
 
     @Override
-    @DeleteMapping(VESSEL_BASE_PATH)
+    @DeleteMapping(value = "deleteVessel")
     public ResponseEntity vesselDelete(@Valid @RequestBody VesselQueryDTO vesselQueryDTO) {
         String name = vesselQueryDTO.getAbbrVslM();
         String incoming = vesselQueryDTO.getInVoyN();
