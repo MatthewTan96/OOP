@@ -18,11 +18,3 @@ CREATE TABLE login_info (
     verified integer
 );
 
--- CREATE TABLE favourites (
---     email VARCHAR(100) references login_info(email),
---     vessel_id UUID references shipping_info(vessel_id),
---     PRIMARY KEY (email, vessel_id)
--- );
-
-
-
