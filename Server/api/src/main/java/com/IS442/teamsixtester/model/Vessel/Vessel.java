@@ -1,9 +1,12 @@
 package com.IS442.teamsixtester.model.Vessel;
 
+import com.IS442.teamsixtester.model.Account.Account;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -46,12 +49,16 @@ public class Vessel implements Serializable {
     @Column(name = "first_berth_time")
     private String firstBerthTime;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "vessels")
+    private Set<Account> accounts;
+
     public Vessel() {
     }
 
     public Vessel(@NotNull UUID vesselId, @NotBlank String abbrVslM, String inVoyN,
                   String outVoyN, String bthgDt, String unbthgDt, String berthN,
-                  String status, int changeCount, double degreeChange, String firstBerthTime) {
+                  String status, int changeCount, double degreeChange,
+                  String firstBerthTime, Set<Account> account) {
         this.vesselId = vesselId;
         this.abbrVslM = abbrVslM;
         this.inVoyN = inVoyN;
@@ -63,6 +70,7 @@ public class Vessel implements Serializable {
         this.changeCount = changeCount;
         this.degreeChange = degreeChange;
         this.firstBerthTime = firstBerthTime;
+        this.accounts = accounts;
     }
 
     public UUID getVesselId() {
@@ -151,6 +159,14 @@ public class Vessel implements Serializable {
 
     public void setFirstBerthTime(String firstBerthTime) {
         this.firstBerthTime = firstBerthTime;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 
     @Override
