@@ -1,15 +1,18 @@
-I'm also using Flyway for DB migrations to have some form of version control on our DB. Each of the class variables in the Vessel class will be mapped to a column in the DB. JPA Hibernate does this mapping automatically
+I'm using Flyway for DB migrations to have some form of version control on our DB. Each of the class variables in the Vessel class will be mapped to a column in the DB. I have Set up DAO to handle the mapping of class variables to column name.
 
-Just pull my branch and open the Server/pom.xml as a project in IntelliJ and it should resolve all the dependencies for you. Run the TeeamsixtesterApplication src file to start the programme.
+Just pull my branch and open the Server/pom.xml as a project in IntelliJ and it should resolve all the dependencies for you. Run the TeamsixtesterApplication src file to start the programme.
 
 Some notes:
 
-1. postgresql installed on your computer (you need to change the postgresql connection configurations under main/java/resources/application.properties. I created a DB called teamsix and granted user tester with password password to all privileges on this db. Flyway will automatically created the tables and manage them for you.
-2. API url is localhost:8080 by default
-3. GET API: /vessel/ retrieves all rows in DB
-4. POST API: /create/ creates a new row in the DB
-5. PUT and DELETE does not work yet, i’m still working on it
-6. Packages:
-   controller: this file directs the API called to the functions in the service package
-   service: contains the functions used to interact with the DB
-   repository: link Hibernate with the PostgresDB
+1. You need Postgresql installed on your computer (you need to change the postgresql connection configurations under main/java/resources/application.yml.
+2. Steps to create database
+    > docker exec -it postgresimagename bin/bash (if you're using docker) <br>
+    > psql -U psql <br>
+    > create database teamsix; <br>
+    > create user tester with password 'password'; <br>
+    > grant all privileges on database teamsix to tester; <br>
+3. API Documentation: https://docs.google.com/document/d/1fhckql2LpTw5Fdc6PbbmIeQEwXTdtgtKuCPRg_p_g7g/edit?usp=sharing
+4. Packages:
+   > controller: this file directs the API called to the functions in the service package <br>
+   > service: contains the functions used to interact with the DB <br>
+   > repository: link Hibernate with the PostgresDB <br>
