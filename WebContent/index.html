@@ -20,6 +20,7 @@
         var email = document.forms["loginForm"]["Email"].value;
         var password = document.forms["loginForm"]["Password"].value;
 
+        // Javascript validations 
         // Check if email is blank
         if (email == ""){
             alert("Email cannot be blank!");
@@ -28,21 +29,56 @@
         }
 
         // Check if password is blank
-        // Check if email is blank
         if (password == ""){
             alert("Password cannot be blank!");
             window.location.replace("index.html");
             error_messages.push("Password cannot be blank!");
         }
 
-        console.log(email);
-        console.log(password);
+        // Assume that basic validations work 
+        // Sending to database now 
+        
+
+        // console.log(email);
+        // console.log(password);
+        login(email,password);
         return false;
       }
 
     //   Populate error message
-        if(error_messages.length == 0){
-            window.location.replace("main.html");
+        // if(error_messages.length == 0){
+        //     window.location.replace("main.html");
+        // }
+    
+    function login(email,password){
+        // Check if account email is available 
+        console.log("login() triggered");
+
+        var http = new XMLHttpRequest();
+        var url = 'http://localhost:8080/getAccountByEmail';
+        http.open('POST', url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        // CORS error for now 
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+                // Perform authentication
+                var response = JSON.parse(http.responseText);
+                console.log(response["password"]);
+                if (response["password"] == password){
+                    window.location.replace("main.html");
+                } else {
+                    alert("Wrong credentials! Please try again!");
+                }
+                console.log(http.responseText);
+            } else if (http.readyState == 4 && http.status == 404){
+                    alert("Error. Account already exists")
+                }
+                return;
+            }
+            http.send(JSON.stringify({ "email": email, "password": password }));
         }
     </script>
 
@@ -56,7 +92,7 @@
           <h1 class="display-4">MVJS Project Placeholder</h1>
           <p class="lead">Motto or whatever</p>
         </div>
-      </div>
+    </div>
 
     <!-- Login page  -->
     <div class="container text-center">

@@ -1,5 +1,7 @@
 package com.IS442.teamsixtester.controllers;
 
+import com.IS442.teamsixtester.dao.Vessel.AccountRepository;
+import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.IS442.teamsixtester.services.AccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,10 @@ import com.IS442.teamsixtester.model.Account.Account;
 
 import javax.persistence.PreUpdate;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @RestController
 public class AccountController {
 
@@ -31,6 +36,13 @@ public class AccountController {
         return ResponseEntity.ok(newAccount);
     }
 
+    @PostMapping(value="/getAccountByEmail")
+    public Account getAccountByEmail(@RequestBody Account account){
+        String email = account.getEmail();
+        Account getAccount = accountService.getAccountByEmail(email);
+        return getAccount;
+    }
+
 //    @Override
     @DeleteMapping(value="/deleteAccount")
     public ResponseEntity accountDelete(@RequestBody Account account) {
@@ -44,8 +56,11 @@ public class AccountController {
     }
 
 //    @Override
-    @PostMapping(value="/updateAccount")
-    public ResponseEntity accountUpdate(Account account) throws JsonProcessingException {
-        return null;
+    @GetMapping(value = "/getAllAccounts")
+    public ResponseEntity<List<Account>> accountGetAll() {
+        return ResponseEntity.ok(accountService.accountGetAll());
     }
+
+//    @Override
+
 }
