@@ -34,8 +34,9 @@ public class VesselController implements VesselAPI {
 
         Vessel checkIfExist2 = vesselService.getVesselByIncoming(vesselDTO.getAbbrVslM(), vesselDTO.getInVoyN());
 
-        if (checkIfExist1 != null || checkIfExist2 != null) {
-            return ResponseEntity.badRequest().build();
+        if (checkIfExist1 != null) {
+            Vessel newVessel = vesselService.updateVessel(checkIfExist1, vesselDTO);
+            return ResponseEntity.ok(newVessel);
         }
         Vessel newVessel = vesselService.addVessel(vesselDTO.toTrueClass());
         return ResponseEntity.ok(newVessel);
@@ -63,7 +64,7 @@ public class VesselController implements VesselAPI {
     }
 
     @Override
-    @DeleteMapping(value = "deleteVessel")
+    @DeleteMapping(value = "/deleteVessel")
     public ResponseEntity vesselDelete(@Valid @RequestBody VesselQueryDTO vesselQueryDTO) {
         String name = vesselQueryDTO.getAbbrVslM();
         String incoming = vesselQueryDTO.getInVoyN();
