@@ -4,11 +4,13 @@ import com.IS442.teamsixtester.services.AccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.IS442.teamsixtester.model.Account.Account;
 
+import javax.persistence.PreUpdate;
 import javax.validation.Valid;
 
 @RestController
@@ -20,18 +22,18 @@ public class AccountController {
 //    @Override
     @PostMapping(value="/postAccount")
     public ResponseEntity accountPost(@RequestBody Account account){
-//        String email = account.getEmail();
-//        Account checkIfExist1 = accountService.getAccountByEmail(email);
-//        if (checkIfExist1 != null) {
-//            return ResponseEntity.badRequest().build();
-//        }
+        String email = account.getEmail();
+        Account checkIfExist1 = accountService.getAccountByEmail(email);
+        if (checkIfExist1 != null) {
+            return ResponseEntity.badRequest().build();
+        }
         Account newAccount = accountService.addAccount(account);
         return ResponseEntity.ok(newAccount);
     }
 
 //    @Override
-    @PostMapping(value="/deleteAccount")
-    public ResponseEntity accountDelete(Account account) {
+    @DeleteMapping(value="/deleteAccount")
+    public ResponseEntity accountDelete(@RequestBody Account account) {
         String email = account.getEmail();
         Account accountToDelete = accountService.getAccountByEmail(email);
         if (accountToDelete == null) {

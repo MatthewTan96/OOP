@@ -1,11 +1,13 @@
 package com.IS442.teamsixtester.model.Vessel;
 
+import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.model.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Set;
 import java.util.UUID;
 
 public class VesselDTO implements Serializable, DTO {
@@ -30,6 +32,8 @@ public class VesselDTO implements Serializable, DTO {
 
     private String firstBerthTime;
 
+    private Set<Account> accounts;
+
     public VesselDTO() {
     }
 
@@ -44,6 +48,7 @@ public class VesselDTO implements Serializable, DTO {
         this.status = status;
         this.changeCount = 0;
         this.degreeChange = 0;
+        this.accounts = null;
     }
 
 //    public VesselDTO(String abbrVslM, String inVoyN, String outVoyN, String bthgDt, String unbthgDt, String berthN,
@@ -140,6 +145,14 @@ public class VesselDTO implements Serializable, DTO {
         this.firstBerthTime = firstBerthTime;
     }
 
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
+    }
+
     @Override
     public String toString() {
         return "VesselDTO{" +
@@ -161,6 +174,6 @@ public class VesselDTO implements Serializable, DTO {
         firstBerthTime = this.getBthgDt();
         return new Vessel(UUID.randomUUID(),
                 this.abbrVslM, this.inVoyN, this.outVoyN, this.bthgDt, this.unbthgDt, this.berthN, this.status,
-                this.changeCount, this.degreeChange, this.firstBerthTime);
+                this.changeCount, this.degreeChange, this.firstBerthTime, this.accounts);
     }
 }
