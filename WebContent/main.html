@@ -91,7 +91,7 @@
     </form>
 
     <form>
-      <button type="submit" class="btn btn-primary mb-2"> upload Ship Test </button> 
+      <button type="button" class="btn btn-primary mb-2" onclick="addtestFavourites2()"> upload Ship Test </button> 
     </form>
 
   </div>
@@ -187,18 +187,56 @@
     console.log(ShipID);
     console.log(incomingVoyage);
     console.log(outcomingVoyage);
+  }
+
+  function addtestFavourites(){
+    console.log("test");
+  }
 
 
+  function addtestFavourites2(){
+    console.log("test");
+    /*
+    name = "test";
+    incomingVoyage = "helloworld";
+    outcomingVoyage = "helloworld";
+    berthingTime = "helloworld";
+    departureTime = "helloworld";
+    berthNo = "helloworld";
+    status = "helloworld";
+    */
+
+    inputName = "test";
+    inputIncomingVoyage = "helloworld";
+    inputOutcomingVoyage = "helloworld";
+    inputBerthingTime = "helloworld";
+    inputDepartureTime = "helloworld";
+    intputBerthNo = "helloworld";
+    intputStatus = "helloworld";
+
+
+
+    console.log("test");
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) 
       {
-
+        console.log("Success :)");
       }
     }
     request.open("POST", "http://localhost:8080/v1/vessel", true);
     request.setRequestHeader("Content-type", "application/json");
-    request.send("query=" + jsonObj);
+    //request.send(name,incomingVoyage,outcomingVoyage,berthingTime,departureTime,berthNo,status);
+    request.send(
+      JSON.stringify({
+        name: inputName, 
+        incomingVoyage: inputIncomingVoyage,
+        outcomingVoyage: inputOutcomingVoyage,
+        berthingTime: inputBerthingTime,
+        departureTime: inputDepartureTime,
+        berthNo: intputBerthNo,
+        status: intputStatus
+      }));
   }
 
 
