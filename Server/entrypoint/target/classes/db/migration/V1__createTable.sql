@@ -11,3 +11,4 @@ CREATE TABLE shipping_info (
         degree_change float,
         first_berth_time VARCHAR(30)
 );
+
