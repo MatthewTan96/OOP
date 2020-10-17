@@ -1,6 +1,6 @@
 package com.IS442.teamsixtester.model.Vessel;
 
-//import org.hibernate.validator.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.IS442.teamsixtester.model.Account.Account;
 
@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
@@ -51,8 +52,9 @@ public class Vessel implements Serializable {
     @Column(name = "first_berth_time")
     private String firstBerthTime;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "vessels")
-    private Set<Account> accounts;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "favouritedVessels")
+    private Set<Account> favouritedByAccounts;
 
     public Vessel() {
     }
@@ -60,7 +62,7 @@ public class Vessel implements Serializable {
     public Vessel(@NotNull UUID vesselId, @NotBlank String abbrVslM, String inVoyN,
                   String outVoyN, String bthgDt, String unbthgDt, String berthN,
                   String status, int changeCount, double degreeChange,
-                  String firstBerthTime, Set<Account> account) {
+                  String firstBerthTime, Set<Account> favouritedByAccounts) {
         this.vesselId = vesselId;
         this.abbrVslM = abbrVslM;
         this.inVoyN = inVoyN;
@@ -72,7 +74,7 @@ public class Vessel implements Serializable {
         this.changeCount = changeCount;
         this.degreeChange = degreeChange;
         this.firstBerthTime = firstBerthTime;
-        this.accounts = accounts;
+        this.favouritedByAccounts = favouritedByAccounts;
     }
 
     public UUID getVesselId() {
@@ -163,12 +165,32 @@ public class Vessel implements Serializable {
         this.firstBerthTime = firstBerthTime;
     }
 
-    public Set<Account> getAccounts() {
-        return accounts;
+    public Set<Account> getFavouritedByAccounts() {
+        return favouritedByAccounts;
     }
 
-    public void setAccounts(Set<Account> accounts) {
-        this.accounts = accounts;
+    public void setFavouritedByAccounts(Set<Account> favouritedByAccounts) {
+        this.favouritedByAccounts = favouritedByAccounts;
+    }
+
+    public void addAccount(Account account) {
+        this.favouritedByAccounts.add(account);
+        Set<Vessel> retrievedVessels = account.getFavouritedVessels();
+        retrievedVessels.add(this);
+        account.setFavouritedVessels(retrievedVessels);
+    }
+
+    public void removeAccount(Account account) {
+        this.favouritedByAccounts.remove(account);
+        Set<Vessel> retrievedVessels = account.getFavouritedVessels();
+        retrievedVessels.remove(this);
+        account.setFavouritedVessels(retrievedVessels);
+    }
+
+    public void remove() {
+        for (Account account : new ArrayList<>(favouritedByAccounts)) {
+            removeAccount(account);
+        }
     }
 
     @Override

@@ -1,9 +1,13 @@
 package com.IS442.teamsixtester.services;
 
 //import com.IS442.teamsixtester.repositories.Vessel.VesselDAO;
+import com.IS442.teamsixtester.dao.Account.AccountDAO;
+import com.IS442.teamsixtester.dao.Account.PostgresAccountDataAccessService;
+import com.IS442.teamsixtester.dao.Vessel.VesselDAO;
 import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.repositories.Account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,30 +15,32 @@ import java.util.List;
 
 @Service
 public class AccountService {
+    private final AccountDAO accountDao;
+
     @Autowired
-    private AccountRepository accountRepository;
+    public AccountService(@Qualifier("postgres1") AccountDAO accountDao) {
+        this.accountDao = accountDao;
+    }
+
 
     public Account addAccount(Account account) {
-        return accountRepository.save(account);
+        return accountDao.insertAccount(account);
     }
 
     public void deleteAccount(Account account) {
-        accountRepository.delete(account);
+        account.remove();
+        accountDao.deleteAccount(account);
     }
 
     public Account getAccountByEmail(String email) {
-        return accountRepository.findTopByEmail(email);
+        return accountDao.getAccountByEmail(email);
     }
 
     public Account updateAccount(Account existingAccount, Account toChangeAccount) {
-        existingAccount.setPassword(toChangeAccount.getPassword());
-        existingAccount.setVerified(toChangeAccount.getVerified());
-        return accountRepository.save(existingAccount);
+        return accountDao.updateAccount(existingAccount, toChangeAccount);
     }
 
     public List<Account> accountGetAll() {
-        List<Account> accounts = new ArrayList<>();
-        accountRepository.findAll().forEach((accounts::add));
-        return accounts;
+        return accountDao.selectAllAccount();
     }
 }

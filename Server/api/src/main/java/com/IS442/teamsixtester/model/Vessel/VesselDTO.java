@@ -33,7 +33,7 @@ public class VesselDTO implements Serializable, DTO {
 
     private String firstBerthTime;
 
-    private Set<Account> accounts;
+    private Set<Account> favouritedByAccounts;
 
     public VesselDTO() {
     }
@@ -49,7 +49,7 @@ public class VesselDTO implements Serializable, DTO {
         this.status = status;
         this.changeCount = 0;
         this.degreeChange = 0;
-        this.accounts = null;
+        this.favouritedByAccounts = null;
     }
 
 //    public VesselDTO(String abbrVslM, String inVoyN, String outVoyN, String bthgDt, String unbthgDt, String berthN,
@@ -146,14 +146,6 @@ public class VesselDTO implements Serializable, DTO {
         this.firstBerthTime = firstBerthTime;
     }
 
-    public Set<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(Set<Account> accounts) {
-        this.accounts = accounts;
-    }
-
     @Override
     public String toString() {
         return "VesselDTO{" +
@@ -175,6 +167,6 @@ public class VesselDTO implements Serializable, DTO {
         firstBerthTime = this.getBthgDt();
         return new Vessel(UUID.randomUUID(),
                 this.abbrVslM, this.inVoyN, this.outVoyN, this.bthgDt, this.unbthgDt, this.berthN, this.status,
-                this.changeCount, this.degreeChange, this.firstBerthTime, this.accounts);
+                this.changeCount, this.degreeChange, this.firstBerthTime, this.favouritedByAccounts);
     }
 }

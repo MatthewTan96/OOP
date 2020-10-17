@@ -13,17 +13,22 @@ import java.util.Set;
 @Service
 public class FavouriteService {
     @Autowired
-    private VesselRepository vesselrepository;
+    private VesselRepository vesselRepository;
 
     @Autowired
-    private AccountRepository accountrepository;
+    private AccountRepository accountRepository;
 
 
     public void addFavourite(Vessel vessel, Account account) {
-        Set<Vessel> currentVessels = account.getVessels();
-        currentVessels.add(vessel);
-        account.setVessels(currentVessels);
-        accountrepository.save(account);
+//        Set<Vessel> currentVessels = account.getVessels();
+//        currentVessels.add(vessel);
+//        account.setVessels(currentVessels);
+        account.addVessel(vessel);
+        accountRepository.save(account);
     }
 
+    public void deleteFavourite(Vessel vessel, Account account) {
+        account.removeVessel(vessel);
+        accountRepository.save(account);
+    }
 }

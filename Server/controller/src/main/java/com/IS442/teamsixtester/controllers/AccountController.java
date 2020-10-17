@@ -11,11 +11,13 @@ import java.util.List;
 @CrossOrigin(origins="*", allowedHeaders = "*")
 @RestController
 public class AccountController {
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService = new AccountService();
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
-//    @Override
     @PostMapping(value="/postAccount")
     public ResponseEntity accountPost(@RequestBody Account account){
         String email = account.getEmail();
@@ -27,14 +29,12 @@ public class AccountController {
         return ResponseEntity.ok(newAccount);
     }
 
-    @PostMapping(value="/getAccountByEmail")
-    public Account getAccountByEmail(@RequestBody Account account){
-        String email = account.getEmail();
-        Account getAccount = accountService.getAccountByEmail(email);
-        return getAccount;
+    @GetMapping(value="/getAccountByEmail")
+    public Account getAccountByEmail(@RequestParam
+                                     String email){
+        return accountService.getAccountByEmail(email);
     }
 
-//    @Override
     @DeleteMapping(value="/deleteAccount")
     public ResponseEntity accountDelete(@RequestBody Account account) {
         String email = account.getEmail();
@@ -46,12 +46,8 @@ public class AccountController {
         return ResponseEntity.ok(accountToDelete);
     }
 
-//    @Override
     @GetMapping(value = "/getAllAccounts")
     public ResponseEntity<List<Account>> accountGetAll() {
         return ResponseEntity.ok(accountService.accountGetAll());
     }
-
-//    @Override
-
 }

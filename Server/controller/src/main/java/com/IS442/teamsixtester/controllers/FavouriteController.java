@@ -29,18 +29,31 @@ public class FavouriteController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping(value = "/postFavourites")
-    public ResponseEntity<String> favouritePost(
+    @PostMapping(value = "/postFavourite")
+    public ResponseEntity favouritePost(
             @RequestParam String vesselShortName,
             @RequestParam String incoming,
             @RequestParam String email
     ){
 
-        Vessel vesselToAdd = vesselService.getVesselByIncoming(vesselShortName, incoming);
+        Vessel vesselToFavourite = vesselService.getVesselByIncoming(vesselShortName, incoming);
         Account account = accountService.getAccountByEmail(email);
 
-        favouriteService.addFavourite(vesselToAdd,account);
-        return new ResponseEntity<>("okay", HttpStatus.OK);
+        favouriteService.addFavourite(vesselToFavourite,account);
+        return ResponseEntity.ok(account);
+    }
+
+    @DeleteMapping(value = "/deleteFavourite")
+    public ResponseEntity favouriteDelete(
+            @RequestParam String vesselShortName,
+            @RequestParam String incoming,
+            @RequestParam String email
+    ) {
+        Vessel vesselToUnfavourite = vesselService.getVesselByIncoming(vesselShortName, incoming);
+        Account account = accountService.getAccountByEmail(email);
+
+        favouriteService.deleteFavourite(vesselToUnfavourite, account);
+        return ResponseEntity.ok(account);
     }
 
 
