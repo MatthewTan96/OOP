@@ -1,9 +1,8 @@
-package com.IS442.teamsixtester.dao.Vessel;
+package com.IS442.teamsixtester.repositories.Vessel;
 
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.UUID;
 

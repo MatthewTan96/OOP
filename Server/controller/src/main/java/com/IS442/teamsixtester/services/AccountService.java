@@ -1,15 +1,11 @@
 package com.IS442.teamsixtester.services;
 
-//import com.IS442.teamsixtester.dao.Vessel.VesselDAO;
+//import com.IS442.teamsixtester.repositories.Vessel.VesselDAO;
 import com.IS442.teamsixtester.model.Account.Account;
-import com.IS442.teamsixtester.dao.Vessel.AccountRepository;
-import com.IS442.teamsixtester.model.Vessel.Vessel;
-import com.IS442.teamsixtester.model.Vessel.VesselDTO;
+import com.IS442.teamsixtester.repositories.Account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

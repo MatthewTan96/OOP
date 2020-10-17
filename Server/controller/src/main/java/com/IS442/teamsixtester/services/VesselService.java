@@ -1,7 +1,6 @@
 package com.IS442.teamsixtester.services;
 
-//import com.IS442.teamsixtester.dao.Vessel.VesselDAO;
-import com.IS442.teamsixtester.dao.Vessel.VesselRepository;
+import com.IS442.teamsixtester.dao.Vessel.VesselDAO;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.IS442.teamsixtester.model.Vessel.VesselDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,39 +9,41 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class VesselService {
+
+    public final VesselDAO vesselDao;
+
     @Autowired
-    private VesselRepository repository;
+    public VesselService(@Qualifier("postgres") VesselDAO vesselDao) {
+        this.vesselDao = vesselDao;
+    }
+
+
 
     public Vessel addVessel(Vessel vessel) {
-        return repository.save(vessel);
+        return vesselDao.insertVessel(vessel);
     }
 
     @CrossOrigin
     public List<Vessel> getAllVessels() {
-        List<Vessel> vessels = new ArrayList<>();
-        repository.findAll().forEach((vessels::add));
-        return vessels;
+        return vesselDao.selectAllVessels();
     }
 
     public Vessel getVesselByIncoming(String abbrVslM, String inVoyN) {
-        return repository.findTopByAbbrVslMAndInVoyN(abbrVslM, inVoyN);
+        return vesselDao.selectVesselByIncoming(abbrVslM, inVoyN);
     }
 
     public Vessel getVesselByOutgoing(String abbrVslM, String outVoyN) {
-        return repository.findTopByAbbrVslMAndOutVoyN(abbrVslM, outVoyN);
+        return vesselDao.selectVesselByOutgoing(abbrVslM, outVoyN);
     }
 
-    public void deleteVessel(Vessel vessel) {
-        repository.delete(vessel);
+    public Vessel deleteVessel(Vessel vessel) {
+        return vesselDao.deleteVessel(vessel);
     }
 
     public Vessel updateVessel(Vessel existingVessel, VesselDTO toChangeVessel) {
@@ -65,6 +66,6 @@ public class VesselService {
         existingVessel.setBerthN(toChangeVessel.getBerthN());
         existingVessel.setStatus(toChangeVessel.getStatus());
 
-        return repository.save(existingVessel);
+        return vesselDao.updateVessel(existingVessel);
     }
 }

@@ -1,6 +1,6 @@
 package com.IS442.teamsixtester.model.Vessel;
 
-import org.hibernate.validator.constraints.NotBlank;
+//import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.IS442.teamsixtester.model.Account.Account;
 

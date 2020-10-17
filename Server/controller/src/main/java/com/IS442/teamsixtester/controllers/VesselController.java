@@ -81,8 +81,8 @@ public class VesselController implements VesselAPI {
         if (vesselToDelete == null) {
             return ResponseEntity.notFound().build();
         }
-        vesselService.deleteVessel(vesselToDelete);
-        return ResponseEntity.ok(vesselToDelete);
+        Vessel deletedVessel = vesselService.deleteVessel(vesselToDelete);
+        return ResponseEntity.ok(deletedVessel);
     }
 
     @Override
