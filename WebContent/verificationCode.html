@@ -34,6 +34,12 @@
       }
     </script>
 
+<style>
+    body {
+        background-color: rgb(236, 236, 236);
+    }
+</style>
+
 </head>
 
 <body>
@@ -43,10 +49,28 @@
         <div class="container">
           <h1 class="display-4">MVJS Project Placeholder</h1>
           <p class="lead">Motto or whatever</p>
+
+        </br>
+        </br>
+
+        <h1 class="display-4 text-center" style="color:grey"> Code Verification</h1>
+        </br>
+
+        <form name="verificationCodeForm" method="POST" onsubmit = "return validateFormVerificationCode()">
+            <div class="form-group">
+              <input type="text" class="form-control form-control-lg" name="verificationCode" placeholder="Verification Code">
+              <small class="form-text text-muted"> Please enter the Verification Code.</small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" value="Submit"> Submit </button>
+            <button type="button" class="btn btn-info btn-lg float-right" onclick="cancel()"> Cancel </button>
+        </form>
+
+
         </div>
       </div>
 
     <!-- Login page  -->
+    <!--
     <div class="container text-center">
         <div class="login-reg-panel">
             <div class="white-panel">
@@ -64,6 +88,13 @@
             </div>
         </div>
     </div>
+    -->
+    <script>
+        function cancel() {
+            console.log("index html");
+            location.replace("index.html");
+        }
+    </script>
 
     
 
