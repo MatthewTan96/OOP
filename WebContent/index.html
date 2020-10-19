@@ -15,6 +15,11 @@
     <!-- Javascript function -->
     <script>
 
+    function new_user() {
+        console.log("register.html");
+        location.replace("register.html");
+    }
+
     function reset_Password() {
         console.log("go next page");
         location.replace("reset_password.html");
@@ -135,7 +140,7 @@
             </div>
             <button type="submit" class="btn btn-primary btn-lg" value="Login"> Login </button>
             <button type="button" class="btn btn-link btn-lg" onclick="reset_Password()"> Forget Password </button>
-            <button type="button" class="btn btn-info btn-lg float-right" onclick=""> New User </button>
+            <button type="button" class="btn btn-info btn-lg float-right" onclick="new_user()"> New User </button>
         </form>
 
         </div>
@@ -143,6 +148,8 @@
 
 
 
+                                            <!-- TO BE DELETED-->
+                                            <!-- TO BE CHECKED FIRST -->
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
