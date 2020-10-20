@@ -173,6 +173,7 @@ public class Vessel implements Serializable {
         this.favouritedByAccounts = favouritedByAccounts;
     }
 
+    // to associate account to this vessel
     public void addAccount(Account account) {
         this.favouritedByAccounts.add(account);
         Set<Vessel> retrievedVessels = account.getFavouritedVessels();
@@ -180,6 +181,7 @@ public class Vessel implements Serializable {
         account.setFavouritedVessels(retrievedVessels);
     }
 
+    //  to disassociate account from this vessel
     public void removeAccount(Account account) {
         this.favouritedByAccounts.remove(account);
         Set<Vessel> retrievedVessels = account.getFavouritedVessels();
@@ -187,6 +189,7 @@ public class Vessel implements Serializable {
         account.setFavouritedVessels(retrievedVessels);
     }
 
+    // disassociate all accounts from this vessel, used when deleting the vessel
     public void remove() {
         for (Account account : new ArrayList<>(favouritedByAccounts)) {
             removeAccount(account);

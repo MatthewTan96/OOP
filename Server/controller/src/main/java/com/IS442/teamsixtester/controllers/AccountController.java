@@ -1,5 +1,6 @@
 package com.IS442.teamsixtester.controllers;
 
+import com.IS442.teamsixtester.model.Account.AccountDTO;
 import com.IS442.teamsixtester.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,28 +20,31 @@ public class AccountController {
     }
 
     @PostMapping(value="/postAccount")
-    public ResponseEntity accountPost(@RequestBody Account account){
-        String email = account.getEmail();
+    public ResponseEntity accountPost(@RequestBody AccountDTO accountDTO){
+        String email = accountDTO.getEmail();
         Account checkIfExist1 = accountService.getAccountByEmail(email);
         if (checkIfExist1 != null) {
             return ResponseEntity.badRequest().build();
         }
-        Account newAccount = accountService.addAccount(account);
+        Account newAccount = accountService.addAccount(accountDTO.toTrueClass());
         return ResponseEntity.ok(newAccount);
     }
 
     @GetMapping(value="/getAccountByEmail")
-    public Account getAccountByEmail(@RequestParam
-                                     String email){
+    public Account getAccountByEmail(@RequestParam String email){
         return accountService.getAccountByEmail(email);
     }
 
     @DeleteMapping(value="/deleteAccount")
-    public ResponseEntity accountDelete(@RequestBody Account account) {
-        String email = account.getEmail();
+    public ResponseEntity accountDelete(@RequestBody AccountDTO accountDTO) {
+        String email = accountDTO.getEmail();
+        String password = accountDTO.getPassword();
         Account accountToDelete = accountService.getAccountByEmail(email);
         if (accountToDelete == null) {
             return ResponseEntity.notFound().build();
+        }
+        if (!(password.equals(accountToDelete.getPassword())))  {
+            return ResponseEntity.badRequest().build();
         }
         accountService.deleteAccount(accountToDelete);
         return ResponseEntity.ok(accountToDelete);

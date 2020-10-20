@@ -43,6 +43,7 @@ public class VesselService {
     }
 
     public Vessel deleteVessel(Vessel vessel) {
+        vessel.remove();
         return vesselDao.deleteVessel(vessel);
     }
 
