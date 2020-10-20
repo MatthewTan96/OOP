@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.IS442.teamsixtester.repositories.Vessel.VesselRepository;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Set;
 
-
+@CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @Service
 public class FavouriteService {
     @Autowired

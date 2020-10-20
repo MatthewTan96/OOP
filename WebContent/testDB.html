@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<head>
+
+    <!-- Add code here -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+
+    <style>
+        .mainContainer{
+          padding: 25px;
+        }
+
+        body {
+            background-color: rgb(236, 236, 236);
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="mainContainer">
+        <form>
+            <button type="button" class="btn btn-primary mb-2" onclick="addtestFavourites()"> Upload Ship Test </button> 
+          </form>
+
+          <form>
+            <button type="button" class="btn btn-primary mb-2" onclick="createUser()"> create User </button> 
+          </form>
+    </div>
+
+    <script>
+
+    /* This here is for testing pupose */
+    function addtestFavourites(){
+      console.log("test");
+      /*
+      name = "test";
+      incomingVoyage = "helloworld";
+      outcomingVoyage = "helloworld";
+      berthingTime = "helloworld";
+      departureTime = "helloworld";
+      berthNo = "helloworld";
+      status = "helloworld";
+      */
+  
+      inputName = "ship8";
+      inputIncomingVoyage = "126";
+      inputOutcomingVoyage = "001";
+      inputBerthingTime = "2020-08-04T11:11:30";
+      inputDepartureTime = "2020-08-05T11:11:30";
+      intputBerthNo = "40";
+      intputStatus = "okay";
+  
+      console.log("test");
+      var request = new XMLHttpRequest();
+      request.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) 
+        {
+          console.log("Success :)");
+        }
+      }
+      request.open("POST", "http://localhost:8080/postVessel", true);
+      request.setRequestHeader("Content-type", "application/json");
+      //request.send(name,incomingVoyage,outcomingVoyage,berthingTime,departureTime,berthNo,status);
+      request.send(
+        JSON.stringify({
+          abbrVslM: inputName,
+          inVoyN: inputIncomingVoyage,
+          outVoyN: inputOutcomingVoyage,
+          btrDt: inputBerthingTime,
+          etdDt: inputDepartureTime,
+          berthN: intputBerthNo,
+          status: intputStatus,
+          degreeChange: "0.0"
+        }));
+    }
+
+
+    function createUser(){
+        var request = new XMLHttpRequest();
+      request.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) 
+        {
+          console.log("User Created Success :)");
+        }
+      }
+      request.open("POST", "http://localhost:8080/postAccount", true);
+      request.setRequestHeader("Content-type", "application/json");
+      //request.send(name,incomingVoyage,outcomingVoyage,berthingTime,departureTime,berthNo,status);
+      request.send(
+        JSON.stringify({
+            email: "test@gmail5.com",
+            password: "1234"
+        }));
+    }
+    </script>
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+      
+</body>
+</html>
+
+<script>
+                            /*
+                          var cell01  = newRow.insertCell(0);
+                          var input01  = document.createTextNode(ship["vesselId"])
+                          cell01.appendChild(input01);
+
+                          var cell02  = newRow.insertCell(1);
+                          var input02  = document.createTextNode(ship["abbrVslM"])
+                          cell02.appendChild(input02);
+
+                          var cell03  = newRow.insertCell(2);
+                          var input03  = document.createTextNode(ship["inVoyN"])
+                          cell03.appendChild(input03);
+
+                          var cell04  = newRow.insertCell(3);
+                          var input04  = document.createTextNode(ship["outVoyN"])
+                          cell04.appendChild(input04);
+
+                          var cell05  = newRow.insertCell(4);
+                          var input05  = document.createTextNode(ship["bthgDt"])
+                          cell05.appendChild(input05);
+
+                          var cell06  = newRow.insertCell(5);
+                          var input06  = document.createTextNode(ship["unbthgDt"])
+                          cell06.appendChild(input06);
+
+                          var cell07  = newRow.insertCell(6);
+                          var input07  = document.createTextNode(ship["berthN"])
+                          cell07.appendChild(input07);
+
+                          var cell08  = newRow.insertCell(7);
+                          var addBtn  = document.createElement("BUTTON")
+                          addBtn.setAttribute("type", "button")
+                          addBtn.setAttribute("id", "addBtn-"+ship["id"]+"-"+ship["incomingVoyage"]+"-"+ship["outcomingVoyage"])
+                          addBtn.setAttribute("class", "btn btn-primary")
+                          addBtn.setAttribute("onclick", "addToFavourites('"+ ship["id"] +"','"+ ship["incomingVoyage"] +"','"+ship["outcomingVoyage"]+"')")
+                          addBtn.innerHTML = "Add";
+                          cell08.appendChild(addBtn);
+
+                          var cell09  = newRow.insertCell(8);
+                          var subBtn  = document.createElement("BUTTON")
+                          subBtn.setAttribute("type", "button")
+                          subBtn.setAttribute("id", "subBtn-"+ship["id"]+"-"+ship["incomingVoyage"]+"-"+ship["outcomingVoyage"])
+                          subBtn.setAttribute("class", "btn btn-info")
+                          subBtn.setAttribute("onclick", "addToSubscribe('"+ ship["id"] +"')")
+                          subBtn.innerHTML = "Sub";
+                          cell09.appendChild(subBtn);
+                          */
+                          // Save the vessel id
+    </script>
+

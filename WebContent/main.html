@@ -34,10 +34,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#"> Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="main.html"> Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"> Favourites </a>
+              <a class="nav-link" href="favourite.html"> Favourites </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#"> Subscribe </a>
@@ -59,7 +59,9 @@
                 <option> Departure time </option>
                 <option> Status </option>
               </select>
+              <button type="button" class="btn btn-primary btn-lg inline">Large button</button>
           </div>
+
 
           <div class="form-group col-md-8">
             <!-- KIV -->
@@ -72,8 +74,8 @@
     <form>
       <table class="table table-striped table-bordered" id="displayTable">
         <thead class="thead-dark">
-          <tr>
-            <th scope="col"> Vessel </th>
+          <tr >
+            <th scope="col  text-center"> Vessel </th>
             <th scope="col"> Incoming Voyage Number </th>
             <th scope="col"> Outgoing voyage number </th>
             <th scope="col"> Berthing Time </th>
@@ -93,10 +95,6 @@
       </table>
     </form>
 
-    <form>
-      <button type="button" class="btn btn-primary mb-2" onclick="addtestFavourites2()"> upload Ship Test </button> 
-    </form>
-
   </div>
   <!-- Close Main Container-->
 
@@ -104,21 +102,34 @@
     // Document.ready function 
     document.addEventListener("DOMContentLoaded", function(event) { 
 
-      if(sessionStorage.getItem("userid") == null){
-          var userid = "Mat-Jia-Sean-Vit";
-          document.getElementById("userNamePlaceholder").innerHTML = userid;
-      
+      if(sessionStorage.getItem("email") != null){
+          var checkEmail = sessionStorage.getItem("email");
+          //document.getElementById("userNamePlaceholder").innerHTML = email;
       } else {
-        document.getElementById("userNamePlaceholder").innerHTML = sessionStorage.getItem("username"); // need to chnage later. 
+        console.log("This is for testing purpose!") // Login page will sent over email via session
+        var checkEmail = "test@gmail5.com";
       }
 
-      getShips(userid);
 
+      var request = new XMLHttpRequest();
+      request.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+          dataObj = JSON.parse(this.responseText);
+          var email = dataObj["email"];
+          document.getElementById("userNamePlaceholder").innerHTML = email;
+          getShips(email);
+        } else {
+          // to display error code
+        }
+      }
+      request.open("GET", "http://localhost:8080/getAccountByEmail?email="+checkEmail, true);
+      request.send();
+    
     });
 
     
     // Get all Ships function 
-    function getShips(userid) {
+    function getShips(email) {
             var request = new XMLHttpRequest();
             request.onreadystatechange = function(){
                 if (this.readyState == 4 && this.status == 200) {
@@ -131,54 +142,7 @@
                         var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
                         for(var ship of dataObj){
                           var newRow = tableRef.insertRow(tableRef.rows.length);
-                          /*
-                          var cell01  = newRow.insertCell(0);
-                          var input01  = document.createTextNode(ship["vesselId"])
-                          cell01.appendChild(input01);
-
-                          var cell02  = newRow.insertCell(1);
-                          var input02  = document.createTextNode(ship["abbrVslM"])
-                          cell02.appendChild(input02);
-
-                          var cell03  = newRow.insertCell(2);
-                          var input03  = document.createTextNode(ship["inVoyN"])
-                          cell03.appendChild(input03);
-
-                          var cell04  = newRow.insertCell(3);
-                          var input04  = document.createTextNode(ship["outVoyN"])
-                          cell04.appendChild(input04);
-
-                          var cell05  = newRow.insertCell(4);
-                          var input05  = document.createTextNode(ship["bthgDt"])
-                          cell05.appendChild(input05);
-
-                          var cell06  = newRow.insertCell(5);
-                          var input06  = document.createTextNode(ship["unbthgDt"])
-                          cell06.appendChild(input06);
-
-                          var cell07  = newRow.insertCell(6);
-                          var input07  = document.createTextNode(ship["berthN"])
-                          cell07.appendChild(input07);
-
-                          var cell08  = newRow.insertCell(7);
-                          var addBtn  = document.createElement("BUTTON")
-                          addBtn.setAttribute("type", "button")
-                          addBtn.setAttribute("id", "addBtn-"+ship["id"]+"-"+ship["incomingVoyage"]+"-"+ship["outcomingVoyage"])
-                          addBtn.setAttribute("class", "btn btn-primary")
-                          addBtn.setAttribute("onclick", "addToFavourites('"+ ship["id"] +"','"+ ship["incomingVoyage"] +"','"+ship["outcomingVoyage"]+"')")
-                          addBtn.innerHTML = "Add";
-                          cell08.appendChild(addBtn);
-
-                          var cell09  = newRow.insertCell(8);
-                          var subBtn  = document.createElement("BUTTON")
-                          subBtn.setAttribute("type", "button")
-                          subBtn.setAttribute("id", "subBtn-"+ship["id"]+"-"+ship["incomingVoyage"]+"-"+ship["outcomingVoyage"])
-                          subBtn.setAttribute("class", "btn btn-info")
-                          subBtn.setAttribute("onclick", "addToSubscribe('"+ ship["id"] +"')")
-                          subBtn.innerHTML = "Sub";
-                          cell09.appendChild(subBtn);
-                          */
-                          // Save the vessel id
+  
                           var vessl_id  = ship["vesselId"];
 
                           var cell01  = newRow.insertCell(0);
@@ -226,7 +190,7 @@
                           addBtn.setAttribute("type", "button")
                           addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
                           addBtn.setAttribute("class", "btn btn-primary")
-                          addBtn.setAttribute("onclick", "addToFavourites('"+ userid +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
                           addBtn.innerHTML = "Add";
                           cell11.appendChild(addBtn);
 
@@ -235,16 +199,16 @@
                           subBtn.setAttribute("type", "button")
                           subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
                           subBtn.setAttribute("class", "btn btn-info")
-                          subBtn.setAttribute("onclick", "addToSubscribe('"+ userid +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
                           subBtn.innerHTML = "Sub";
                           cell12.appendChild(subBtn);
 
-                          // if degree of change is more than 1 the row becomes red. 
-                          if(ship["degreeChange"] > 1.0){
+                          // if degree of change is between 0 & 1 == yellow else more than == red. 
+                          if(ship["degreeChange"] < 1.0 && ship["degreeChange"] > 0.0){
+                            newRow.setAttribute("class", "table-warning")
+                          } else if(ship["degreeChange"] > 1.0){
                             newRow.setAttribute("class", "table-danger")
                           }
-                        
-
                         }
                       }
                     } catch(err){
@@ -252,85 +216,37 @@
                     }
             }
         }
-        //request.open("GET", "http://localhost:8080/v1/vessel", true);
         request.open("GET", "http://localhost:8080/getAllVessels", true);
         request.send();  
     }
     // End of get all ship function 
 
-  function addToFavourites( userid, ShipID, incomingVoyage, outcomingVoyage){
-    console.log("ADD!!");
-    console.log(userid);
-    console.log(ShipID);
-    console.log(incomingVoyage);
-    console.log(outcomingVoyage);
-  }
+  function addToFavourites( email, vesselName, incomingVoyage, outcomingVoyage){
+    console.log("Add to Favourites");
 
-  function addToSubscribe(userid, ShipID, incomingVoyage, outcomingVoyage){
-    console.log("SUB!!");
-    console.log(userid);
-    console.log(ShipID);
-    console.log(incomingVoyage);
-    console.log(outcomingVoyage);
-  }
-
-
-  function addtestFavourites2(){
-    console.log("test");
-    /*
-    name = "test";
-    incomingVoyage = "helloworld";
-    outcomingVoyage = "helloworld";
-    berthingTime = "helloworld";
-    departureTime = "helloworld";
-    berthNo = "helloworld";
-    status = "helloworld";
-    */
-
-    inputName = "test";
-    inputIncomingVoyage = "helloworld";
-    inputOutcomingVoyage = "helloworld";
-    inputBerthingTime = "helloworld";
-    inputDepartureTime = "helloworld";
-    intputBerthNo = "helloworld";
-    intputStatus = "helloworld";
-
-
-
-    console.log("test");
+    // Sent to Favourites
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
-      if(this.readyState == 4 && this.status == 200) 
-      {
+      if(this.readyState == 4 && this.status == 200){
         console.log("Success :)");
+      } else {
+        // To display error code if need.
       }
     }
-    request.open("POST", "http://localhost:8080/postVessel", true);
+    var data = "http://localhost:8080/postFavourite" + "?vesselShortName=" + vesselName + "&incoming=" + incomingVoyage + "&email=" + email
+    request.open("POST", data, true);
     request.setRequestHeader("Content-type", "application/json");
-    //request.send(name,incomingVoyage,outcomingVoyage,berthingTime,departureTime,berthNo,status);
-    request.send(
-      JSON.stringify({
-        /*
-        name: inputName, 
-        incomingVoyage: inputIncomingVoyage,
-        outcomingVoyage: inputOutcomingVoyage,
-        berthingTime: inputBerthingTime,
-        departureTime: inputDepartureTime,
-        berthNo: intputBerthNo,
-        status: intputStatus
-        */
-        abbrVslM: "ship9",
-        inVoyN: "231",
-        outVoyN: "011",
-        btrDt: "2020-08-04T11:11:30",
-        etdDt: "2020-08-04T23:11:30",
-        berthN: "40",
-        status: "okay",
-        degreeChange: "70"
-      }));
+    request.send();
   }
+  // End of get add to Favourites function 
 
-
+  function addToSubscribe(email, ShipID, incomingVoyage, outcomingVoyage){
+    console.log("SUB!!");
+    console.log(email);
+    console.log(ShipID);
+    console.log(incomingVoyage);
+    console.log(outcomingVoyage);
+  }
   </script>
 
      <!-- jQuery first, then Popper.js, then Bootstrap JS -->

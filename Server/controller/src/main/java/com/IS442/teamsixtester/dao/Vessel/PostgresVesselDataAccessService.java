@@ -4,12 +4,14 @@ import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.IS442.teamsixtester.repositories.Vessel.VesselRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @Repository("postgres")
 public class PostgresVesselDataAccessService implements VesselDAO{
     @Autowired

@@ -17,6 +17,7 @@ import com.IS442.teamsixtester.services.AccountService;
 import java.io.*;
 import java.util.*;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @RestController
 public class FavouriteController {
 

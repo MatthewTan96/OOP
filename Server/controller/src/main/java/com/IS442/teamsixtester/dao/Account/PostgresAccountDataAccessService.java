@@ -4,10 +4,12 @@ import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.repositories.Account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @Repository("postgres1")
 public class PostgresAccountDataAccessService implements AccountDAO{
 
