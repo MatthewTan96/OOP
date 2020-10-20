@@ -40,6 +40,10 @@ public class FavouriteController {
         Vessel vesselToFavourite = vesselService.getVesselByIncoming(vesselShortName, incoming);
         Account account = accountService.getAccountByEmail(email);
 
+        if (vesselToFavourite == null || account == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         favouriteService.addFavourite(vesselToFavourite,account);
         return ResponseEntity.ok(account);
     }
@@ -53,10 +57,10 @@ public class FavouriteController {
         Vessel vesselToUnfavourite = vesselService.getVesselByIncoming(vesselShortName, incoming);
         Account account = accountService.getAccountByEmail(email);
 
+        if (vesselToUnfavourite == null || account == null) {
+            return ResponseEntity.badRequest().build();
+        }
         favouriteService.deleteFavourite(vesselToUnfavourite, account);
         return ResponseEntity.ok(account);
     }
-
-
-
 }

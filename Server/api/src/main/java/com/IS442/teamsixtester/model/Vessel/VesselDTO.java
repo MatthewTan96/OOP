@@ -27,14 +27,6 @@ public class VesselDTO implements Serializable, DTO {
 
     private String status;
 
-    private int changeCount;
-
-    private double degreeChange;
-
-    private String firstBerthTime;
-
-    private Set<Account> favouritedByAccounts;
-
     public VesselDTO() {
     }
 
@@ -47,9 +39,6 @@ public class VesselDTO implements Serializable, DTO {
         this.unbthgDt = unbthgDt;
         this.berthN = berthN;
         this.status = status;
-        this.changeCount = 0;
-        this.degreeChange = 0;
-        this.favouritedByAccounts = null;
     }
 
 //    public VesselDTO(String abbrVslM, String inVoyN, String outVoyN, String bthgDt, String unbthgDt, String berthN,
@@ -122,30 +111,6 @@ public class VesselDTO implements Serializable, DTO {
         this.status = status;
     }
 
-    public int getChangeCount() {
-        return changeCount;
-    }
-
-    public void setChangeCount(int changeCount) {
-        this.changeCount = changeCount;
-    }
-
-    public double getDegreeChange() {
-        return degreeChange;
-    }
-
-    public void setDegreeChange(double degreeChange) {
-        this.degreeChange = degreeChange;
-    }
-
-    public String getFirstBerthTime() {
-        return firstBerthTime;
-    }
-
-    public void setFirstBerthTime(String firstBerthTime) {
-        this.firstBerthTime = firstBerthTime;
-    }
-
     @Override
     public String toString() {
         return "VesselDTO{" +
@@ -156,17 +121,13 @@ public class VesselDTO implements Serializable, DTO {
                 ", unbthgDt='" + unbthgDt + '\'' +
                 ", berthN='" + berthN + '\'' +
                 ", status='" + status + '\'' +
-                ", changeCount=" + changeCount +
-                ", degreeChange=" + degreeChange +
-                ", firstBerthTime='" + firstBerthTime + '\'' +
                 '}';
     }
 
     @Override
     public Vessel toTrueClass() {
-        firstBerthTime = this.getBthgDt();
-        return new Vessel(UUID.randomUUID(),
-                this.abbrVslM, this.inVoyN, this.outVoyN, this.bthgDt, this.unbthgDt, this.berthN, this.status,
-                this.changeCount, this.degreeChange, this.firstBerthTime, this.favouritedByAccounts);
+        return new Vessel(
+                UUID.randomUUID(), this.abbrVslM, this.inVoyN,
+                this.outVoyN, this.bthgDt, this.unbthgDt, this.berthN, this.status);
     }
 }

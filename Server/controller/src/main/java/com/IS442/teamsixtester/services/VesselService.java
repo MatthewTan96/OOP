@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
@@ -44,6 +43,8 @@ public class VesselService {
     }
 
     public Vessel deleteVessel(Vessel vessel) {
+        vessel.removeAllFavouritedByAccounts();
+        vessel.removeAllSubscribedByAccounts();
         return vesselDao.deleteVessel(vessel);
     }
 
@@ -55,7 +56,7 @@ public class VesselService {
 
         if (!(changedBerthTime.isEqual(currentBerthTime))) {
             existingVessel.setChangeCount(existingVessel.getChangeCount() + 1);
-            double numberOfHours = (double) (duration.toHours());
+            double numberOfHours = Math.abs((double) (duration.toHours()));
             existingVessel.setDegreeChange(numberOfHours);
             existingVessel.setBthgDt(toChangeVessel.getBthgDt());
 
