@@ -1,27 +1,21 @@
 package com.IS442.teamsixtester.controllers;
 
-import com.IS442.teamsixtester.api.VesselAPI;
 import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
-import com.IS442.teamsixtester.model.Vessel.VesselDTO;
-import com.IS442.teamsixtester.model.Vessel.VesselQueryDTO;
-import com.IS442.teamsixtester.services.FavouriteService;
-import com.IS442.teamsixtester.services.VesselService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 import com.IS442.teamsixtester.services.AccountService;
-import java.io.*;
-import java.util.*;
+import com.IS442.teamsixtester.services.SubscribeService;
+import com.IS442.teamsixtester.services.VesselService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
-public class FavouriteController {
-
+@Controller
+public class SubscribeController {
     @Autowired
-    private FavouriteService favouriteService;
+    private SubscribeService subscribeService;
 
     @Autowired
     private VesselService vesselService;
@@ -29,37 +23,38 @@ public class FavouriteController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping(value = "/postFavourite")
+    @PostMapping(value = "/postSubscribe")
     public ResponseEntity favouritePost(
             @RequestParam String vesselShortName,
             @RequestParam String incoming,
             @RequestParam String email
     ){
 
-        Vessel vesselToFavourite = vesselService.getVesselByIncoming(vesselShortName, incoming);
+        Vessel vesselToSubscribe = vesselService.getVesselByIncoming(vesselShortName, incoming);
         Account account = accountService.getAccountByEmail(email);
 
-        if (vesselToFavourite == null || account == null) {
+        if (vesselToSubscribe == null || account == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        favouriteService.addFavourite(vesselToFavourite,account);
+        subscribeService.addSubscribe(vesselToSubscribe,account);
         return ResponseEntity.ok(account);
     }
 
-    @DeleteMapping(value = "/deleteFavourite")
+    @DeleteMapping(value = "/deleteSubscribe")
     public ResponseEntity favouriteDelete(
             @RequestParam String vesselShortName,
             @RequestParam String incoming,
             @RequestParam String email
     ) {
-        Vessel vesselToUnfavourite = vesselService.getVesselByIncoming(vesselShortName, incoming);
+        Vessel vesselToUnsubscribe = vesselService.getVesselByIncoming(vesselShortName, incoming);
         Account account = accountService.getAccountByEmail(email);
 
-        if (vesselToUnfavourite == null || account == null) {
+        if (vesselToUnsubscribe == null || account == null) {
             return ResponseEntity.badRequest().build();
         }
-        favouriteService.deleteFavourite(vesselToUnfavourite, account);
+
+        subscribeService.deleteSubscribe(vesselToUnsubscribe, account);
         return ResponseEntity.ok(account);
     }
 }

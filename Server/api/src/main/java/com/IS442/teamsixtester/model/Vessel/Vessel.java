@@ -1,7 +1,6 @@
 package com.IS442.teamsixtester.model.Vessel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import com.IS442.teamsixtester.model.Account.Account;
 
 import javax.persistence.*;
@@ -56,13 +55,16 @@ public class Vessel implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "favouritedVessels")
     private Set<Account> favouritedByAccounts;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "subscribedVessels")
+    private Set<Account> subscribedByAccounts;
+
     public Vessel() {
     }
 
     public Vessel(@NotNull UUID vesselId, @NotBlank String abbrVslM, String inVoyN,
                   String outVoyN, String bthgDt, String unbthgDt, String berthN,
-                  String status, int changeCount, double degreeChange,
-                  String firstBerthTime, Set<Account> favouritedByAccounts) {
+                  String status) {
         this.vesselId = vesselId;
         this.abbrVslM = abbrVslM;
         this.inVoyN = inVoyN;
@@ -71,10 +73,11 @@ public class Vessel implements Serializable {
         this.unbthgDt = unbthgDt;
         this.berthN = berthN;
         this.status = status;
-        this.changeCount = changeCount;
-        this.degreeChange = degreeChange;
-        this.firstBerthTime = firstBerthTime;
-        this.favouritedByAccounts = favouritedByAccounts;
+        this.changeCount = 0;
+        this.degreeChange = 0;
+        this.firstBerthTime = bthgDt;
+        this.favouritedByAccounts = null;
+        this.subscribedByAccounts = null;
     }
 
     public UUID getVesselId() {
@@ -173,26 +176,57 @@ public class Vessel implements Serializable {
         this.favouritedByAccounts = favouritedByAccounts;
     }
 
-    // to associate account to this vessel
-    public void addAccount(Account account) {
+    // to associate favourited account to this vessel
+    public void addFavouritedByAccount(Account account) {
         this.favouritedByAccounts.add(account);
         Set<Vessel> retrievedVessels = account.getFavouritedVessels();
         retrievedVessels.add(this);
         account.setFavouritedVessels(retrievedVessels);
     }
 
-    //  to disassociate account from this vessel
-    public void removeAccount(Account account) {
+    //  to disassociate favourited account from this vessel
+    public void removeFavouritedByAccount(Account account) {
         this.favouritedByAccounts.remove(account);
         Set<Vessel> retrievedVessels = account.getFavouritedVessels();
         retrievedVessels.remove(this);
         account.setFavouritedVessels(retrievedVessels);
     }
 
-    // disassociate all accounts from this vessel, used when deleting the vessel
-    public void remove() {
+    // disassociate all favourited accounts from this vessel, used when deleting the vessel
+    public void removeAllFavouritedByAccounts() {
         for (Account account : new ArrayList<>(favouritedByAccounts)) {
-            removeAccount(account);
+            removeFavouritedByAccount(account);
+        }
+    }
+
+    public Set<Account> getSubscribedByAccounts() {
+        return subscribedByAccounts;
+    }
+
+    public void setSubscribedByAccounts(Set<Account> subscribedByAccounts) {
+        this.subscribedByAccounts = subscribedByAccounts;
+    }
+
+    // to associate subscribed account to this vessel
+    public void addSubscribedByAccount(Account account) {
+        this.subscribedByAccounts.add(account);
+        Set<Vessel> retrievedVessels = account.getSubscribedVessels();
+        retrievedVessels.add(this);
+        account.setSubscribedVessels(retrievedVessels);
+    }
+
+    //  to disassociate subscribed account from this vessel
+    public void removeSubscribedByAccount(Account account) {
+        this.subscribedByAccounts.remove(account);
+        Set<Vessel> retrievedVessels = account.getSubscribedVessels();
+        retrievedVessels.remove(this);
+        account.setSubscribedVessels(retrievedVessels);
+    }
+
+    // disassociate all subscribed accounts from this vessel, used when deleting the vessel
+    public void removeAllSubscribedByAccounts() {
+        for (Account account : new ArrayList<>(subscribedByAccounts)) {
+            removeSubscribedByAccount(account);
         }
     }
 
@@ -200,16 +234,18 @@ public class Vessel implements Serializable {
     public String toString() {
         return "Vessel{" +
                 "vesselId=" + vesselId +
-                ", vesselShortName='" + abbrVslM + '\'' +
-                ", incomingVoyageNumber='" + inVoyN + '\'' +
-                ", outgoingVoyageNumber='" + outVoyN + '\'' +
-                ", berthTimeRequired='" + bthgDt + '\'' +
-                ", expectedDatetimeDeparture='" + unbthgDt + '\'' +
-                ", berthNumber='" + berthN + '\'' +
+                ", abbrVslM='" + abbrVslM + '\'' +
+                ", inVoyN='" + inVoyN + '\'' +
+                ", outVoyN='" + outVoyN + '\'' +
+                ", bthgDt='" + bthgDt + '\'' +
+                ", unbthgDt='" + unbthgDt + '\'' +
+                ", berthN='" + berthN + '\'' +
                 ", status='" + status + '\'' +
                 ", changeCount=" + changeCount +
                 ", degreeChange=" + degreeChange +
                 ", firstBerthTime='" + firstBerthTime + '\'' +
+                ", favouritedByAccounts=" + favouritedByAccounts +
+                ", subscribedByAccounts=" + subscribedByAccounts +
                 '}';
     }
 }

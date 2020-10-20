@@ -2,15 +2,11 @@ package com.IS442.teamsixtester.services;
 
 //import com.IS442.teamsixtester.repositories.Vessel.VesselDAO;
 import com.IS442.teamsixtester.dao.Account.AccountDAO;
-import com.IS442.teamsixtester.dao.Account.PostgresAccountDataAccessService;
-import com.IS442.teamsixtester.dao.Vessel.VesselDAO;
 import com.IS442.teamsixtester.model.Account.Account;
-import com.IS442.teamsixtester.repositories.Account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +24,8 @@ public class AccountService {
     }
 
     public void deleteAccount(Account account) {
-        account.remove();
+        account.removeAllFavouritedVessels();
+        account.removeAllSubscribedVessels();
         accountDao.deleteAccount(account);
     }
 
