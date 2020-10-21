@@ -1,0 +1,9 @@
+.mainContainer{
+    padding: 25px;
+  }
+  body {
+      background-color: rgb(236, 236, 236);
+  }
+  .table th {
+    text-align: center;   
+  }

@@ -36,6 +36,8 @@
 
     <script>
 
+    getPSA();
+
     /* This here is for testing pupose */
     function addtestFavourites(){
       console.log("test");
@@ -49,7 +51,7 @@
       status = "helloworld";
       */
   
-      inputName = "ship8";
+      inputName = "ship678";
       inputIncomingVoyage = "126";
       inputOutcomingVoyage = "001";
       inputBerthingTime = "2020-08-04T11:11:30";
@@ -73,8 +75,8 @@
           abbrVslM: inputName,
           inVoyN: inputIncomingVoyage,
           outVoyN: inputOutcomingVoyage,
-          btrDt: inputBerthingTime,
-          etdDt: inputDepartureTime,
+          btrgDt: inputBerthingTime,
+          unbthgDt: inputDepartureTime,
           berthN: intputBerthNo,
           status: intputStatus,
           degreeChange: "0.0"
@@ -98,6 +100,38 @@
             email: "test@gmail5.com",
             password: "1234"
         }));
+    }
+
+
+
+
+    function getPSA(){
+        var request = new XMLHttpRequest();
+      request.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) 
+        {
+          console.log(this.responseText);
+        }
+      }
+      var url = "https://api.pntestbox.com/vsspp/pp/bizfn/berthingSchedule/retrieveByBerthingDate/v1.2";
+      var allow = "https://developer.pntestbox.com"
+      request.open("POST", url, true);
+      request.setRequestHeader(
+        "Access-Control-Allow-Origin", "origin-list",
+        "accept","application/json",
+        "Content-type", "application/json",
+        "Apikey", "d0ceb61c5edd48ce964d65bffacf3274",
+        "Allow", "*/*"
+      );
+      //request.setRequestHeader("accept: application/json", "Apikey: d0ceb61c5edd48ce964d65bffacf3274", "content-type: application/json");
+      //request.send();
+  
+      request.send(
+        JSON.stringify({
+          "dateFrom": "2020-10-21",
+          "dateTo": "2020-10-22"
+        })); 
+        
     }
     </script>
 
