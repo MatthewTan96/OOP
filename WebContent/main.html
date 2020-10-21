@@ -72,7 +72,7 @@
 
 
     <form>
-      <table class="table table-striped table-bordered" id="displayTable">
+      <table class="table table-borderless table-hover" id="displayTable">
         <thead class="thead-dark">
           <tr >
             <th scope="col  text-center"> Vessel </th>
@@ -108,6 +108,7 @@
       } else {
         console.log("This is for testing purpose!") // Login page will sent over email via session
         var checkEmail = "test@gmail5.com";
+        sessionStorage.setItem("email", "test@gmail5.com");
       }
 
 
@@ -240,13 +241,31 @@
   }
   // End of get add to Favourites function 
 
-  function addToSubscribe(email, ShipID, incomingVoyage, outcomingVoyage){
+  function addToSubscribe(email, vesselName, incomingVoyage, outcomingVoyage){
     console.log("SUB!!");
     console.log(email);
-    console.log(ShipID);
+    console.log(vesselName);
     console.log(incomingVoyage);
     console.log(outcomingVoyage);
+
+    console.log("Add to Subscribe");
+
+    // Sent to Subscribe
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200){
+        console.log("Success :)");
+      } else {
+        // To display error code if need.
+      }
+    }
+    var data = "http://localhost:8080/postSubscribe" + "?vesselShortName=" + vesselName + "&incoming=" + incomingVoyage + "&email=" + email
+    request.open("POST", data, true);
+    request.setRequestHeader("Content-type", "application/json");
+    request.send();
   }
+  // End of get add to Subscribe function 
+
   </script>
 
      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
