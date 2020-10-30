@@ -11,8 +11,17 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <!-- Link JavaScript -->
     <script type="text/javascript" src="Javascript/main.js"></script>
+    <script type="text/javascript" src="Javascript/general.js"></script>
     <!-- Link CSS -->
     <link rel="stylesheet" href="CSS/design.css">
+
+    <script>
+      function signOut(){
+        sessionStorage.clear();
+        window.location.href = "index.html";
+      }
+    </script>
+
 </head>
 <body>
     <!-- seperate from the sides -->
@@ -35,7 +44,11 @@
               <a class="nav-link" href="subscribe.html"> Subscribe </a>
             </li>
           </ul>
-          <i class="fas fa-user mr-2"></i> <span class="navbar-text" id="userNamePlaceholder"> </span>
+            <i class="fas fa-user mr-2"></i> <span class="navbar-text" id="userNamePlaceholder"> </span>
+            &nbsp &nbsp
+            <form class="form-inline">
+              <button class="btn btn-outline-secondary my-2 my-sm-0" onclick="signOut()" type="button"> <i class="fas fa-power-off"></i> </button>
+            </form>
         </div>
     </nav>
 

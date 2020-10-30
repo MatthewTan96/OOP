@@ -9,9 +9,17 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <!-- Link JavaScript -->
-    <script type="text/javascript" src="Javascript/subscribe.js"></script>
+    <script type="text/javascript" src="Javascript/favourite.js"></script>
+    <script type="text/javascript" src="Javascript/general.js"></script>
     <!-- Link CSS -->
     <link rel="stylesheet" href="CSS/design.css">
+
+    <script>
+      function signOut(){
+        sessionStorage.clear();
+        window.location.href = "index.html";
+      }
+    </script>
     
 </head>
 <body>
@@ -24,22 +32,26 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+                <li class="nav-item active">
                   <a class="nav-link" href="main.html"> Dashboard </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="favourite.html">  Favourites </a>
+                  <a class="nav-link" href="favourite.html"> <b style="color: blue;"> Favourites </b> <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="subscribe.html"> <b style="color: blue;"> Subscribe </b> <span class="sr-only">(current)</span> </a>
+                <li class="nav-item">
+                  <a class="nav-link" href="subscribe.html"> Subscribe </a>
                 </li>
               </ul>
-              <i class="fas fa-user mr-2"></i> <span class="navbar-text" id="userNamePlaceholder"> </span>
+                <i class="fas fa-user mr-2"></i> <span class="navbar-text" id="userNamePlaceholder"> </span>
+                &nbsp &nbsp
+                <form class="form-inline">
+                  <button class="btn btn-outline-secondary my-2 my-sm-0" onclick="signOut()" type="button"> <i class="fas fa-power-off"></i> </button>
+                </form>
             </div>
         </nav>
     
       </br>
-      <h1 class="text-center font-weight-light"> Subscribe </h1>
+      <h1 class="text-center font-weight-light"> Favourites </h1>
       </br>
     
     
@@ -68,8 +80,4 @@
     
       </div>
 
-
-      <script>
-        
-      </script>
 </body>
