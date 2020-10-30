@@ -12,6 +12,21 @@
 
     <!-- Javascript function -->
     <script>
+
+    function createVerificationCode(){
+        var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var verificationCode = '';
+        for ( var i = 0; i < 6; i++ ) {
+            verificationCode += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+        console.log(verificationCode);
+        alert( "Verification Code sent to your email. Please check" );
+
+
+        // Find some way to send the email lmao 
+    }
+
+
     function validateFormVerificationCode() {
         // Error message form
         var error_messages = [];
@@ -26,9 +41,14 @@
         // Enter code here
 
         if (error_messages.length == 0){
-            alert("No code added please try again");
-            window.location.replace("verificationCode.html");
+            alert("No code added. Please try again");
+            // window.location.replace("verificationCode.html");
         }
+
+        // Generate random string of length 6 
+
+        console.log(verificationCode);
+        
 
         return false;
       }
@@ -43,6 +63,10 @@
 </head>
 
 <body>
+
+    <body onload="createVerificationCode()"></body>
+
+
     <!-- Jumbotron -->
 
     <div class="jumbotron jumbotron-fluid">

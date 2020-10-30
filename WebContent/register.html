@@ -20,6 +20,7 @@
         var email = document.forms["registrationForm"]["Email"].value;
         var password = document.forms["registrationForm"]["Password"].value;
         var confirmPassword = document.forms["registrationForm"]["ConfirmPassword"].value;
+
         if (password != confirmPassword){
             alert("Passwords need to match!");
             // window.location.replace("register.html");
@@ -38,14 +39,13 @@
         }
 
         // Check if password is blank
-        // Check if email is blank
         if (password == ""){
             alert("Password cannot be blank!");
             // window.location.replace("register.html");
             error_messages.push("Password cannot be blank!");
         }
 
-        // Check if email is blank
+        // Check if confirm password field is blank
         if (confirmPassword == ""){
             alert("Password Confirmation cannot be blank!");
             // window.location.replace("register.html");
