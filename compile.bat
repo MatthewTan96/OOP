@@ -1,1 +1,1 @@
-javac -d target/classes -cp src;lib/* src/main/java/Scheduler.java
+javac -d target/classes -cp src:lib/gson-2.8.6.jar src/main/java/Vessel.java src/main/java/PullFromAPI.java

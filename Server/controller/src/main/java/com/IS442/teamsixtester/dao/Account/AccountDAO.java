@@ -15,4 +15,8 @@ public interface AccountDAO {
     void deleteAccount(Account accountToDelete);
 
     Account updateAccount(Account existingAccount, Account newAccount);
+
+    Account changePassword(Account existingAccount, String newPassword);
+
+    Account changeVerified(Account existingAccount);
 }

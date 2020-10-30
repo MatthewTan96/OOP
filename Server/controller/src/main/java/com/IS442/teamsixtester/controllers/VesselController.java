@@ -5,6 +5,7 @@ import com.IS442.teamsixtester.api.VesselAPI;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.IS442.teamsixtester.model.Vessel.VesselDTO;
 import com.IS442.teamsixtester.model.Vessel.VesselQueryDTO;
+import com.IS442.teamsixtester.model.VesselTracker.VesselTracker;
 import com.IS442.teamsixtester.services.VesselService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,13 @@ public class VesselController implements VesselAPI {
             @Valid @RequestBody VesselDTO vesselDTO) {
         Vessel checkIfExist1 = vesselService.getVesselByOutgoing(vesselDTO.getAbbrVslM(), vesselDTO.getOutVoyN());
 
-        Vessel checkIfExist2 = vesselService.getVesselByIncoming(vesselDTO.getAbbrVslM(), vesselDTO.getInVoyN());
+//        Vessel checkIfExist2 = vesselService.getVesselByIncoming(vesselDTO.getAbbrVslM(), vesselDTO.getInVoyN());
 
         if (checkIfExist1 != null) {
             Vessel newVessel = vesselService.updateVessel(checkIfExist1, vesselDTO);
             return ResponseEntity.ok(newVessel);
         }
+
         Vessel newVessel = vesselService.addVessel(vesselDTO.toTrueClass());
         return ResponseEntity.ok(newVessel);
     }

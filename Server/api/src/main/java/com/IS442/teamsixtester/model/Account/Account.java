@@ -129,4 +129,10 @@ public class Account {
             removeSubscribedVessel(vessel);
         }
     }
+
+    //make a copy of Account
+    public Account copy() {
+        Account newAccount = new Account(this.email,this.password);
+        return newAccount;
+    }
 }

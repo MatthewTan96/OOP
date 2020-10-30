@@ -49,4 +49,16 @@ public class PostgresAccountDataAccessService implements AccountDAO{
         existingAccount.setVerified(toChangeAccount.getVerified());
         return accountRepository.save(existingAccount);
     }
+
+    @Override
+    public Account changePassword(Account existingAccount, String newPassword) {
+        existingAccount.setPassword(newPassword);
+        return accountRepository.save(existingAccount);
+    }
+
+    @Override
+    public Account changeVerified(Account existingAccount) {
+        existingAccount.setVerified(1);
+        return accountRepository.save(existingAccount);
+    }
 }

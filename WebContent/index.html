@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <head>
 
-
+    <!-- Initializing session -->
+    <script>
+        window.sessionStorage
+    </script>
 
     <!-- Add code here -->
     <meta charset="utf-8">
@@ -96,6 +99,8 @@
                 // Check if verified 
                 if (response == 0){
                     alert("Please verify your account and try again");
+                    // Placing in session for retrieval in the verification code page 
+                    sessionStorage.setItem("email", email);
                     window.location.replace("main.html")
                 }
 

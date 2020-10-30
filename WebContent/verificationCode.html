@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <head>
 
+    <!-- Adding SMTP Javascript link -->
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+
     <!-- Add code here -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,16 +23,34 @@
             verificationCode += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
         }
         console.log(verificationCode);
+
+        // Storing as session
+        sessionStorage.setItem("verificationCode", verificationCode);
+
         alert( "Verification Code sent to your email. Please check" );
 
-
+        var email = sessionStorage.getItem("email");
+        console.log(email);
         // Find some way to send the email lmao 
+        Email.send({
+            Host: "smtp.gmail.com",
+            Username : "teamsixoop@gmail.com",
+            Password : "thisist6",
+            To : email,
+            From : "teamsixoop@gmail.com",
+            Subject : "OOP Project Verification Code",
+            Body : verificationCode,
+        })
+        .then(function(message){
+            alert("mail sent successfully")
+        });
     }
 
 
     function validateFormVerificationCode() {
         // Error message form
         var error_messages = [];
+        var verificationCodeSession = sessionStorage.getItem("verificationCode");
 
         // This function extracts the variables email and password and sends it to the Java backend for validation
         var verificationCode = document.forms["verificationCodeForm"]["verificationCode"].value;
@@ -40,16 +61,19 @@
         // Retrieve list of errors 
         // Enter code here
 
-        if (error_messages.length == 0){
-            alert("No code added. Please try again");
-            // window.location.replace("verificationCode.html");
+        if (verificationCode == verificationCodeSession){
+            window.location.replace("main.html");
         }
+
+        // if (error_messages.length == 0){
+        //     alert("No code added. Please try again");
+        //     // window.location.replace("verificationCode.html");
+        // }
 
         // Generate random string of length 6 
 
         console.log(verificationCode);
         
-
         return false;
       }
     </script>

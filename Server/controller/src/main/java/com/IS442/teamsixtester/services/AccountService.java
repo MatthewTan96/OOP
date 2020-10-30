@@ -42,4 +42,12 @@ public class AccountService {
     public List<Account> accountGetAll() {
         return accountDao.selectAllAccount();
     }
+
+    public Account changePassword(Account existingAccount, String newPassword) {
+        return accountDao.changePassword(existingAccount, newPassword);
+    }
+
+    public Account changeVerified(Account existingAccount) {
+        return accountDao.changeVerified(existingAccount);
+    }
 }
