@@ -62,7 +62,7 @@ public class AccountController {
         return ResponseEntity.ok(accountService.accountGetAll());
     }
 
-    @PostMapping(value = "/authenticate")
+    @GetMapping(value = "/authenticate")
     public ResponseEntity accountCheckAuthenticate(
             @RequestParam String email,
             @RequestParam String password

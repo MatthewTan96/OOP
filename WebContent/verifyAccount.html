@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<head>
+
+    <!-- Adding SMTP Javascript link -->
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+
+    <!-- Add code here -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap code  -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <!-- Import javascript -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <!-- Javascript function -->
+    <script>
+
+    function createVerificationCode(){
+        var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var verificationCode = '';
+        for ( var i = 0; i < 6; i++ ) {
+            verificationCode += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+        console.log(verificationCode);
+
+        // Storing as session
+        sessionStorage.setItem("verificationCode", verificationCode);
+
+        alert( "Verification Code sent to your email. Please check" );
+
+        var email = sessionStorage.getItem("email");
+        console.log(email);
+        // Find some way to send the email lmao 
+        Email.send({
+            Host: "smtp.gmail.com",
+            Username : "teamsixoop@gmail.com",
+            Password : "thisist6",
+            To : email,
+            From : "teamsixoop@gmail.com",
+            Subject : "OOP Project Verification Code",
+            Body : verificationCode,
+        })
+        .then(function(message){
+            alert("mail sent successfully")
+        });
+    }
+
+
+    function validateFormVerificationCode() {
+        // Error message form
+        var error_messages = [];
+        var verificationCodeSession = sessionStorage.getItem("verificationCode");
+
+        // This function extracts the variables email and password and sends it to the Java backend for validation
+        var verificationCode = document.forms["verificationCodeForm"]["verificationCode"].value;
+
+        console.log(verificationCode);
+
+        // Check if email exists on the database
+        // Retrieve list of errors 
+        // Enter code here
+
+        if (verificationCode == verificationCodeSession){
+            window.location.replace("main.html");
+        }
+
+        // if (error_messages.length == 0){
+        //     alert("No code added. Please try again");
+        //     // window.location.replace("verificationCode.html");
+        // }
+
+        // Generate random string of length 6 
+
+        console.log(verificationCode);
+        
+        return false;
+      }
+    </script>
+
+<style>
+    body {
+        background-color: rgb(236, 236, 236);
+    }
+</style>
+
+</head>
+
+<body>
+
+    <body onload="createVerificationCode()"></body>
+
+
+    <!-- Jumbotron -->
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">MVJS Project Placeholder</h1>
+          <p class="lead">Motto or whatever</p>
+
+        </br>
+        </br>
+
+        <h1 class="display-4 text-center" style="color:grey"> Code Verification</h1>
+        </br>
+
+        <form name="verificationCodeForm" method="POST" onsubmit = "return validateFormVerificationCode()">
+            <div class="form-group">
+              <input type="text" class="form-control form-control-lg" name="verificationCode" placeholder="Verification Code">
+              <small class="form-text text-muted"> Please enter the Verification Code.</small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" value="Submit"> Submit </button>
+            <button type="button" class="btn btn-info btn-lg float-right" onclick="cancel()"> Cancel </button>
+        </form>
+
+
+        </div>
+      </div>
+
+    <!-- Login page  -->
+    <!--
+    <div class="container text-center">
+        <div class="login-reg-panel">
+            <div class="white-panel">
+                <div class="login-show text-center">
+                    <form name="verificationCodeForm" method="POST" onsubmit = "return validateFormVerificationCode()">
+                        <h2>Reset Password </h2>
+                        Please enter your email address below:
+                        <br>
+                        <br>
+                        <input name="verificationCode" placeholder="verificationCode">
+                        <br><br>
+                        <input type="submit" value="submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+    <script>
+        function cancel() {
+            console.log("index html");
+            location.replace("index.html");
+        }
+    </script>
+
+    
+
+    <!-- Bootstrap code  -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>

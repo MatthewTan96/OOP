@@ -25,7 +25,7 @@
 
     function reset_Password() {
         console.log("go next page");
-        location.replace("reset_password.html");
+        location.replace("resetPasswordEmail.html");
     }
 
 
@@ -74,24 +74,18 @@
         // Check if account email is available 
         console.log("login() triggered");
 
+        var url = "http://localhost:8080/authenticate";
+        // var params = "email=somevalue&anothervariable=anothervalue";
+        var params = "email=" + email + "&password=" + password;
         var http = new XMLHttpRequest();
-        // URL to be tested 
-        var url = 'http://localhost:8080/authenticate';
-            //var url = 'http://localhost:8080/authenticate'+ "?email=" + email + "&password=" + password; // -> Testing by Vittorio
-        http.open('POST', url, true);
 
-        //Send the proper header information along with the request
-            //http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        http.setRequestHeader("Content-type", "application/json");
-            //http.send(); // -> Testing by Vittorio
-        http.send(JSON.stringify({ "email": email, "password": password }));
-
-        // CORS error for now 
-
-        http.onreadystatechange = function() {//Call a function when the state changes.
+        http.open("GET", url+"?"+params, true);
+        http.onreadystatechange = function()
+        {
             if(http.readyState == 4 && http.status == 200) {
                 // Perform authentication
                 console.log(http.responseText);
+                response = http.responseText;
                 // var response = JSON.parse(http.responseText);
 
                 // 0 means not verified 
@@ -105,7 +99,7 @@
                     alert("Please verify your account and try again");
                     // Placing in session for retrieval in the verification code page 
                     sessionStorage.setItem("email", email);
-                    window.location.replace("main.html")
+                    window.location.replace("verifyAccount.html")
                 }
 
                 if (response == 1){
@@ -116,15 +110,19 @@
                     alert("Wrong credentials! Please try again!");
                 }
                 
-            } else if (http.readyState == 4 && http.status == 404){
-                    alert("Error. Account already exists")
-            } else {
-                alert("Error! but no Corss orgin ")
+            // } else if (http.readyState == 4 && http.status == 404){
+            //     alert("Error. Account already exists")
+            // } else {
+            //     alert("Error! but not from CORS orgin ")
+            // }
+            //     return;
             }
-                return;
-            }
-            //http.send(JSON.stringify({ "email": email, "password": password }));
         }
+
+        http.send(null);
+
+    }
+        
         
     </script>
 
