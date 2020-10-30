@@ -1,1 +1,1 @@
-java -cp target/classes:lib/gson-2.8.6.jar main.java.PullFromAPI
+java -cp target/classes;lib/gson-2.8.6.jar src/main/java/Scheduler.java
