@@ -77,10 +77,14 @@
         var http = new XMLHttpRequest();
         // URL to be tested 
         var url = 'http://localhost:8080/authenticate';
+            //var url = 'http://localhost:8080/authenticate'+ "?email=" + email + "&password=" + password; // -> Testing by Vittorio
         http.open('POST', url, true);
 
         //Send the proper header information along with the request
-        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            //http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.setRequestHeader("Content-type", "application/json");
+            //http.send(); // -> Testing by Vittorio
+        http.send(JSON.stringify({ "email": email, "password": password }));
 
         // CORS error for now 
 
@@ -114,10 +118,12 @@
                 
             } else if (http.readyState == 4 && http.status == 404){
                     alert("Error. Account already exists")
-                }
+            } else {
+                alert("Error! but no Corss orgin ")
+            }
                 return;
             }
-            http.send(JSON.stringify({ "email": email, "password": password }));
+            //http.send(JSON.stringify({ "email": email, "password": password }));
         }
         
     </script>
