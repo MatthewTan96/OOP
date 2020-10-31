@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.Set;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
-
 @Service
 public class FavouriteService {
     @Autowired

@@ -44,7 +44,7 @@
                         var newRow = tableRef.insertRow(tableRef.rows.length);
 
                         var vessl_id  = ship["vesselId"];
-
+                        /*
                         var cell01  = newRow.insertCell(0);
                         var input01  = document.createTextNode(ship["abbrVslM"])
                         cell01.appendChild(input01);
@@ -102,6 +102,62 @@
                         subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
                         subBtn.innerHTML = "Sub";
                         cell12.appendChild(subBtn);
+
+                        */
+
+                        var cell01  = newRow.insertCell(0);
+                        var input01  = document.createTextNode(ship["abbrVslM"])
+                        cell01.appendChild(input01);
+
+                        var cell02  = newRow.insertCell(1);
+                        var input02  = document.createTextNode(ship["inVoyN"])
+                        cell02.appendChild(input02);
+
+                        var cell03  = newRow.insertCell(2);
+                        var input03  = document.createTextNode(ship["outVoyN"])
+                        cell03.appendChild(input03);
+
+                        var cell04  = newRow.insertCell(3);
+                        var input04  = document.createTextNode(ship["bthgDt"])
+                        cell04.appendChild(input04);
+
+                        var cell05  = newRow.insertCell(4);
+                        var input05  = document.createTextNode(ship["unbthgDt"])
+                        cell05.appendChild(input05);
+
+                        var cell06  = newRow.insertCell(5);
+                        var input06  = document.createTextNode(ship["berthN"])
+                        cell06.appendChild(input06);
+
+                        var cell07  = newRow.insertCell(6);
+                        var input07  = document.createTextNode(ship["status"])
+                        cell07.appendChild(input07);
+
+                        var cell08  = newRow.insertCell(7);
+                        var input08  = document.createTextNode(ship["changeCount"])
+                        cell08.appendChild(input08);
+
+                        var cell09  = newRow.insertCell(8);
+                        var input09  = document.createTextNode(ship["degreeChange"])
+                        cell09.appendChild(input09);
+
+                        var cell10  = newRow.insertCell(9);
+                        var addBtn  = document.createElement("BUTTON")
+                        addBtn.setAttribute("type", "button")
+                        addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                        addBtn.setAttribute("class", "btn btn-primary")
+                        addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                        addBtn.innerHTML = "Add";
+                        cell10.appendChild(addBtn);
+
+                        var cell11  = newRow.insertCell(10);
+                        var subBtn  = document.createElement("BUTTON")
+                        subBtn.setAttribute("type", "button")
+                        subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                        subBtn.setAttribute("class", "btn btn-info")
+                        subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                        subBtn.innerHTML = "Sub";
+                        cell11.appendChild(subBtn);
 
                         // if degree of change is between 0 & 1 == yellow else more than == red. 
                         if(ship["degreeChange"] < 1.0 && ship["degreeChange"] > 0.0){
