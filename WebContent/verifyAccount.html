@@ -62,19 +62,27 @@
         // Enter code here
 
         if (verificationCode == verificationCodeSession){
+            // Changing the verification status 
+            
+            var url = "http://localhost:8080/setVerification";
+            // var params = "email=somevalue&anothervariable=anothervalue";
+            var params = "email=" + email;
+            var http = new XMLHttpRequest();
+
+            http.open("GET", url+"?"+params, true);
+            http.onreadystatechange = function()
+            {
+                if(http.readyState == 4 && http.status == 200) {
+                    // Perform authentication
+                    console.log(http.responseText);
+                    response = http.responseText;
+                    alert(response);
+                }
+                http.send(null);
+            }
             window.location.replace("main.html");
         }
-
-        // if (error_messages.length == 0){
-        //     alert("No code added. Please try again");
-        //     // window.location.replace("verificationCode.html");
-        // }
-
-        // Generate random string of length 6 
-
-        console.log(verificationCode);
         
-        return false;
       }
     </script>
 
