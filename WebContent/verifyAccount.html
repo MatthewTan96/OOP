@@ -31,7 +31,7 @@
 
         var email = sessionStorage.getItem("email");
         console.log(email);
-        // Find some way to send the email lmao 
+
         Email.send({
             Host: "smtp.gmail.com",
             Username : "teamsixoop@gmail.com",
@@ -44,24 +44,30 @@
         .then(function(message){
             alert("mail sent successfully")
         });
+
     }
 
 
-    function validateFormVerificationCode() {
+    function validateVerificationCode() {
         // Error message form
         var error_messages = [];
         var verificationCodeSession = sessionStorage.getItem("verificationCode");
 
         // This function extracts the variables email and password and sends it to the Java backend for validation
-        var verificationCode = document.forms["verificationCodeForm"]["verificationCode"].value;
+        var verificationCode = document.getElementById("verificationCode").value;
 
         console.log(verificationCode);
 
         // Check if email exists on the database
         // Retrieve list of errors 
         // Enter code here
+        var email = sessionStorage.getItem("email");
+        console.log(email);
 
         if (verificationCode == verificationCodeSession){
+
+            console.log("API triggered");
+
             // Changing the verification status 
             
             var url = "http://localhost:8080/setVerification";
@@ -69,7 +75,7 @@
             var params = "email=" + email;
             var http = new XMLHttpRequest();
 
-            http.open("GET", url+"?"+params, true);
+            http.open("PUT", url+"?"+params, true);
             http.onreadystatechange = function()
             {
                 if(http.readyState == 4 && http.status == 200) {
@@ -78,9 +84,12 @@
                     response = http.responseText;
                     alert(response);
                 }
-                http.send(null);
             }
-            window.location.replace("main.html");
+            http.send(params);
+            alert("Account verified");
+            window.location.replace("index.html");
+        } else {
+            alert ("Wrong verification code. Please try again");
         }
         
       }
@@ -112,15 +121,12 @@
         <h1 class="display-4 text-center" style="color:grey"> Code Verification</h1>
         </br>
 
-        <form name="verificationCodeForm" method="POST" onsubmit = "return validateFormVerificationCode()">
-            <div class="form-group">
-              <input type="text" class="form-control form-control-lg" name="verificationCode" placeholder="Verification Code">
-              <small class="form-text text-muted"> Please enter the Verification Code.</small>
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg" value="Submit"> Submit </button>
-            <button type="button" class="btn btn-info btn-lg float-right" onclick="cancel()"> Cancel </button>
-        </form>
-
+        <div class="form-group">
+            <input type="text" class="form-control form-control-lg" id="verificationCode" name="verificationCode" placeholder="Verification Code">
+            <small class="form-text text-muted"> Please enter the Verification Code.</small>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg" value="Submit" onclick="validateVerificationCode()"> Submit </button>
+        <button type="button" class="btn btn-info btn-lg float-right" onclick="cancel()"> Cancel </button>
 
         </div>
       </div>
