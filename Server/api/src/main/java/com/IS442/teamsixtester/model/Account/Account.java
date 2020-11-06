@@ -135,4 +135,10 @@ public class Account {
         Account newAccount = new Account(this.email,this.password);
         return newAccount;
     }
+
+    public String toString(){
+          return "{ email=" + email
+                    + ", password=" + password
+                    + "}";
+    }
 }

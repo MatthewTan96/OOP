@@ -27,6 +27,8 @@ public class VesselDTO implements Serializable, DTO {
 
     private String status;
 
+    private String firstBerthTime;
+
     public VesselDTO() {
     }
 
@@ -110,6 +112,7 @@ public class VesselDTO implements Serializable, DTO {
     public void setStatus(String status) {
         this.status = status;
     }
+
 
     @Override
     public String toString() {

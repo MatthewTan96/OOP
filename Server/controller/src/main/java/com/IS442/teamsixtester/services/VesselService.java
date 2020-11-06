@@ -42,6 +42,10 @@ public class VesselService {
         return vesselDao.selectVesselByOutgoing(abbrVslM, outVoyN);
     }
 
+    public Vessel getVesselByShortname(String abbrVslM) {
+        return vesselDao.selectVesselByShortname(abbrVslM);
+    }
+
     public Vessel deleteVessel(Vessel vessel) {
         vessel.removeAllFavouritedByAccounts();
         vessel.removeAllSubscribedByAccounts();

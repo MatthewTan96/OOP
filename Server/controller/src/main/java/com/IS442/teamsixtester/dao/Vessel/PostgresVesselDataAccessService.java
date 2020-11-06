@@ -41,6 +41,11 @@ public class PostgresVesselDataAccessService implements VesselDAO{
     }
 
     @Override
+    public Vessel selectVesselByShortname(String abbrVslM) {
+        return repository.findByAbbrVslM(abbrVslM);
+    }
+
+    @Override
     public Vessel deleteVessel(Vessel vessel) {
         repository.delete(vessel);
         return vessel;

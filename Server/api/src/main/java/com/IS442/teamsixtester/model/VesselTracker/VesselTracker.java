@@ -1,35 +1,34 @@
 package com.IS442.teamsixtester.model.VesselTracker;
 
-//
-//import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Set;
-
-import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class VesselTracker{
     private Multimap userAndSubscribedVessels;
 
     public VesselTracker(){this.userAndSubscribedVessels = ArrayListMultimap.create(); }
 
-    public Multimap<Account, ArrayList<Vessel>> getUserAndSubscribedVessels() {
+    @Bean("VesselTracker")
+    public VesselTracker newTracker() {
+        return new VesselTracker();
+    }
+
+    public Multimap<String, Vessel> getUserAndSubscribedVessels() {
         return userAndSubscribedVessels;
     }
 
-    public void setUserAndSubscribedVessels(Multimap<Account, ArrayList<Vessel>> userAndSubscribedVessels) {
+    public void setUserAndSubscribedVessels(Multimap<String, Vessel> userAndSubscribedVessels) {
         this.userAndSubscribedVessels = userAndSubscribedVessels;
     }
 
-    public void addVessel(Account user, Vessel vessel){ this.userAndSubscribedVessels.put(user,vessel); }
+    public void addVessel(String email, Vessel vessel) {
+            userAndSubscribedVessels.put(email,vessel);
 
-//    @Override
-//    public String toString() {
-//        return "Vessel{" +
-//                "vessel=" + vesselId +
-//                '}';
-//    }
+
+    }
+
 }

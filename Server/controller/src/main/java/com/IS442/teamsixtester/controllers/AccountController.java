@@ -85,7 +85,6 @@ public class AccountController {
     public ResponseEntity updatePassword(@RequestParam String email,
                                          @RequestParam String newPassword) {
         Account accountToChangePw = accountService.getAccountByEmail(email);
-        String oldpw = accountToChangePw.getPassword();
         String hashedNewPassword = Hashing.sha256().hashString(newPassword, StandardCharsets.UTF_8).toString();
         accountService.changePassword(accountToChangePw,hashedNewPassword);
         return ResponseEntity.ok("Password Successfully Changed");

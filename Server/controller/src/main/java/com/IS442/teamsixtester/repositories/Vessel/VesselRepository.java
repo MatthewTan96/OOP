@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface VesselRepository extends CrudRepository<Vessel, UUID> {
     Vessel findTopByAbbrVslMAndInVoyN(String abbrVslM, String inVoyN);
     Vessel findTopByAbbrVslMAndOutVoyN(String abbrVslM, String outVoyN);
+    Vessel findByAbbrVslM(String abbrVslM);
 }

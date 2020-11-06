@@ -15,6 +15,8 @@ public interface VesselDAO {
 
     Vessel selectVesselByOutgoing(String abbrVslM, String outVoyN);
 
+    Vessel selectVesselByShortname(String abbrVslM);
+
     Vessel deleteVessel(Vessel vessel);
 
     Vessel updateVessel(Vessel vesselToUpdate);
