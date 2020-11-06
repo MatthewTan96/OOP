@@ -52,6 +52,10 @@
             error_messages.push("Password Confirmation cannot be blank!");
         }
 
+        if (error_messages!=[]){
+            return;
+        }
+
         // Validation passed
         addAccount(email,password);
         
