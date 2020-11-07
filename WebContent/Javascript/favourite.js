@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     } else {
       console.log("no email") // Login page will sent over email via session
       //var checkEmail = "test@gmail5.com";
+      window.location.href = "index.html";
     }
 
     var request = new XMLHttpRequest();

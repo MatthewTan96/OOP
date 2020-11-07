@@ -1,19 +1,26 @@
   // Document.ready function 
   document.addEventListener("DOMContentLoaded", function(event) { 
 
+    //window.sessionStorage
+
+
+    
     if(sessionStorage.getItem("email") != null){
         var checkEmail = sessionStorage.getItem("email");
         //document.getElementById("userNamePlaceholder").innerHTML = email;
     } else {
-      console.log("This is for testing purpose!") // Login page will sent over email via session
-      var checkEmail = "test@gmail5.com";
-      sessionStorage.setItem("email", "test@gmail5.com");
+      //console.log("This is for testing purpose!") // Login page will sent over email via session
+      //var checkEmail = "test@gmail5.com";
+      //sessionStorage.setItem("email", "test@gmail5.com");
+      window.location.href = "index.html";
     }
-
+    
+    console.log(checkEmail);
 
     var request = new XMLHttpRequest();
     request.onreadystatechange = function(){
       if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
         dataObj = JSON.parse(this.responseText);
         var email = dataObj["email"];
         document.getElementById("userNamePlaceholder").innerHTML = email;

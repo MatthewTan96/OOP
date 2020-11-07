@@ -16,7 +16,10 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
     <!-- Javascript function -->
+    
     <script>
+    sessionStorage.clear()
+    console.log("Session is cleared");
 
     function new_user() {
         console.log("register.html");
@@ -103,6 +106,8 @@
                 }
 
                 if (response == 1){
+                    sessionStorage.setItem("email", email);
+                    console.log(sessionStorage.getItem("email"));
                     window.location.replace("main.html");
                 } 
 

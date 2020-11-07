@@ -11,15 +11,20 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <!-- Link JavaScript -->
     <script type="text/javascript" src="Javascript/main.js"></script>
-    <script type="text/javascript" src="Javascript/general.js"></script>
+    <!-- <script type="text/javascript" src="Javascript/general.js"></script> -->
     <!-- Link CSS -->
     <link rel="stylesheet" href="CSS/design.css">
 
     <script>
+      window.sessionStorage
       function signOut(){
-        sessionStorage.clear();
+        //sessionStorage.clear();
         window.location.href = "index.html";
       }
+
+      var checkEmail = sessionStorage.getItem("email");
+      console.log(checkEmail);
+
     </script>
 
 </head>
@@ -58,7 +63,7 @@
 
       <form>
           <!-- dropdown -->
-          <!--
+      
         <div class="form-row">
           <div class="form-group col-md-4">
               <select class="form-control form-control-lg inline" id="filterVessel">
@@ -84,7 +89,7 @@
             </div>
           </div>
       </div>
-    -->
+
           <!-- close dropdown -->
       </form>
 
