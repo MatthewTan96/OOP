@@ -65,6 +65,7 @@
           <!-- dropdown -->
       
         <div class="form-row">
+          <!--
           <div class="form-group col-md-4">
               <select class="form-control form-control-lg inline" id="filterVessel">
                 <option disabled selected> Filter </option>
@@ -73,21 +74,30 @@
                 <option value="status"> Status </option>
               </select>
           </div>
-
-          <div class="form-group col-md-1">
-            <div class="form-group col-md-1">
-              <button type="button" class="btn btn-outline-secondary btn-lg">  Filter </button> 
-            </div>
-          </div>
+          -->
 
           <div class="form-group col-md-7">
             <div class="input-group input-group-lg">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-lg">Large</span>
+                <span class="input-group-text" id="inputGroup-sizing-lg"> Search by Vessel </span>
               </div>
-              <input type="text" class="form-control">
+              <input type="text" id="vesselSearch" class="form-control">
             </div>
           </div>
+
+          <div class="form-group col-md-1">
+            <div class="form-group col-md-1">
+              <button type="button" class="btn btn-outline-secondary btn-lg" onclick="getVesselByName()">  Search </button> 
+            </div>
+          </div>
+
+          <div class="form-group col-md-1">
+            <div class="form-group col-md-1">
+              <button type="button" class="btn btn-outline-secondary btn-lg" onclick="reloadPage()"> <i class="fas fa-sync-alt"></i> </button> 
+            </div>
+          </div>
+
+
       </div>
 
           <!-- close dropdown -->
@@ -130,6 +140,8 @@
         </tbody>
       </table>
     </form>
+
+    <h1 id="displayOutputInformation" class="text-center"> </h1>
 
   </div>
   <!-- Close Main Container-->

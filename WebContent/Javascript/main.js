@@ -3,24 +3,16 @@
 
     //window.sessionStorage
 
-
-    
     if(sessionStorage.getItem("email") != null){
         var checkEmail = sessionStorage.getItem("email");
-        //document.getElementById("userNamePlaceholder").innerHTML = email;
     } else {
-      //console.log("This is for testing purpose!") // Login page will sent over email via session
-      //var checkEmail = "test@gmail5.com";
-      //sessionStorage.setItem("email", "test@gmail5.com");
       window.location.href = "index.html";
     }
     
-    console.log(checkEmail);
-
     var request = new XMLHttpRequest();
     request.onreadystatechange = function(){
       if (this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText);
+        //console.log(this.responseText);
         dataObj = JSON.parse(this.responseText);
         var email = dataObj["email"];
         document.getElementById("userNamePlaceholder").innerHTML = email;
@@ -31,87 +23,41 @@
     }
     request.open("GET", "http://localhost:8080/getAccountByEmail?email="+checkEmail, true);
     request.send();
+
+    getVesseslInFavorites();
+    getVesseslInSubscribe()
   
   });
 
+  // remove all row in the table
+  function clearTable(){
+    $("#displayTable > tbody").empty()
+  }
+
+  // reload page
+  function reloadPage(){
+    location.reload();
+  }
   
-  // Get all Ships function 
+  // Get all Vessel function 
   function getShips(email) {
           var request = new XMLHttpRequest();
           request.onreadystatechange = function(){
               if (this.readyState == 4 && this.status == 200) {
                   try { 
-                      console.log(this.responseText);
+                      //console.log(this.responseText);
                       dataObj = JSON.parse(this.responseText);
+                      //sessionStorage.setItem("allVesselData", dataObj);
                       if(dataObj == []){
-                        console.log("nothing in Database")
+                        //console.log("nothing in Database")
+                        document.getElementById("displayOutputInformation").innerHTML = 'Unable to connect to DataBase';
                       } else {
                       var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
                       for(var ship of dataObj){
                         var newRow = tableRef.insertRow(tableRef.rows.length);
 
                         var vessl_id  = ship["vesselId"];
-                        /*
-                        var cell01  = newRow.insertCell(0);
-                        var input01  = document.createTextNode(ship["abbrVslM"])
-                        cell01.appendChild(input01);
-
-                        var cell02  = newRow.insertCell(1);
-                        var input02  = document.createTextNode(ship["inVoyN"])
-                        cell02.appendChild(input02);
-
-                        var cell03  = newRow.insertCell(2);
-                        var input03  = document.createTextNode(ship["outVoyN"])
-                        cell03.appendChild(input03);
-
-                        var cell04  = newRow.insertCell(3);
-                        var input04  = document.createTextNode(ship["btrgDt"])
-                        cell04.appendChild(input04);
-
-                        var cell05  = newRow.insertCell(4);
-                        var input05  = document.createTextNode(ship["unbthgDt"])
-                        cell05.appendChild(input05);
-
-                        var cell06  = newRow.insertCell(5);
-                        var input06  = document.createTextNode(ship["berthN"])
-                        cell06.appendChild(input06);
-
-                        var cell07  = newRow.insertCell(6);
-                        var input07  = document.createTextNode(ship["changeCount"])
-                        cell07.appendChild(input07);
-
-                        var cell08  = newRow.insertCell(7);
-                        var input08  = document.createTextNode(ship["degreeChange"])
-                        cell08.appendChild(input08);
-
-                        var cell09  = newRow.insertCell(8);
-                        var input09  = document.createTextNode(ship["firstBerthTime"])
-                        cell09.appendChild(input09);
-
-                        var cell10  = newRow.insertCell(9);
-                        var input10  = document.createTextNode(ship["status"])
-                        cell10.appendChild(input10);
-
-                        var cell11  = newRow.insertCell(10);
-                        var addBtn  = document.createElement("BUTTON")
-                        addBtn.setAttribute("type", "button")
-                        addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                        addBtn.setAttribute("class", "btn btn-primary")
-                        addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                        addBtn.innerHTML = "Add";
-                        cell11.appendChild(addBtn);
-
-                        var cell12  = newRow.insertCell(11);
-                        var subBtn  = document.createElement("BUTTON")
-                        subBtn.setAttribute("type", "button")
-                        subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                        subBtn.setAttribute("class", "btn btn-info")
-                        subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                        subBtn.innerHTML = "Sub";
-                        cell12.appendChild(subBtn);
-
-                        */
-
+                        
                         var cell01  = newRow.insertCell(0);
                         var input01  = document.createTextNode(ship["abbrVslM"])
                         cell01.appendChild(input01);
@@ -148,15 +94,40 @@
                         var input09  = document.createTextNode(ship["degreeChange"])
                         cell09.appendChild(input09);
 
-                        var cell10  = newRow.insertCell(9);
-                        var addBtn  = document.createElement("BUTTON")
-                        addBtn.setAttribute("type", "button")
-                        addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                        addBtn.setAttribute("class", "btn btn-primary")
-                        addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                        addBtn.innerHTML = "Add";
-                        cell10.appendChild(addBtn);
+                        var isInFavorites = vesselInFavorites(vessl_id)
+                        if(isInFavorites){
+                          var cell10  = newRow.insertCell(9);
+                          var addBtn  = document.createElement("BUTTON")
+                          addBtn.setAttribute("type", "button")
+                          addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                          addBtn.setAttribute("class", "btn btn-secondary")
+                          addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          addBtn.setAttribute("disabled", "true")
+                          addBtn.innerHTML = "Add";
+                          cell10.appendChild(addBtn);
+                        } else {
+                          var cell10  = newRow.insertCell(9);
+                          var addBtn  = document.createElement("BUTTON")
+                          addBtn.setAttribute("type", "button")
+                          addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                          addBtn.setAttribute("class", "btn btn-primary")
+                          addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          addBtn.innerHTML = "Add";
+                          cell10.appendChild(addBtn);
+                        }
 
+                      var isInSubscribe = vesselInSubscribe(vessl_id)
+                      if(isInSubscribe){
+                        var cell11  = newRow.insertCell(10);
+                        var subBtn  = document.createElement("BUTTON")
+                        subBtn.setAttribute("type", "button")
+                        subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                        subBtn.setAttribute("class", "btn btn-secondary")
+                        subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                        subBtn.setAttribute("disabled", "true")
+                        subBtn.innerHTML = "Sub";
+                        cell11.appendChild(subBtn);
+                      } else {
                         var cell11  = newRow.insertCell(10);
                         var subBtn  = document.createElement("BUTTON")
                         subBtn.setAttribute("type", "button")
@@ -165,15 +136,15 @@
                         subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
                         subBtn.innerHTML = "Sub";
                         cell11.appendChild(subBtn);
-
+                      }
                         // if degree of change is between 0 & 1 == yellow else more than == red. 
                         if(ship["degreeChange"] < 1.0 && ship["degreeChange"] > 0.0){
                           newRow.setAttribute("class", "table-warning")
                         } else if(ship["degreeChange"] > 1.0){
                           newRow.setAttribute("class", "table-danger")
                         }
-                      }
-                    }
+                      } // end of for loop
+                    } // end of else
                   } catch(err){
                       console.log("error");
                   }
@@ -227,5 +198,223 @@ function addToSubscribe(email, vesselName, incomingVoyage, outcomingVoyage){
   request.send();
 }
 // End of get add to Subscribe function 
+
+// Print vesssels into Table.
+function getVesselByName(){
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){
+        try {                      
+          console.log(this.responseText);
+          dataObj = JSON.parse(this.responseText);
+          if(dataObj == []){
+            console.log("nothing in Database")
+            } else {
+              clearTable()
+              var email = sessionStorage.getItem("email");
+              var searchVessel = document.getElementById('vesselSearch').value;
+              searchVessel = searchVessel.toLowerCase();
+              var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
+              for(var ship of dataObj){
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+
+                var SelectByVesselName = ship["abbrVslM"];
+                SelectByVesselName = SelectByVesselName.toLowerCase();
+
+                if(searchVessel==SelectByVesselName){
+
+                  var vessl_id  = ship["vesselId"];
+
+                  var cell01  = newRow.insertCell(0);
+                  var input01  = document.createTextNode(ship["abbrVslM"])
+                  cell01.appendChild(input01);
+
+                  var cell02  = newRow.insertCell(1);
+                  var input02  = document.createTextNode(ship["inVoyN"])
+                  cell02.appendChild(input02);
+
+                  var cell03  = newRow.insertCell(2);
+                  var input03  = document.createTextNode(ship["outVoyN"])
+                  cell03.appendChild(input03);
+
+                  var cell04  = newRow.insertCell(3);
+                  var input04  = document.createTextNode(ship["bthgDt"])
+                  cell04.appendChild(input04);
+
+                  var cell05  = newRow.insertCell(4);
+                  var input05  = document.createTextNode(ship["unbthgDt"])
+                  cell05.appendChild(input05);
+
+                  var cell06  = newRow.insertCell(5);
+                  var input06  = document.createTextNode(ship["berthN"])
+                  cell06.appendChild(input06);
+
+                  var cell07  = newRow.insertCell(6);
+                  var input07  = document.createTextNode(ship["status"])
+                  cell07.appendChild(input07);
+
+                  var cell08  = newRow.insertCell(7);
+                  var input08  = document.createTextNode(ship["changeCount"])
+                  cell08.appendChild(input08);
+
+                  var cell09  = newRow.insertCell(8);
+                  var input09  = document.createTextNode(ship["degreeChange"])
+                  cell09.appendChild(input09);
+
+                  var isInFavorites = vesselInFavorites(vessl_id)
+                        if(isInFavorites){
+                          var cell10  = newRow.insertCell(9);
+                          var addBtn  = document.createElement("BUTTON")
+                          addBtn.setAttribute("type", "button")
+                          addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                          addBtn.setAttribute("class", "btn btn-secondary")
+                          addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          addBtn.setAttribute("disabled", "true")
+                          addBtn.innerHTML = "Add";
+                          cell10.appendChild(addBtn);
+                        } else {
+                          var cell10  = newRow.insertCell(9);
+                          var addBtn  = document.createElement("BUTTON")
+                          addBtn.setAttribute("type", "button")
+                          addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                          addBtn.setAttribute("class", "btn btn-primary")
+                          addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          addBtn.innerHTML = "Add";
+                          cell10.appendChild(addBtn);
+                        }
+
+                      var isInSubscribe = vesselInSubscribe(vessl_id)
+                      if(isInSubscribe){
+                        var cell11  = newRow.insertCell(10);
+                        var subBtn  = document.createElement("BUTTON")
+                        subBtn.setAttribute("type", "button")
+                        subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                        subBtn.setAttribute("class", "btn btn-secondary")
+                        subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                        subBtn.setAttribute("disabled", "true")
+                        subBtn.innerHTML = "Sub";
+                        cell11.appendChild(subBtn);
+                      } else {
+                        var cell11  = newRow.insertCell(10);
+                        var subBtn  = document.createElement("BUTTON")
+                        subBtn.setAttribute("type", "button")
+                        subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                        subBtn.setAttribute("class", "btn btn-info")
+                        subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                        subBtn.innerHTML = "Sub";
+                        cell11.appendChild(subBtn);
+                      }
+
+                  /*
+                  var cell10  = newRow.insertCell(9);
+                  var addBtn  = document.createElement("BUTTON")
+                  addBtn.setAttribute("type", "button")
+                  addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                  addBtn.setAttribute("class", "btn btn-primary")
+                  addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                  addBtn.innerHTML = "Add";
+                  cell10.appendChild(addBtn);
+
+                  var cell11  = newRow.insertCell(10);
+                  var subBtn  = document.createElement("BUTTON")
+                  subBtn.setAttribute("type", "button")
+                  subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                  subBtn.setAttribute("class", "btn btn-info")
+                  subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                  subBtn.innerHTML = "Sub";
+                  cell11.appendChild(subBtn);
+                  */
+
+                  // if degree of change is between 0 & 1 == yellow else more than == red. 
+                  if(ship["degreeChange"] < 1.0 && ship["degreeChange"] > 0.0){
+                    newRow.setAttribute("class", "table-warning")
+                  } else if(ship["degreeChange"] > 1.0){
+                    newRow.setAttribute("class", "table-danger")
+                  } // End of color check
+
+                } // End of If 
+                else{
+                  document.getElementById("displayOutputInformation").innerHTML = 'Unable to search for query: ' + searchVessel;
+                }
+              } // end of for loop
+            } // end of else
+        } catch(err){
+          console.log("error");
+        }
+      }    
+    }
+  request.open("GET", "http://localhost:8080/getAllVessels", true);
+  request.send();  
+}
+
+// -- FUNCTION -- //
+// Check if vessel in favorites and return boolean to disable button
+function getVesseslInFavorites(){
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200) {
+      dataObj = JSON.parse(this.responseText);
+      var favouritesVessels = dataObj["favouritedVessels"];
+      console.log(favouritesVessels);
+      sessionStorage.setItem("vesseslInFavorites", JSON.stringify(favouritesVessels));
+    } else {
+      // to display error code
+    }
+  }
+  var email = sessionStorage.getItem("email");
+  request.open("GET", "http://localhost:8080/getAccountByEmail?email="+email, true);
+  request.send();
+}
+
+function vesselInFavorites(check_Vessel_ID){
+  var favouritesVessels = sessionStorage.getItem("vesseslInFavorites");
+  favouritesVessels = JSON.parse(favouritesVessels);
+  console.log(favouritesVessels);
+  for(var ship of favouritesVessels){
+    var vessl_id = ship["vesselId"];
+    if(check_Vessel_ID == vessl_id){
+      console.log("true")
+      return true;
+    } 
+  }
+  return false;
+}
+// -- END OF FUNCTION --//
+
+// -- FUNCTION -- //
+// Check if vessel in subscribe and return boolean to disable button
+function getVesseslInSubscribe(){
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200) {
+      dataObj = JSON.parse(this.responseText);
+      var subscribedVessels = dataObj["subscribedVessels"];
+      console.log(subscribedVessels);
+      sessionStorage.setItem("vesseslInSubscribe", JSON.stringify(subscribedVessels));
+    } else {
+      // to display error code
+    }
+  }
+  var email = sessionStorage.getItem("email");
+  request.open("GET", "http://localhost:8080/getAccountByEmail?email="+email, true);
+  request.send();
+}
+
+function vesselInSubscribe(check_Vessel_ID){
+  var subscribedVessels = sessionStorage.getItem("vesseslInSubscribe");
+  subscribedVessels = JSON.parse(subscribedVessels);
+  console.log(subscribedVessels);
+  for(var ship of subscribedVessels){
+    var vessl_id = ship["vesselId"];
+    if(check_Vessel_ID == vessl_id){
+      console.log("true")
+      return true;
+    } 
+  }
+  return false;
+}
+// -- END OF FUNCTION --//
+
+
 
 
