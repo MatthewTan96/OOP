@@ -141,7 +141,51 @@
       </table>
     </form>
 
-    <h1 id="displayOutputInformation" class="text-center"> </h1>
+    <h1 id="displayOutputInformationMainPage" class="text-center font-weight-light"> </h1>
+
+    <!-- Modal Favourites -->
+    <div class="modal fade" id="mainModalCenterFavourites" tabindex="-1" role="dialog" aria-labelledby="mainFavouritesModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle"> Notification </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h3 class="font-weight-light"> Vessel added to favourites list </h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reloadPage()"> OK </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End -->
+    <!-- Modal Subscribe -->
+    <div class="modal fade" id="mainModalCenterSubscribe" tabindex="-1" role="dialog" aria-labelledby="mainSubscribeModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle"> Notification </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h3 class="font-weight-light"> Vessel added to subscribe list </h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal" onclick="reloadPage()"> OK </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End -->
+
+
+
 
   </div>
   <!-- Close Main Container-->

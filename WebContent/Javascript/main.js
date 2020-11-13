@@ -50,7 +50,7 @@
                       //sessionStorage.setItem("allVesselData", dataObj);
                       if(dataObj == []){
                         //console.log("nothing in Database")
-                        document.getElementById("displayOutputInformation").innerHTML = 'Unable to connect to DataBase';
+                        document.getElementById("displayOutputInformationMainPage").innerHTML = 'Unable to connect to DataBase';
                       } else {
                       var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
                       for(var ship of dataObj){
@@ -71,11 +71,19 @@
                         cell03.appendChild(input03);
 
                         var cell04  = newRow.insertCell(3);
-                        var input04  = document.createTextNode(ship["bthgDt"])
+                        var bthDateTimeValue = ship["bthgDt"];
+                        bthDateTimeValue = bthDateTimeValue.split("T");
+                        var bthOutput = "Date:" + bthDateTimeValue[0] + " Time:" + bthDateTimeValue[1];
+                        var input04  = document.createTextNode(bthOutput)
+                        //var input04  = document.createTextNode(ship["bthgDt"])
                         cell04.appendChild(input04);
 
                         var cell05  = newRow.insertCell(4);
-                        var input05  = document.createTextNode(ship["unbthgDt"])
+                        var unbthDateTimeValue = ship["unbthgDt"];
+                        unbthDateTimeValue = unbthDateTimeValue.split("T");
+                        var unbthOutput = "Date:" + unbthDateTimeValue[0] + " Time:" + unbthDateTimeValue[1];
+                        var input05  = document.createTextNode(unbthOutput);
+                        //var input05  = document.createTextNode(ship["unbthgDt"])
                         cell05.appendChild(input05);
 
                         var cell06  = newRow.insertCell(5);
@@ -112,6 +120,8 @@
                           addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
                           addBtn.setAttribute("class", "btn btn-primary")
                           addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                          addBtn.setAttribute("data-toggle", "modal")
+                          addBtn.setAttribute("data-target", "#mainModalCenterFavourites")
                           addBtn.innerHTML = "Add";
                           cell10.appendChild(addBtn);
                         }
@@ -134,6 +144,8 @@
                         subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
                         subBtn.setAttribute("class", "btn btn-info")
                         subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                        subBtn.setAttribute("data-toggle", "modal")
+                        subBtn.setAttribute("data-target", "#mainModalCenterSubscribe")
                         subBtn.innerHTML = "Sub";
                         cell11.appendChild(subBtn);
                       }
@@ -214,6 +226,7 @@ function getVesselByName(){
               var email = sessionStorage.getItem("email");
               var searchVessel = document.getElementById('vesselSearch').value;
               searchVessel = searchVessel.toLowerCase();
+              var isFound = false;
               var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
               for(var ship of dataObj){
                 var newRow = tableRef.insertRow(tableRef.rows.length);
@@ -221,8 +234,10 @@ function getVesselByName(){
                 var SelectByVesselName = ship["abbrVslM"];
                 SelectByVesselName = SelectByVesselName.toLowerCase();
 
-                if(searchVessel==SelectByVesselName){
-
+                if(searchVessel == SelectByVesselName)
+                {
+                  console.log("Found!")
+                  isFound = true;
                   var vessl_id  = ship["vesselId"];
 
                   var cell01  = newRow.insertCell(0);
@@ -237,6 +252,7 @@ function getVesselByName(){
                   var input03  = document.createTextNode(ship["outVoyN"])
                   cell03.appendChild(input03);
 
+                  /*
                   var cell04  = newRow.insertCell(3);
                   var input04  = document.createTextNode(ship["bthgDt"])
                   cell04.appendChild(input04);
@@ -244,6 +260,23 @@ function getVesselByName(){
                   var cell05  = newRow.insertCell(4);
                   var input05  = document.createTextNode(ship["unbthgDt"])
                   cell05.appendChild(input05);
+                  */
+
+                 var cell04  = newRow.insertCell(3);
+                 var bthDateTimeValue = ship["bthgDt"];
+                 bthDateTimeValue = bthDateTimeValue.split("T");
+                 var bthOutput = "Date:" + bthDateTimeValue[0] + " Time:" + bthDateTimeValue[1];
+                 var input04  = document.createTextNode(bthOutput)
+                 //var input04  = document.createTextNode(ship["bthgDt"])
+                 cell04.appendChild(input04);
+
+                 var cell05  = newRow.insertCell(4);
+                 var unbthDateTimeValue = ship["unbthgDt"];
+                 unbthDateTimeValue = unbthDateTimeValue.split("T");
+                 var unbthOutput = "Date:" + unbthDateTimeValue[0] + " Time:" + unbthDateTimeValue[1];
+                 var input05  = document.createTextNode(unbthOutput);
+                 //var input05  = document.createTextNode(ship["unbthgDt"])
+                 cell05.appendChild(input05);
 
                   var cell06  = newRow.insertCell(5);
                   var input06  = document.createTextNode(ship["berthN"])
@@ -262,68 +295,52 @@ function getVesselByName(){
                   cell09.appendChild(input09);
 
                   var isInFavorites = vesselInFavorites(vessl_id)
-                        if(isInFavorites){
-                          var cell10  = newRow.insertCell(9);
-                          var addBtn  = document.createElement("BUTTON")
-                          addBtn.setAttribute("type", "button")
-                          addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                          addBtn.setAttribute("class", "btn btn-secondary")
-                          addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                          addBtn.setAttribute("disabled", "true")
-                          addBtn.innerHTML = "Add";
-                          cell10.appendChild(addBtn);
-                        } else {
-                          var cell10  = newRow.insertCell(9);
-                          var addBtn  = document.createElement("BUTTON")
-                          addBtn.setAttribute("type", "button")
-                          addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                          addBtn.setAttribute("class", "btn btn-primary")
-                          addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                          addBtn.innerHTML = "Add";
-                          cell10.appendChild(addBtn);
-                        }
+                  if(isInFavorites){
+                    var cell10  = newRow.insertCell(9);
+                    var addBtn  = document.createElement("BUTTON")
+                    addBtn.setAttribute("type", "button")
+                    addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                    addBtn.setAttribute("class", "btn btn-secondary")
+                    addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                    addBtn.setAttribute("disabled", "true")
+                    addBtn.innerHTML = "Add";
+                    cell10.appendChild(addBtn);
+                  } else {
+                    var cell10  = newRow.insertCell(9);
+                    var addBtn  = document.createElement("BUTTON")
+                    addBtn.setAttribute("type", "button")
+                    addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                    addBtn.setAttribute("class", "btn btn-primary")
+                    addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                    addBtn.setAttribute("data-toggle", "modal")
+                    addBtn.setAttribute("data-target", "#mainModalCenterFavourites")
+                    addBtn.innerHTML = "Add";
+                    cell10.appendChild(addBtn);
+                  }
 
-                      var isInSubscribe = vesselInSubscribe(vessl_id)
-                      if(isInSubscribe){
-                        var cell11  = newRow.insertCell(10);
-                        var subBtn  = document.createElement("BUTTON")
-                        subBtn.setAttribute("type", "button")
-                        subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                        subBtn.setAttribute("class", "btn btn-secondary")
-                        subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                        subBtn.setAttribute("disabled", "true")
-                        subBtn.innerHTML = "Sub";
-                        cell11.appendChild(subBtn);
-                      } else {
-                        var cell11  = newRow.insertCell(10);
-                        var subBtn  = document.createElement("BUTTON")
-                        subBtn.setAttribute("type", "button")
-                        subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                        subBtn.setAttribute("class", "btn btn-info")
-                        subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                        subBtn.innerHTML = "Sub";
-                        cell11.appendChild(subBtn);
-                      }
-
-                  /*
-                  var cell10  = newRow.insertCell(9);
-                  var addBtn  = document.createElement("BUTTON")
-                  addBtn.setAttribute("type", "button")
-                  addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                  addBtn.setAttribute("class", "btn btn-primary")
-                  addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                  addBtn.innerHTML = "Add";
-                  cell10.appendChild(addBtn);
-
-                  var cell11  = newRow.insertCell(10);
-                  var subBtn  = document.createElement("BUTTON")
-                  subBtn.setAttribute("type", "button")
-                  subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-                  subBtn.setAttribute("class", "btn btn-info")
-                  subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-                  subBtn.innerHTML = "Sub";
-                  cell11.appendChild(subBtn);
-                  */
+                  var isInSubscribe = vesselInSubscribe(vessl_id)
+                  if(isInSubscribe){
+                    var cell11  = newRow.insertCell(10);
+                    var subBtn  = document.createElement("BUTTON")
+                    subBtn.setAttribute("type", "button")
+                    subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                    subBtn.setAttribute("class", "btn btn-secondary")
+                    subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                    subBtn.setAttribute("disabled", "true")
+                    subBtn.innerHTML = "Sub";
+                    cell11.appendChild(subBtn);
+                  } else {
+                    var cell11  = newRow.insertCell(10);
+                    var subBtn  = document.createElement("BUTTON")
+                    subBtn.setAttribute("type", "button")
+                    subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+                    subBtn.setAttribute("class", "btn btn-info")
+                    subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+                    subBtn.setAttribute("data-toggle", "modal")
+                    subBtn.setAttribute("data-target", "#mainModalCenterSubscribe")
+                    subBtn.innerHTML = "Sub";
+                    cell11.appendChild(subBtn);
+                  }
 
                   // if degree of change is between 0 & 1 == yellow else more than == red. 
                   if(ship["degreeChange"] < 1.0 && ship["degreeChange"] > 0.0){
@@ -333,10 +350,11 @@ function getVesselByName(){
                   } // End of color check
 
                 } // End of If 
-                else{
-                  document.getElementById("displayOutputInformation").innerHTML = 'Unable to search for query: ' + searchVessel;
-                }
               } // end of for loop
+              if(!(isFound)){
+                //console.log("Not Found")
+                document.getElementById("displayOutputInformationMainPage").innerHTML = 'Unable to search for query: ' + searchVessel;
+              }
             } // end of else
         } catch(err){
           console.log("error");
@@ -355,7 +373,7 @@ function getVesseslInFavorites(){
     if (this.readyState == 4 && this.status == 200) {
       dataObj = JSON.parse(this.responseText);
       var favouritesVessels = dataObj["favouritedVessels"];
-      console.log(favouritesVessels);
+      //console.log(favouritesVessels);
       sessionStorage.setItem("vesseslInFavorites", JSON.stringify(favouritesVessels));
     } else {
       // to display error code
@@ -369,11 +387,11 @@ function getVesseslInFavorites(){
 function vesselInFavorites(check_Vessel_ID){
   var favouritesVessels = sessionStorage.getItem("vesseslInFavorites");
   favouritesVessels = JSON.parse(favouritesVessels);
-  console.log(favouritesVessels);
+  //console.log(favouritesVessels);
   for(var ship of favouritesVessels){
     var vessl_id = ship["vesselId"];
     if(check_Vessel_ID == vessl_id){
-      console.log("true")
+      //console.log("true")
       return true;
     } 
   }
@@ -389,7 +407,7 @@ function getVesseslInSubscribe(){
     if (this.readyState == 4 && this.status == 200) {
       dataObj = JSON.parse(this.responseText);
       var subscribedVessels = dataObj["subscribedVessels"];
-      console.log(subscribedVessels);
+      //console.log(subscribedVessels);
       sessionStorage.setItem("vesseslInSubscribe", JSON.stringify(subscribedVessels));
     } else {
       // to display error code
@@ -403,11 +421,11 @@ function getVesseslInSubscribe(){
 function vesselInSubscribe(check_Vessel_ID){
   var subscribedVessels = sessionStorage.getItem("vesseslInSubscribe");
   subscribedVessels = JSON.parse(subscribedVessels);
-  console.log(subscribedVessels);
+  //console.log(subscribedVessels);
   for(var ship of subscribedVessels){
     var vessl_id = ship["vesselId"];
     if(check_Vessel_ID == vessl_id){
-      console.log("true")
+      //console.log("true")
       return true;
     } 
   }

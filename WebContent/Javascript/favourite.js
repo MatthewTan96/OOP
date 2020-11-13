@@ -30,61 +30,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   function getFavouritedVessels(favouritesVessels,email){
     var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
+    console.log(favouritesVessels);
+    if(favouritesVessels.length == 0){
+      document.getElementById("displayOutputInformationFavouritePage").innerHTML = 'There are no Vessel within Favourites';
+    } else {
     for(var ship of favouritesVessels){
       var newRow = tableRef.insertRow(tableRef.rows.length);
 
-      var vessl_id  = ship["vesselId"];
-
-      /*
-      var cell01  = newRow.insertCell(0);
-      var input01  = document.createTextNode(ship["abbrVslM"])
-      cell01.appendChild(input01);
-
-      var cell02  = newRow.insertCell(1);
-      var input02  = document.createTextNode(ship["inVoyN"])
-      cell02.appendChild(input02);
-
-      var cell03  = newRow.insertCell(2);
-      var input03  = document.createTextNode(ship["outVoyN"])
-      cell03.appendChild(input03);
-
-      var cell04  = newRow.insertCell(3);
-      var input04  = document.createTextNode(ship["btrgDt"])
-      cell04.appendChild(input04);
-
-      var cell05  = newRow.insertCell(4);
-      var input05  = document.createTextNode(ship["unbthgDt"])
-      cell05.appendChild(input05);
-
-      var cell06  = newRow.insertCell(5);
-      var input06  = document.createTextNode(ship["berthN"])
-      cell06.appendChild(input06);
-
-      var cell07  = newRow.insertCell(6);
-      var input07  = document.createTextNode(ship["changeCount"])
-      cell07.appendChild(input07);
-
-      var cell08  = newRow.insertCell(7);
-      var input08  = document.createTextNode(ship["degreeChange"])
-      cell08.appendChild(input08);
-
-      var cell09  = newRow.insertCell(8);
-      var input09  = document.createTextNode(ship["firstBerthTime"])
-      cell09.appendChild(input09);
-
-      var cell10  = newRow.insertCell(9);
-      var input10  = document.createTextNode(ship["status"])
-      cell10.appendChild(input10);
-
-      var cell11  = newRow.insertCell(10);
-      var removeBtn  = document.createElement("BUTTON")
-      removeBtn.setAttribute("type", "button")
-      removeBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
-      removeBtn.setAttribute("class", "btn btn-danger")
-      removeBtn.setAttribute("onclick", "removeFromFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
-      removeBtn.innerHTML = "Remove";
-      cell11.appendChild(removeBtn);
-      */
+    var vessl_id  = ship["vesselId"];
 
      var cell01  = newRow.insertCell(0);
      var input01  = document.createTextNode(ship["abbrVslM"])
@@ -98,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
      var input03  = document.createTextNode(ship["outVoyN"])
      cell03.appendChild(input03);
 
+     /*
      var cell04  = newRow.insertCell(3);
      var input04  = document.createTextNode(ship["bthgDt"])
      cell04.appendChild(input04);
@@ -105,6 +59,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
      var cell05  = newRow.insertCell(4);
      var input05  = document.createTextNode(ship["unbthgDt"])
      cell05.appendChild(input05);
+     */
+
+    var cell04  = newRow.insertCell(3);
+    var bthDateTimeValue = ship["bthgDt"];
+    bthDateTimeValue = bthDateTimeValue.split("T");
+    var bthOutput = "Date:" + bthDateTimeValue[0] + " Time:" + bthDateTimeValue[1];
+    var input04  = document.createTextNode(bthOutput)
+    //var input04  = document.createTextNode(ship["bthgDt"])
+    cell04.appendChild(input04);
+
+    var cell05  = newRow.insertCell(4);
+    var unbthDateTimeValue = ship["unbthgDt"];
+    unbthDateTimeValue = unbthDateTimeValue.split("T");
+    var unbthOutput = "Date:" + unbthDateTimeValue[0] + " Time:" + unbthDateTimeValue[1];
+    var input05  = document.createTextNode(unbthOutput);
+    //var input05  = document.createTextNode(ship["unbthgDt"])
+    cell05.appendChild(input05);
 
      var cell06  = newRow.insertCell(5);
      var input06  = document.createTextNode(ship["berthN"])
@@ -140,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     }
   }
+}
 
 function removeFromFavourites( email, vesselName, incomingVoyage, outcomingVoyage){
 console.log("remove to Favourites");

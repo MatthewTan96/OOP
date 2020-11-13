@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   function getSubscribedVessels(subscribedVessels,email){
     var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
+    if(subscribedVessels.length == 0){
+      document.getElementById("displayOutputInformationSubscibePage").innerHTML = 'There are no Vessel within Subscibe';
+    }
     for(var ship of subscribedVessels){
       var newRow = tableRef.insertRow(tableRef.rows.length);
 
@@ -99,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var input03  = document.createTextNode(ship["outVoyN"])
       cell03.appendChild(input03);
 
+      /*
       var cell04  = newRow.insertCell(3);
       var input04  = document.createTextNode(ship["bthgDt"])
       cell04.appendChild(input04);
@@ -106,6 +110,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var cell05  = newRow.insertCell(4);
       var input05  = document.createTextNode(ship["unbthgDt"])
       cell05.appendChild(input05);
+      */
+
+     var cell04  = newRow.insertCell(3);
+     var bthDateTimeValue = ship["bthgDt"];
+     bthDateTimeValue = bthDateTimeValue.split("T");
+     var bthOutput = "Date:" + bthDateTimeValue[0] + " Time:" + bthDateTimeValue[1];
+     var input04  = document.createTextNode(bthOutput)
+     //var input04  = document.createTextNode(ship["bthgDt"])
+     cell04.appendChild(input04);
+ 
+     var cell05  = newRow.insertCell(4);
+     var unbthDateTimeValue = ship["unbthgDt"];
+     unbthDateTimeValue = unbthDateTimeValue.split("T");
+     var unbthOutput = "Date:" + unbthDateTimeValue[0] + " Time:" + unbthDateTimeValue[1];
+     var input05  = document.createTextNode(unbthOutput);
+     //var input05  = document.createTextNode(ship["unbthgDt"])
+     cell05.appendChild(input05);
 
       var cell06  = newRow.insertCell(5);
       var input06  = document.createTextNode(ship["berthN"])
