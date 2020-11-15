@@ -26,8 +26,7 @@
 
     getVesseslInFavorites();
     getVesseslInSubscribe();
-    SortVesselByDate();
-  
+    //SortVesselByDate();
   });
 
   // remove all row in the table
@@ -49,13 +48,64 @@
                       //console.log(this.responseText);
                       dataObj = JSON.parse(this.responseText);
                       //sessionStorage.setItem("allVesselData", dataObj);
-                      sessionStorage.setItem("allVesselData", JSON.stringify(dataObj));
-                      if(dataObj == []){
-                        //console.log("nothing in Database")
+
+                      // Sort Vessel by Date
+                      var vesselByDate = {};
+                      var allVesselFiltered = [];
+                      for(var ship of dataObj){
+                        var bthDateTimeValue = ship["bthgDt"];
+                        bthDateTimeValue = bthDateTimeValue.split("T");
+                        var checkDate = bthDateTimeValue[0];
+                        // If False, date is before today, which we do not want.
+                        var isAfterToday = checkIfDateBeforeToday(checkDate); 
+                        // create date as key, if the date is not in vesselByDate  
+                        if(isAfterToday){
+                          if(!(checkDate in vesselByDate)){
+                            vesselByDate[checkDate] = [];
+                            vesselByDate[checkDate].push(ship);
+                          } else {
+                            vesselByDate[checkDate].push(ship);
+                          }
+                          // Place all vessels into all Vessel key, which are also before today;
+                          if(!("allVessel" in vesselByDate)){
+                            vesselByDate["allVessel"] = [];
+                          } else {
+                            vesselByDate["allVessel"].push(ship)
+                            allVesselFiltered.push(ship);
+                          }
+                        }
+                        // end of if
+                      }
+                      console.log(vesselByDate);
+                      sessionStorage.setItem("vesselByDate", JSON.stringify(vesselByDate));
+                      sessionStorage.setItem("allVesselFiltered", JSON.stringify(allVesselFiltered));
+
+                      // Get Current Date
+                      var currentDate = "";
+                      for(var key in vesselByDate){
+                        if(key!="allVessel"){
+                          if(checkIfTodayIsCurrentDate(key)){
+                            currentDate = key;
+                          }
+                        }
+                        if(currentDate == key){
+                          $('#filterVesselBySelection').append($('<option>').val(key).text(key))
+                          $('#filterVesselBySelection').val(key);
+                        } else if (key == "allVessel") {
+                          $('#filterVesselBySelection').append($('<option>').val(key).text("All Vessels"))
+                        } else {
+                          $('#filterVesselBySelection').append($('<option>').val(key).text(key))
+                        }
+
+                      }
+                      //console.log(currentDate);
+
+                      if(vesselByDate[currentDate] == []){
                         document.getElementById("displayOutputInformationMainPage").innerHTML = 'Unable to connect to DataBase';
                       } else {
                       var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
-                      for(var ship of dataObj){
+                      //for(var ship of dataObj){
+                        for(var ship of vesselByDate[currentDate]){
                         var newRow = tableRef.insertRow(tableRef.rows.length);
 
                         var vessl_id  = ship["vesselId"];
@@ -230,7 +280,12 @@ function getVesselByName(){
               searchVessel = searchVessel.toLowerCase();
               var isFound = false;
               var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
-              for(var ship of dataObj){
+
+              var allVesselFiltered = sessionStorage.getItem("allVesselFiltered");
+              allVesselFiltered = JSON.parse(allVesselFiltered);
+
+              //for(var ship of dataObj){
+                for(var ship of allVesselFiltered){
                 var newRow = tableRef.insertRow(tableRef.rows.length);
 
                 var SelectByVesselName = ship["abbrVslM"];
@@ -437,6 +492,7 @@ function vesselInSubscribe(check_Vessel_ID){
 
 // -- FUNCTION -- //
 // display vessel by current date and create input selection. 
+/*
 function SortVesselByDate(){
   var allVesselData = sessionStorage.getItem("allVesselData");
   allVesselData = JSON.parse(allVesselData);
@@ -466,6 +522,7 @@ function SortVesselByDate(){
   }
   console.log(vesselByDate);
 }
+*/
 
 // -- FUNCTION -- //
 // Function filters out date that is before current date (Today). 
@@ -485,24 +542,151 @@ function checkIfDateBeforeToday(date){
   //var postDateTime = " " + month + " " + day + ", " + year + " " + hour + ":" + min + ":" + sec + "";
   var inputDate = " " + month + " " + day + ", " + year;
   var checkinputDate = new Date(inputDate).getTime();
-  //console.log("Checked Date: " + checkinputDate);
+
   var now = new Date().getTime();
   var timeRemaining =  checkinputDate - now;
-  /*
-  console.log("Today's Date");
-  console.log(inputDate);
-  console.log(checkinputDate);
-  console.log(now);
-  console.log(timeRemaining);
-  console.log(" --- ");
-  */
+
   if (timeRemaining < -86400000) {
-    //console.log("false")
     return false;
   } else {
-    //console.log("true")
     return true;
   }
   return false;
 }
 // -- END OF FUNCTION --//
+
+// -- FUNCTION -- //
+// Function check the objects keys if the date is current date. 
+function checkIfTodayIsCurrentDate(key){
+  var year = key.split("-")[0];
+  var month = key.split("-")[1];
+  var day = key.split("-")[2];
+
+  var inputDate = " " + month + " " + day + ", " + year;
+  var checkinputDate = new Date(inputDate).getTime();
+
+  var now = new Date().getTime();
+  var timeRemaining =  checkinputDate - now;
+
+  if (timeRemaining < 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+// -- END OF FUNCTION --//
+
+function filterVesselByInputSelection(){
+  clearTable();
+  var email = sessionStorage.getItem("email");
+  var selectedDate = document.getElementById('filterVesselBySelection').value;
+  var vesselByDate = sessionStorage.getItem("vesselByDate");
+  vesselByDate = JSON.parse(vesselByDate);
+  //console.log(selectedDate);
+  //console.log(vesselByDate);
+  //console.log(vesselByDate[selectedDate]);
+  var tableRef = document.getElementById('displayTable').getElementsByTagName('tbody')[0];
+  for(var ship of vesselByDate[selectedDate]){
+    var newRow = tableRef.insertRow(tableRef.rows.length);
+
+    var vessl_id  = ship["vesselId"];
+    
+    var cell01  = newRow.insertCell(0);
+    var input01  = document.createTextNode(ship["abbrVslM"])
+    cell01.appendChild(input01);
+
+    var cell02  = newRow.insertCell(1);
+    var input02  = document.createTextNode(ship["inVoyN"])
+    cell02.appendChild(input02);
+
+    var cell03  = newRow.insertCell(2);
+    var input03  = document.createTextNode(ship["outVoyN"])
+    cell03.appendChild(input03);
+
+    var cell04  = newRow.insertCell(3);
+    var bthDateTimeValue = ship["bthgDt"];
+    bthDateTimeValue = bthDateTimeValue.split("T");
+    var bthOutput = "Date:" + bthDateTimeValue[0] + " Time:" + bthDateTimeValue[1];
+    var input04  = document.createTextNode(bthOutput)
+    //var input04  = document.createTextNode(ship["bthgDt"])
+    cell04.appendChild(input04);
+
+    var cell05  = newRow.insertCell(4);
+    var unbthDateTimeValue = ship["unbthgDt"];
+    unbthDateTimeValue = unbthDateTimeValue.split("T");
+    var unbthOutput = "Date:" + unbthDateTimeValue[0] + " Time:" + unbthDateTimeValue[1];
+    var input05  = document.createTextNode(unbthOutput);
+    //var input05  = document.createTextNode(ship["unbthgDt"])
+    cell05.appendChild(input05);
+
+    var cell06  = newRow.insertCell(5);
+    var input06  = document.createTextNode(ship["berthN"])
+    cell06.appendChild(input06);
+
+    var cell07  = newRow.insertCell(6);
+    var input07  = document.createTextNode(ship["status"])
+    cell07.appendChild(input07);
+
+    var cell08  = newRow.insertCell(7);
+    var input08  = document.createTextNode(ship["changeCount"])
+    cell08.appendChild(input08);
+
+    var cell09  = newRow.insertCell(8);
+    var input09  = document.createTextNode(ship["degreeChange"])
+    cell09.appendChild(input09);
+
+    var isInFavorites = vesselInFavorites(vessl_id)
+    if(isInFavorites){
+      var cell10  = newRow.insertCell(9);
+      var addBtn  = document.createElement("BUTTON")
+      addBtn.setAttribute("type", "button")
+      addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+      addBtn.setAttribute("class", "btn btn-secondary")
+      addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+      addBtn.setAttribute("disabled", "true")
+      addBtn.innerHTML = "Add";
+      cell10.appendChild(addBtn);
+    } else {
+      var cell10  = newRow.insertCell(9);
+      var addBtn  = document.createElement("BUTTON")
+      addBtn.setAttribute("type", "button")
+      addBtn.setAttribute("id", "addBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+      addBtn.setAttribute("class", "btn btn-primary")
+      addBtn.setAttribute("onclick", "addToFavourites('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+      addBtn.setAttribute("data-toggle", "modal")
+      addBtn.setAttribute("data-target", "#mainModalCenterFavourites")
+      addBtn.innerHTML = "Add";
+      cell10.appendChild(addBtn);
+    }
+
+  var isInSubscribe = vesselInSubscribe(vessl_id)
+  if(isInSubscribe){
+    var cell11  = newRow.insertCell(10);
+    var subBtn  = document.createElement("BUTTON")
+    subBtn.setAttribute("type", "button")
+    subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+    subBtn.setAttribute("class", "btn btn-secondary")
+    subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+    subBtn.setAttribute("disabled", "true")
+    subBtn.innerHTML = "Sub";
+    cell11.appendChild(subBtn);
+  } else {
+    var cell11  = newRow.insertCell(10);
+    var subBtn  = document.createElement("BUTTON")
+    subBtn.setAttribute("type", "button")
+    subBtn.setAttribute("id", "subBtn-"+ship["vesselId"]+"-"+ship["abbrVslM"]+"-"+ship["inVoyN"]+"-"+ship["outVoyN"])
+    subBtn.setAttribute("class", "btn btn-info")
+    subBtn.setAttribute("onclick", "addToSubscribe('"+ email +"','"+ ship["abbrVslM"] +"','"+ ship["inVoyN"] +"','"+ship["outVoyN"]+"')")
+    subBtn.setAttribute("data-toggle", "modal")
+    subBtn.setAttribute("data-target", "#mainModalCenterSubscribe")
+    subBtn.innerHTML = "Sub";
+    cell11.appendChild(subBtn);
+  }
+    // if degree of change is between 0 & 1 == yellow else more than == red. 
+    if(ship["degreeChange"] < 1.0 && ship["degreeChange"] > 0.0){
+      newRow.setAttribute("class", "table-warning")
+    } else if(ship["degreeChange"] > 1.0){
+      newRow.setAttribute("class", "table-danger")
+    }
+  }
+}
