@@ -25,7 +25,8 @@
     request.send();
 
     getVesseslInFavorites();
-    getVesseslInSubscribe()
+    getVesseslInSubscribe();
+    SortVesselByDate();
   
   });
 
@@ -48,6 +49,7 @@
                       //console.log(this.responseText);
                       dataObj = JSON.parse(this.responseText);
                       //sessionStorage.setItem("allVesselData", dataObj);
+                      sessionStorage.setItem("allVesselData", JSON.stringify(dataObj));
                       if(dataObj == []){
                         //console.log("nothing in Database")
                         document.getElementById("displayOutputInformationMainPage").innerHTML = 'Unable to connect to DataBase';
@@ -433,6 +435,74 @@ function vesselInSubscribe(check_Vessel_ID){
 }
 // -- END OF FUNCTION --//
 
+// -- FUNCTION -- //
+// display vessel by current date and create input selection. 
+function SortVesselByDate(){
+  var allVesselData = sessionStorage.getItem("allVesselData");
+  allVesselData = JSON.parse(allVesselData);
+  //console.log(allVesselData);
+  var vesselByDate = {};
+  for(var ship of allVesselData){
+    var bthDateTimeValue = ship["bthgDt"];
+    bthDateTimeValue = bthDateTimeValue.split("T");
+    var checkDate = bthDateTimeValue[0];
+    var isAfterToday = checkIfDateBeforeToday(checkDate); // If False, date is before today, which we do not want.
+    // create date as key, if the date is not in vesselByDate  
+    if(isAfterToday){
+      if(!(checkDate in vesselByDate)){
+        vesselByDate[checkDate] = [];
+        vesselByDate[checkDate].push(ship);
+      } else {
+        vesselByDate[checkDate].push(ship);
+      }
+      // Place all vessels into all Vessel key, which are also before today;
+      if(!("allVessel" in vesselByDate)){
+        vesselByDate["allVessel"] = [];
+      } else {
+        vesselByDate["allVessel"].push(ship)
+      }
+    }
+    // end of if
+  }
+  console.log(vesselByDate);
+}
 
-
-
+// -- FUNCTION -- //
+// Function filters out date that is before current date (Today). 
+function checkIfDateBeforeToday(date){
+  //console.log(date);
+  //console.log(time);
+  // date
+  var year = date.split("-")[0];
+  var month = date.split("-")[1];
+  var day = date.split("-")[2];
+  // time
+  /*
+  var hour = time.split(":")[0];
+  var min = time.split(":")[1];
+  var sec = "00";
+  */
+  //var postDateTime = " " + month + " " + day + ", " + year + " " + hour + ":" + min + ":" + sec + "";
+  var inputDate = " " + month + " " + day + ", " + year;
+  var checkinputDate = new Date(inputDate).getTime();
+  //console.log("Checked Date: " + checkinputDate);
+  var now = new Date().getTime();
+  var timeRemaining =  checkinputDate - now;
+  /*
+  console.log("Today's Date");
+  console.log(inputDate);
+  console.log(checkinputDate);
+  console.log(now);
+  console.log(timeRemaining);
+  console.log(" --- ");
+  */
+  if (timeRemaining < -86400000) {
+    //console.log("false")
+    return false;
+  } else {
+    //console.log("true")
+    return true;
+  }
+  return false;
+}
+// -- END OF FUNCTION --//
