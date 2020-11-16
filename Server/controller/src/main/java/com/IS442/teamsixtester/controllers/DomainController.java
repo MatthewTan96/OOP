@@ -16,11 +16,13 @@ public class DomainController {
         this.domainService = domainService;
     }
 
+    @CrossOrigin
     @PostMapping(value="/postDomain")
     public ResponseEntity domainPost(@RequestBody Domain domain) {
         return ResponseEntity.ok(domainService.addDomain(domain));
     }
 
+    @CrossOrigin
     @GetMapping(value="/getDomain")
     public ResponseEntity getDomain(@RequestBody Domain domain) {
         return ResponseEntity.ok(domainService.getDomain(domain));
