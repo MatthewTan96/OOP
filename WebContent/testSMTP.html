@@ -1,10 +1,10 @@
 <!-- Adding SMTP Javascript link -->
-<script src="https://smtpjs.com/v3/smtp.js"></script>
+<!-- <script src="https://smtpjs.com/v3/smtp.js"></script> -->
 
 <script>
     // Find some way to send the email lmao 
-	var url = "localhost:8000/sendVerification";
-    var params = "email=matthewiantan@gmail.com&code=12345";
+	var url = "http://localhost:8080/sendVerification";
+    var params = "email=matthewiantan@gmail.com&code=123456";
     var http = new XMLHttpRequest();
 
     http.open("GET", url+"?"+params, true);
@@ -15,5 +15,5 @@
         }
     }
     http.send(null);
-        
+    
 </script>

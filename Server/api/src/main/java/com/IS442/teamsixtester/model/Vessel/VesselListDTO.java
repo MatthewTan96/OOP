@@ -8,7 +8,6 @@ public class VesselListDTO {
     private List<VesselDTO> vessels;
 
     public VesselListDTO() {
-
     }
 
     public VesselListDTO(List<VesselDTO> listVesselDTO) {

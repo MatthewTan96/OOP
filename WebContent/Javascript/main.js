@@ -45,12 +45,12 @@
           request.onreadystatechange = function(){
               if (this.readyState == 4 && this.status == 200) {
                   try { 
-                      //console.log(this.responseText);
+                      
                       dataObj = JSON.parse(this.responseText);
-                      //sessionStorage.setItem("allVesselData", dataObj);
-
-                      // Sort Vessel by Date
-                      var vesselByDate = {};
+                      
+                      // === SORT BY VESSEL INCOMMING DATE === //
+                      var vesselByDate = {}; // Sort Vessel by incomming date (Default)
+                      // Sort Vessel by incomming date (Default)
                       var allVesselFiltered = [];
                       for(var ship of dataObj){
                         var bthDateTimeValue = ship["bthgDt"];
@@ -74,9 +74,8 @@
                             allVesselFiltered.push(ship);
                           }
                         }
-                        // end of if
                       }
-                      console.log(vesselByDate);
+                      
                       sessionStorage.setItem("vesselByDate", JSON.stringify(vesselByDate));
                       sessionStorage.setItem("allVesselFiltered", JSON.stringify(allVesselFiltered));
 
@@ -97,9 +96,8 @@
                         } else {
                           $('#filterVesselBySelection').append($('<option>').val(key).text(key))
                         }
-
                       }
-                      //console.log(currentDate);
+                      $('#filterVesselBySelection').append($('<option>').val("").text("-"))
 
                       if(vesselByDate[currentDate] == []){
                         document.getElementById("displayOutputInformationMainPage").innerHTML = 'Unable to connect to DataBase';
@@ -108,7 +106,11 @@
                           displayResultsToTable(email, ship);
                         } // end of for loop
                         document.getElementById("displayOutputInformationMainPage").innerHTML = "";
-                    } // end of else
+                      } // end of else
+                      // === END: SORT BY VESSEL INCOMMING DATE === //
+
+                      filterByOutgoingVessels();
+
                   } catch(err){
                       console.log("error");
                   }
@@ -118,6 +120,47 @@
       request.send();  
   }
   // End of get all ship function 
+
+function filterByOutgoingVessels(){
+
+    var dataObj = sessionStorage.getItem("allVesselFiltered");
+    dataObj = JSON.parse(dataObj);
+    console.log(dataObj);
+    vesselByOutgoingDate = {};
+    for(var ship of dataObj){
+      var unbthDateTimeValue = ship["unbthgDt"];
+      unbthDateTimeValue = unbthDateTimeValue.split("T");
+      var checkDate = unbthDateTimeValue[0];
+      if(!(checkDate in vesselByOutgoingDate)){
+        vesselByOutgoingDate[checkDate] = [];
+        vesselByOutgoingDate[checkDate].push(ship);
+      } else {
+        vesselByOutgoingDate[checkDate].push(ship);
+      }
+      // Place all vessels into all Vessel key;
+      if(!("allVessel" in vesselByOutgoingDate)){
+        vesselByOutgoingDate["allVessel"] = [];
+      } else {
+        vesselByOutgoingDate["allVessel"].push(ship)
+      }
+    }
+
+    sessionStorage.setItem("vesselByOutgoingDate", JSON.stringify(vesselByOutgoingDate));
+
+    // Get Current Date
+    for(var key in vesselByOutgoingDate){
+      if(key!="allVessel"){
+        $('#filterVesselByOutgoing').append($('<option>').val(key).text(key))
+      } else{
+        $('#filterVesselByOutgoing').append($('<option>').val(key).text("ALL VESSELS"))
+      }
+    }
+    $('#filterVesselByOutgoing').append($('<option>').val("").text("-"))
+    $('#filterVesselByOutgoing').val("");
+}
+
+
+
 
 function addToFavourites( email, vesselName, incomingVoyage, outcomingVoyage){
   console.log("Add to Favourites");
@@ -321,16 +364,45 @@ function checkIfTodayIsCurrentDate(key){
 // -- FUNCTION -- //
 // Function: filter Vessels by input selection options from table. 
 function filterVesselByInputSelection(){
-  clearTable();
+  document.getElementById("vesselSearch").value = "";
   var email = sessionStorage.getItem("email");
   var selectedDate = document.getElementById('filterVesselBySelection').value;
-  var vesselByDate = sessionStorage.getItem("vesselByDate");
-  vesselByDate = JSON.parse(vesselByDate);
+  if(selectedDate!=""){
+    clearTable();
+    var vesselByDate = sessionStorage.getItem("vesselByDate");
+    vesselByDate = JSON.parse(vesselByDate);
 
-  for(var ship of vesselByDate[selectedDate]){
-    displayResultsToTable(email, ship);
+    console.log(vesselByDate[selectedDate]);
+  
+    for(var ship of vesselByDate[selectedDate]){
+      displayResultsToTable(email, ship);
+    }
+    document.getElementById("displayOutputInformationMainPage").innerHTML = "";
+    $('#filterVesselByOutgoing').val("");
+    
   }
-  document.getElementById("displayOutputInformationMainPage").innerHTML = "";
+}
+// -- END OF FUNCTION --//
+
+
+// -- FUNCTION -- //
+// Function: filter Vessels by input selection options from table. 
+function filterVesselByOutgoingInputSelection(){
+  document.getElementById("vesselSearch").value = "";
+  var email = sessionStorage.getItem("email");
+  var selectedDate = document.getElementById('filterVesselByOutgoing').value;
+  if(selectedDate!=""){
+    clearTable();
+    var vesselByOutgoingDate = sessionStorage.getItem("vesselByOutgoingDate");
+    vesselByOutgoingDate = JSON.parse(vesselByOutgoingDate);
+  
+    for(var ship of vesselByOutgoingDate[selectedDate]){
+      displayResultsToTable(email, ship);
+    }
+    document.getElementById("displayOutputInformationMainPage").innerHTML = "";
+    $('#filterVesselBySelection').val("");
+    document.getElementById("vesselSearch").innerHTML = "";
+  }
 }
 // -- END OF FUNCTION --//
 
@@ -449,3 +521,45 @@ function displayResultsToTable(email,ship){
 
 }
 // -- END OF FUNCTION --//
+
+
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("displayTable");
+  switching = true;
+  
+  dir = "asc";
+
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < (rows.length - 1); i++) {
+      shouldSwitch = false;
+
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      switchcount ++;
+    } else {
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
