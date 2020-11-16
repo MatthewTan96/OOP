@@ -364,7 +364,7 @@ function checkIfTodayIsCurrentDate(key){
 // -- FUNCTION -- //
 // Function: filter Vessels by input selection options from table. 
 function filterVesselByInputSelection(){
-  
+  document.getElementById("vesselSearch").value = "";
   var email = sessionStorage.getItem("email");
   var selectedDate = document.getElementById('filterVesselBySelection').value;
   if(selectedDate!=""){
@@ -379,6 +379,7 @@ function filterVesselByInputSelection(){
     }
     document.getElementById("displayOutputInformationMainPage").innerHTML = "";
     $('#filterVesselByOutgoing').val("");
+    
   }
 }
 // -- END OF FUNCTION --//
@@ -387,7 +388,7 @@ function filterVesselByInputSelection(){
 // -- FUNCTION -- //
 // Function: filter Vessels by input selection options from table. 
 function filterVesselByOutgoingInputSelection(){
-  
+  document.getElementById("vesselSearch").value = "";
   var email = sessionStorage.getItem("email");
   var selectedDate = document.getElementById('filterVesselByOutgoing').value;
   if(selectedDate!=""){
@@ -400,6 +401,7 @@ function filterVesselByOutgoingInputSelection(){
     }
     document.getElementById("displayOutputInformationMainPage").innerHTML = "";
     $('#filterVesselBySelection').val("");
+    document.getElementById("vesselSearch").innerHTML = "";
   }
 }
 // -- END OF FUNCTION --//
