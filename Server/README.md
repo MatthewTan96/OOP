@@ -1,6 +1,5 @@
-Not using Flyway for migrations anymore, JPA does the table creation automatically
-
-Just pull my branch and open the Server/pom.xml as a project in IntelliJ and it should resolve all the dependencies for you. Run the TeamsixtesterApplication src file to start the programme.
+Swagger-UI
+> http://localhost:8080/swagger-ui/
 
 Some notes:
 
