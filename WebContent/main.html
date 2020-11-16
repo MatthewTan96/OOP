@@ -65,6 +65,8 @@
           <!-- dropdown -->
       
         <div class="form-row">
+
+          <!-- First Row -->
           
           <div class="form-group col-md-4">
             <div class="input-group input-group-lg">
@@ -87,19 +89,41 @@
             </div>
           </div>
 
-          <div class="form-group col-md-3">
-            <select class="form-control form-control-lg inline" id="filterVesselBySelection">
-              <!-- Empty -->
-            </select>
+      </div>
+
+      <!-- Second Row -->
+      <div class="form-row">
+
+        
+      <!-- Filter By Incomming-->
+      <div class="form-group col-md-2">
+          <select class="form-control form-control-lg inline" id="filterVesselBySelection">
+            <!-- Empty -->
+          </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <div>
+          <button type="button" class="btn btn-outline-secondary btn-lg" onclick="filterVesselByInputSelection()"> Filter By Berthing </button> 
         </div>
-
-        <div class="form-group col-md-3">
-          <div>
-            <button type="button" class="btn btn-outline-secondary btn-lg" onclick="filterVesselByInputSelection()"> Filter </button> 
-          </div>
+      </div> 
+      <!-- END -->
+        
+        
+      <!-- Filter By Departure-->
+      <div class="form-group col-md-2">
+          <select class="form-control form-control-lg inline" id="filterVesselByOutgoing">
+            <!-- Empty -->
+          </select>
+      </div>
+      <div class="form-group col-md-2">
+        <div>
+          <button type="button" class="btn btn-outline-secondary btn-lg" onclick="filterVesselByOutgoingInputSelection()"> Filter By Departure </button> 
         </div>
+      </div>
+      <!-- END -->
 
-
+      <!-- End of Second Row-->
       </div>
 
           <!-- close dropdown -->
@@ -124,15 +148,15 @@
             <th scope="col"> Favourites </th>
             <th scope="col"> Subscript </th>
             -->
-            <th scope="col"> Vessel </th> <!-- abbrVslM -->
-            <th scope="col"> Incoming Voyage Number </th> <!-- inVoyN -->
-            <th scope="col"> Outgoing voyage number </th> <!-- outVoyN -->
-            <th scope="col"> Berthing Time </th> <!-- bthgDt -->
-            <th scope="col"> Departure time </th> <!-- unbthgDt -->
-            <th scope="col"> Berth Number </th> <!-- berthN -->
-            <th scope="col"> Status </th> <!-- status -->
-            <th scope="col"> Change Count </th> <!-- changeCount -->
-            <th scope="col"> Degree Change </th> <!-- degreeChange -->
+            <th scope="col" onclick="sortTable(0)"> Vessel </th> <!-- abbrVslM -->
+            <th scope="col" onclick="sortTable(1)"> Incoming Voyage Number </th> <!-- inVoyN -->
+            <th scope="col" onclick="sortTable(2)"> Outgoing voyage number </th> <!-- outVoyN -->
+            <th scope="col" onclick="sortTable(3)"> Berthing Time </th> <!-- bthgDt -->
+            <th scope="col" onclick="sortTable(4)"> Departure time </th> <!-- unbthgDt -->
+            <th scope="col" onclick="sortTable(5)"> Berth Number </th> <!-- berthN -->
+            <th scope="col" onclick="sortTable(6)"> Status </th> <!-- status -->
+            <th scope="col" onclick="sortTable(7)"> Change Count </th> <!-- changeCount -->
+            <th scope="col" onclick="sortTable(8)"> Degree Change </th> <!-- degreeChange -->
             <th scope="col"> Favourites </th>
             <th scope="col"> Subscript </th>
           </tr>
