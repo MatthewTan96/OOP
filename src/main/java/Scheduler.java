@@ -16,7 +16,7 @@ import java.util.*;
 
 public class Scheduler {
 
-    public static void sendMessage(String apiKey) throws MalformedURLException, IOException{
+    public static void sendMessageWeek(String apiKey) throws MalformedURLException, IOException{
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime today = LocalDateTime.now();
         LocalDateTime sixDaysLater = today.plusDays(6);
@@ -40,7 +40,31 @@ public class Scheduler {
             e.printStackTrace();
         }
     }
-    
+
+    public static void sendMessageToday(String apiKey) throws MalformedURLException, IOException{
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime today = LocalDateTime.now();
+        // LocalDateTime sixDaysLater = today.plusDays(6);
+        // Getting rid of the time 
+        String nowString = dtf.format(today);
+        // String sixDaysLaterString = dtf.format(sixDaysLater);
+        System.out.println(nowString);
+        // System.out.println(sixDaysLaterString);
+
+        String JsonMessage = "{\"dateFrom\":\"" + nowString +"\" , \"dateTo\":\""+nowString+"\"}";
+        System.out.println(JsonMessage);
+
+        // Actual execution 
+        try {
+            JsonArray results = PullFromAPI.sendJson(JsonMessage,apiKey);
+            // Sending to database 
+            PullFromAPI.SendtoDatabase(results);
+        } catch (final MalformedURLException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
     
     public static void main(final String[] args) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
@@ -62,7 +86,7 @@ public class Scheduler {
 
             if (runOnce){
                 try{
-                    sendMessage(apiKey);
+                    sendMessageToday(apiKey);
                 }catch (final MalformedURLException e) {
                     e.printStackTrace();
                 } catch (final IOException e) {
@@ -72,40 +96,48 @@ public class Scheduler {
                 runOnce = false; 
             }
 
-            // If the interval is put at 0, it goes into default mode and runs every hour 
-            if(interval == 0){
-
-                System.out.println("API call time interval set to default mode");
-
-                // Today variable will be the time it is first called. Extract the hour 
-                // Check if there is a change in the hour 
-                
-                if (dtf.format(timeLastTriggered.plusHours(1)).equals(dtf.format(now))){
-                    timeLastTriggered = now;
-                    try{
-                        sendMessage(apiKey);
-                    }catch (final MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (final IOException e) {
-                        e.printStackTrace();
-                    }
+            // By default, API called every hour regardless 
+            // This will call the vessels for the current day 
+            // Today variable will be the time it is first called. Extract the hour 
+            // Check if there is a change in the hour 
+            if (now.getHour() != timeLastTriggered.getHour()){
+                try{
+                    sendMessageToday(apiKey);
+                }catch (final MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (final IOException e) {
+                    e.printStackTrace();
                 }
+            }
 
-            } else {
+            // // By default, API called every hour regardless 
+            // This will call the vessels for the current Week 
+            // Today variable will be the time it is first called. Extract the day 
+            // Check if there is a change in the day 
 
-                System.out.println(dtf.format(timeLastTriggered.plusMinutes(interval)));
-                System.out.println(dtf.format(now));
-                
-                if (dtf.format(timeLastTriggered.plusMinutes(interval)).equals(dtf.format(now))){
-                    System.out.println("works");
-                    timeLastTriggered = now;
-                    try{
-                        sendMessage(apiKey);
-                    }catch (final MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (final IOException e) {
-                        e.printStackTrace();
-                    }
+            if (now.getDayOfMonth() != timeLastTriggered.getDayOfMonth()){
+                try{
+                    sendMessageWeek(apiKey);
+                }catch (final MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Calling based on the interval 
+            System.out.println(dtf.format(timeLastTriggered.plusMinutes(interval)));
+            System.out.println(dtf.format(now));
+            
+            if (dtf.format(timeLastTriggered.plusMinutes(interval)).equals(dtf.format(now))){
+                // System.out.println("works");
+                timeLastTriggered = now;
+                try{
+                    sendMessageToday(apiKey);
+                }catch (final MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (final IOException e) {
+                    e.printStackTrace();
                 }
             }
 
