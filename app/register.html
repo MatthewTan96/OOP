@@ -103,7 +103,10 @@
                     alert("Account has been created!");
                     window.location.replace("index.html");
             } else {
-                alert("Error. Account already exists")
+                if (http.status == 400){
+                    alert("Error. Account already exists");
+                    return;
+                }
             }
                 return;
         }
