@@ -1,1 +1,1 @@
-javac -d target/classes -cp src;lib/*; src/main/java/Scheduler.java
+javac -d target/classes -cp src:lib/* src/main/java/Scheduler.java

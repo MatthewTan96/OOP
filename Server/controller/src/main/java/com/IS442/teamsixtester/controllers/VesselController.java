@@ -9,6 +9,7 @@ import com.IS442.teamsixtester.model.Vessel.VesselListDTO;
 import com.IS442.teamsixtester.model.Vessel.VesselQueryDTO;
 import com.IS442.teamsixtester.services.VesselService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -45,7 +47,7 @@ public class VesselController implements VesselAPI {
 
         if (checkIfExist1 != null) {
             Vessel newVessel = vesselService.updateVessel(checkIfExist1, vesselDTO);
-            Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
+//            Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
 
 //            for (Account account : AccountsSubscribed) {
 //                VesselTracker.addVessel(account.getEmail(), newVessel);
@@ -61,12 +63,14 @@ public class VesselController implements VesselAPI {
 
     @PostMapping(value = "/bulkUpdate")
     public ResponseEntity bulkUpdateVessel(
-            @Valid @RequestBody VesselListDTO vesselListDTO) {
+            @Valid @RequestBody String json) {
         try{
-            vesselService.bulkUpdate(vesselListDTO);
+            vesselService.bulkUpdate(json);
         }
-        catch (MessagingException e ){
-            return ResponseEntity.badRequest().body("Bad request");
+        catch (MessagingException e){
+            return ResponseEntity.badRequest().body("Messaging Exception Error");
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body("JsonProcessingError");
         }
 
         return ResponseEntity.ok("OK");
@@ -138,70 +142,6 @@ public class VesselController implements VesselAPI {
         return null;
     }
 
-//    @PostMapping("/sendEmail") //send email
-//    public ResponseEntity<?> sendEmail() throws MessagingException {
-//
-//        MimeMessage message = mailSender.createMimeMessage();
-//        MimeMessageHelper helper = new MimeMessageHelper(message);
-//
-//        //get the email of the user
-//        for (String email: VesselTracker.getUserAndSubscribedVessels().keySet()){
-//            helper.setTo(email);
-//            String mailContent = "<html>\n" +
-//                    "<head>\n" +
-//                    "<style>\n" +
-//                    "table {\n" +
-//                    "  font-family: arial, sans-serif;\n" +
-//                    "  border-collapse: collapse;\n" +
-//                    "  width: 100%;\n" +
-//                    "}\n" +
-//                    "\n" +
-//                    "td, th {\n" +
-//                    "  border: 1px solid #dddddd;\n" +
-//                    "  text-align: left;\n" +
-//                    "  padding: 8px;\n" +
-//                    "}\n" +
-//                    "\n" +
-//                    "tr:nth-child(even) {\n" +
-//                    "  background-color: #77c3ec;\n" +
-//                    "}\n" +
-//                    "</style>\n" +
-//                    "</head>\n" +
-//                    "<body>\n" +
-//                    "\n" +
-//                    "<h2>Vessel Berthing Time Change Notification</h2>\n" +
-//                    "\n" +
-//                    "<h3> Dear user, please note that there is the changes to the berthing time for the following vessels you have subscribed to.</h3> \n" +
-//                    "<table>\n" +
-//                    "  <tr>\n" +
-//                    "    <th>Vessel Short Name</th>\n" +
-//                    "    <th>Previous Berthing Time</th>\n" +
-//                    "    <th>New Berthing Time</th>\n" +
-//                    "  </tr>" ;
-//
-//            // get all vessels subscribed
-//            for (Vessel s : VesselTracker.getUserAndSubscribedVessels().get(email)) {
-//                mailContent += "<tr>\n" +
-//                        "    <td>" + s.getAbbrVslM()  +"</td>\n" +
-//                        "    <td>" + s.getFirstBerthTime() +
-//                        "    <td>" + s.getBthgDt() +
-//                        "  </tr>";
-//            }
-//
-//            mailContent += "</table>\n" +
-//                    "\n" +
-//                    "</body>\n" +
-//                    "</html>\n";
-//
-//            helper.setText(mailContent,true);
-//            helper.setSubject("PSA - Vessel Changes Notification");
-//            mailSender.send(message);
 
-//        }
-//
-//        VesselTracker.getUserAndSubscribedVessels().clear();
-//
-//        return ResponseEntity.ok(VesselTracker.getUserAndSubscribedVessels().asMap());
-//    }
 
 }

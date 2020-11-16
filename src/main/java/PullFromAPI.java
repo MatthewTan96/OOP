@@ -73,8 +73,6 @@ public class PullFromAPI {
         //     e.printStackTrace();
         // }
         
-
-        //System.out.println(results.size());
         return results;
     }
 
