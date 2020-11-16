@@ -32,18 +32,18 @@
         var email = sessionStorage.getItem("email");
         console.log(email);
 
-        Email.send({
-            Host: "smtp.gmail.com",
-            Username : "teamsixoop@gmail.com",
-            Password : "thisist6",
-            To : email,
-            From : "teamsixoop@gmail.com",
-            Subject : "OOP Project Verification Code",
-            Body : verificationCode,
-        })
-        .then(function(message){
-            alert("mail sent successfully")
-        });
+        var url = "http://localhost:8080/sendVerification";
+        var params = "email=" + email +"&code=" + verificationCode;
+        var http = new XMLHttpRequest();
+
+        http.open("GET", url+"?"+params, true);
+        http.onreadystatechange = function()
+        {
+            if(http.readyState == 4 && http.status == 200) {
+                alert(http.responseText);
+            }
+        }
+        http.send(null);
 
     }
 
@@ -112,8 +112,8 @@
 
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-          <h1 class="display-4">MVJS Project Placeholder</h1>
-          <p class="lead">Motto or whatever</p>
+          <h1 class="display-4">G1T6 OOP Project UI</h1>
+          <p class="lead">by Matthew, Sean, Jing Yi & Vittorio</p>
 
         </br>
         </br>
