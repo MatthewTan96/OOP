@@ -47,7 +47,7 @@ public class VesselController implements VesselAPI {
 
         if (checkIfExist1 != null) {
             Vessel newVessel = vesselService.updateVessel(checkIfExist1, vesselDTO);
-            Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
+//            Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
 
 //            for (Account account : AccountsSubscribed) {
 //                VesselTracker.addVessel(account.getEmail(), newVessel);
@@ -69,11 +69,8 @@ public class VesselController implements VesselAPI {
         }
         catch (MessagingException e){
             return ResponseEntity.badRequest().body("Messaging Exception Error");
-        }
-        catch (ParseException js){
-            return ResponseEntity.badRequest().body("JSON exception");
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            return ResponseEntity.badRequest().body("JsonProcessingError");
         }
 
         return ResponseEntity.ok("OK");

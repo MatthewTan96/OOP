@@ -69,9 +69,9 @@ public class VesselService {
         return vesselDao.deleteVessel(vessel);
     }
 
-    public void bulkUpdate(String json) throws MessagingException, ParseException, JsonProcessingException {
+    public void bulkUpdate(String json) throws MessagingException, JsonProcessingException {
         JSONObject jsonObject = new JSONObject(json);
-        JSONArray jsonArray = jsonObject.getJSONArray("Vessels");
+        JSONArray jsonArray = jsonObject.getJSONArray("results");
         List<VesselDTO> list = new ArrayList<VesselDTO>();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -104,7 +104,7 @@ public class VesselService {
                 addVessel(vesselDTO.toTrueClass());
             }
         }
-        
+
 
         //email
         if (vesselTracker.getUserAndSubscribedVessels().size() != 0) {
@@ -142,16 +142,16 @@ public class VesselService {
                         "<table>\n" +
                         "  <tr>\n" +
                         "    <th>Vessel Short Name</th>\n" +
-                        "    <th>Previous Berthing Time</th>\n" +
                         "    <th>New Berthing Time</th>\n" +
+                        "    <th>New Departure Time</th>\n" +
                         "  </tr>";
 
                 // get all vessels subscribed
                 for (Vessel s : vesselTracker.getUserAndSubscribedVessels().get(email)) {
                     mailContent += "<tr>\n" +
                             "    <td>" + s.getAbbrVslM() + "</td>\n" +
-                            "    <td>" + s.getFirstBerthTime() +
                             "    <td>" + s.getBthgDt() +
+                            "    <td>" + s.getUnbthgDt() +
                             "  </tr>";
                 }
 
