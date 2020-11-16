@@ -1,1 +1,1 @@
-javac -d target/classes -cp src;lib/* src/main/java/PullfromApi.java src/main/java/Initializer.java
+javac -d target/classes -cp src;lib/* src/main/java/Initializer.java

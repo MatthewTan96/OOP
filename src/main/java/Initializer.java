@@ -1,10 +1,11 @@
 package main.java;
 import main.java.*;
-import java.util.Scanner;
+// import java.util.Scanner;
 import java.lang.Thread;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;  
 import com.google.gson.*;
+import java.io.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +16,103 @@ import java.net.URL;
 import java.util.*;
 
 public class Initializer {
+    
+    public static String sendJson(final String json, final String apiKey) throws MalformedURLException, IOException {
+        String targeturl = "https://api.pntestbox.com/vsspp/pp/bizfn/berthingSchedule/retrieveByBerthingDate/v1.2";
+        // Creating empty string
+        String output = "";
+        // method call for generating json
+
+        URL myurl = new URL(targeturl);
+        HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
+
+        con.setRequestProperty("Content-Type", "application/json;");
+        con.setRequestProperty("Accept", "application/json,text/plain");
+        con.setRequestProperty("Method", "POST");
+        con.setRequestProperty("Apikey", apiKey);
+        OutputStream os = con.getOutputStream();
+        os.write(json.toString().getBytes("UTF-8"));
+        os.close();
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            final BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+
+            String line = null;
+
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            // System.out.println(""+sb.toString());
+            output = "" + sb.toString();
+            // System.out.println(output);
+        } else {
+            System.out.println(con.getResponseCode());
+            System.out.println(con.getResponseMessage());
+        }
+        
+        System.out.println(output);
+        // JsonObject JSONObject = new Gson().fromJson(output, JsonObject.class);
+        // JsonArray results = JSONObject.get("results").getAsJsonArray(); // returns type object
+        
+        // To return string 
+        // String results;
+
+        // try{
+        //     results = JSONObject.
+        // } catch (NullPointerException e){
+        //     e.printStackTrace();
+        // } catch (ClassCastException e){
+        //     e.printStackTrace();
+        // }
+
+        // System.out.println(results);
+        
+        return output;
+    }
+
+    public static void sendToDatabase(String results) throws MalformedURLException, IOException{
+        String targeturl = "http://localhost:8080/bulkUpdate/";
+        // for (int i = 0; i < results.size(); i++) {
+        //JsonElement result = results.get(i);
+            // String jsonMessage = results.get(i).toString();
+            // System.out.println(jsonMessage); //JSON string you are sending
+
+        //Sending over to database API
+        URL myurl = new URL(targeturl);
+        HttpURLConnection con = (HttpURLConnection)myurl.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
+
+        con.setRequestProperty("Content-Type", "application/json;");
+        con.setRequestProperty("Accept", "application/json,text/plain");
+        con.setRequestProperty("Method", "POST");
+        OutputStream os = con.getOutputStream();
+        os.write(results.getBytes("UTF-8"));
+        os.close();
+
+
+        StringBuilder sb = new StringBuilder();  
+        int HttpResult =con.getResponseCode();
+        if(HttpResult ==HttpURLConnection.HTTP_OK){
+            BufferedReader br = new BufferedReader(new   InputStreamReader(con.getInputStream(),"utf-8"));  
+
+            String line = null;
+        while ((line = br.readLine()) != null) {  
+            sb.append(line + "\n");  
+        }
+            br.close(); 
+            System.out.println(""+sb.toString());  
+ 
+        }else{
+            System.out.println(con.getResponseCode());
+            System.out.println(con.getResponseMessage());  
+        }
+    }
 
     public static void sendMessageWeek(String apiKey) throws MalformedURLException, IOException{
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -31,9 +129,9 @@ public class Initializer {
 
         // Actual execution 
         try {
-            String results = PullFromAPI.sendJson(JsonMessage,apiKey);
+            String results = sendJson(JsonMessage,apiKey);
             // Sending to database 
-            PullFromAPI.SendtoDatabase(results);
+            sendToDatabase(results);
         } catch (final MalformedURLException e) {
             e.printStackTrace();
         } catch (final IOException e) {
@@ -56,9 +154,9 @@ public class Initializer {
 
         // Actual execution 
         try {
-            String results = PullFromAPI.sendJson(JsonMessage,apiKey);
+            String results = sendJson(JsonMessage,apiKey);
             // Sending to database 
-            PullFromAPI.SendtoDatabase(results);
+            sendToDatabase(results);
         } catch (final MalformedURLException e) {
             e.printStackTrace();
         } catch (final IOException e) {
