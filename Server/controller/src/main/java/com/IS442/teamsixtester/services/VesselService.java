@@ -76,6 +76,12 @@ public class VesselService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         for(int i = 0 ; i < jsonArray.length(); i++) {
+            jsonArray.getJSONObject(i).remove("imoN");
+            jsonArray.getJSONObject(i).remove("fullVslM");
+            jsonArray.getJSONObject(i).remove("shiftSeqN");
+            jsonArray.getJSONObject(i).remove("abbrTerminalM");
+            jsonArray.getJSONObject(i).remove("fullOutVoyN");
+            jsonArray.getJSONObject(i).remove("fullInVoyN");
             VesselDTO vesselDTO = objectMapper.readValue(jsonArray.getJSONObject(i).toString(), VesselDTO.class);
             list.add(vesselDTO);
         }

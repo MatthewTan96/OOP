@@ -31,7 +31,7 @@ public class Initializer {
 
         // Actual execution 
         try {
-            JsonArray results = PullFromAPI.sendJson(JsonMessage,apiKey);
+            String results = PullFromAPI.sendJson(JsonMessage,apiKey);
             // Sending to database 
             PullFromAPI.SendtoDatabase(results);
         } catch (final MalformedURLException e) {
@@ -56,7 +56,7 @@ public class Initializer {
 
         // Actual execution 
         try {
-            JsonArray results = PullFromAPI.sendJson(JsonMessage,apiKey);
+            String results = PullFromAPI.sendJson(JsonMessage,apiKey);
             // Sending to database 
             PullFromAPI.SendtoDatabase(results);
         } catch (final MalformedURLException e) {
@@ -136,7 +136,6 @@ public class Initializer {
             e.printStackTrace();
         }
         
-
         System.out.print("Enter time interval to call API >");
         int interval = sc.nextInt();
         System.out.println(interval);

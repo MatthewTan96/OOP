@@ -24,7 +24,7 @@ public class PullFromAPI {
 
     // private static final String USER_AGENT = "Mozilla/5.0";
 
-    public static JsonArray sendJson(final String json, final String apiKey) throws MalformedURLException, IOException {
+    public static String sendJson(final String json, final String apiKey) throws MalformedURLException, IOException {
         String targeturl = "https://api.pntestbox.com/vsspp/pp/bizfn/berthingSchedule/retrieveByBerthingDate/v1.2";
         // Creating empty string
         String output = "";
@@ -56,63 +56,68 @@ public class PullFromAPI {
             br.close();
             // System.out.println(""+sb.toString());
             output = "" + sb.toString();
-            System.out.println(output);
+            // System.out.println(output);
         } else {
             System.out.println(con.getResponseCode());
             System.out.println(con.getResponseMessage());
         }
-
-        JsonObject JSONObject = new Gson().fromJson(output, JsonObject.class);
-        JsonArray results = JSONObject.get("results").getAsJsonArray(); // returns type object
+        
+        System.out.println(output);
+        // JsonObject JSONObject = new Gson().fromJson(output, JsonObject.class);
+        // JsonArray results = JSONObject.get("results").getAsJsonArray(); // returns type object
+        
         // To return string 
+        // String results;
+
         // try{
-            // String results = JSONObject.getString("results");
+        //     results = JSONObject.
         // } catch (NullPointerException e){
         //     e.printStackTrace();
         // } catch (ClassCastException e){
         //     e.printStackTrace();
         // }
+
+        // System.out.println(results);
         
-        return results;
+        return output;
     }
 
-    public static void SendtoDatabase(JsonArray results) throws MalformedURLException, IOException{
-        String targeturl = "http://localhost:8080/postVessel/";
-        for (int i = 0; i < results.size(); i++) {
+    public static void SendtoDatabase(String results) throws MalformedURLException, IOException{
+        String targeturl = "http://localhost:8080/bulkUpdate/";
+        // for (int i = 0; i < results.size(); i++) {
         //JsonElement result = results.get(i);
-            String jsonMessage = results.get(i).toString();
+            // String jsonMessage = results.get(i).toString();
             // System.out.println(jsonMessage); //JSON string you are sending
 
         //Sending over to database API
-            URL myurl = new URL(targeturl);
-            HttpURLConnection con = (HttpURLConnection)myurl.openConnection();
-            con.setDoOutput(true);
-            con.setDoInput(true);
+        URL myurl = new URL(targeturl);
+        HttpURLConnection con = (HttpURLConnection)myurl.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
 
-            con.setRequestProperty("Content-Type", "application/json;");
-            con.setRequestProperty("Accept", "application/json,text/plain");
-            con.setRequestProperty("Method", "POST");
-            OutputStream os = con.getOutputStream();
-            os.write(jsonMessage.toString().getBytes("UTF-8"));
-            os.close();
- 
- 
-            StringBuilder sb = new StringBuilder();  
-            int HttpResult =con.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
+        con.setRequestProperty("Content-Type", "application/json;");
+        con.setRequestProperty("Accept", "application/json,text/plain");
+        con.setRequestProperty("Method", "POST");
+        OutputStream os = con.getOutputStream();
+        os.write(results.getBytes("UTF-8"));
+        os.close();
+
+
+        StringBuilder sb = new StringBuilder();  
+        int HttpResult =con.getResponseCode();
+        if(HttpResult ==HttpURLConnection.HTTP_OK){
             BufferedReader br = new BufferedReader(new   InputStreamReader(con.getInputStream(),"utf-8"));  
- 
+
             String line = null;
-            while ((line = br.readLine()) != null) {  
+        while ((line = br.readLine()) != null) {  
             sb.append(line + "\n");  
-            }
-             br.close(); 
-             System.out.println(""+sb.toString());  
+        }
+            br.close(); 
+            System.out.println(""+sb.toString());  
  
         }else{
             System.out.println(con.getResponseCode());
             System.out.println(con.getResponseMessage());  
-            }
-        }  
-    }
+        }
+    }  
 }
