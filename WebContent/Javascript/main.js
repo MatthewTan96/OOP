@@ -79,9 +79,13 @@
                       sessionStorage.setItem("vesselByDate", JSON.stringify(vesselByDate));
                       sessionStorage.setItem("allVesselFiltered", JSON.stringify(allVesselFiltered));
 
+                      var orderedVesselByDate = {};
+                      Object.keys(vesselByDate).sort().forEach(function(key) {
+                        orderedVesselByDate[key] = vesselByDate[key];
+                      });
                       // Get Current Date
                       var currentDate = "";
-                      for(var key in vesselByDate){
+                      for(var key in orderedVesselByDate){
                         if(key!="allVessel"){
                           if(checkIfTodayIsCurrentDate(key)){
                             currentDate = key;
@@ -147,8 +151,12 @@ function filterByOutgoingVessels(){
 
     sessionStorage.setItem("vesselByOutgoingDate", JSON.stringify(vesselByOutgoingDate));
 
+    var orderedVesselByOutgoingDate = {};
+    Object.keys(vesselByOutgoingDate).sort().forEach(function(key) {
+      orderedVesselByOutgoingDate[key] = vesselByOutgoingDate[key];
+    });
     // Get Current Date
-    for(var key in vesselByOutgoingDate){
+    for(var key in orderedVesselByOutgoingDate){
       if(key!="allVessel"){
         $('#filterVesselByOutgoing').append($('<option>').val(key).text(key))
       } else{
@@ -563,3 +571,4 @@ function sortTable(n) {
     }
   }
 }
+
