@@ -86,20 +86,25 @@ public class VesselService {
 
         for (VesselDTO vesselDTO : vesselListDTO.getListVesselDTO()) {
             Vessel checkIfExist1 = getVesselByOutgoing(vesselDTO.getAbbrVslM(), vesselDTO.getOutVoyN());
+            //if vessel dont exist in database
             if (checkIfExist1 != null) {
-                if (checkVesselTime(checkIfExist1,vesselDTO)){
-                Vessel newVessel = updateVessel(checkIfExist1, vesselDTO);
-                Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
-                for (Account account : AccountsSubscribed) {
-                    vesselTracker.addVessel(account.getEmail(), newVessel);
-                }
+                //if berthing time or departure time change
+                if (checkBerthTime(checkIfExist1,vesselDTO) || checkDepartureTime(checkIfExist1,vesselDTO) ){
+                    Vessel newVessel = updateVessel(checkIfExist1, vesselDTO);
+                    // get all accounts subscribed to the updated vessel
+                    Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
+                    //add account to VesselTracker object (multimap)
+                    for (Account account : AccountsSubscribed) {
+                        vesselTracker.addVessel(account.getEmail(), newVessel);
+                    }
+                } else {
+                    updateVessel(checkIfExist1, vesselDTO);
                 }
             } else {
                 addVessel(vesselDTO.toTrueClass());
             }
         }
-
-        //check departure time too!! //check if got changes then add to vesseltracker pls.
+        
 
         //email
         if (vesselTracker.getUserAndSubscribedVessels().size() != 0) {
@@ -162,7 +167,7 @@ public class VesselService {
         }
     }
 
-    public boolean checkVesselTime(Vessel existingVessel, VesselDTO toChangeVessel){
+    public boolean checkBerthTime(Vessel existingVessel, VesselDTO toChangeVessel){
         LocalDateTime firstBerthTime = LocalDateTime.parse(existingVessel.getFirstBerthTime());
         LocalDateTime changedBerthTime = LocalDateTime.parse(toChangeVessel.getBthgDt());
         LocalDateTime currentBerthTime = LocalDateTime.parse(existingVessel.getBthgDt());
@@ -170,17 +175,31 @@ public class VesselService {
             return true;
         }
 
+
         return false;
     }
+
+    public boolean checkDepartureTime(Vessel existingVessel, VesselDTO toChangeVessel){
+        LocalDateTime changedDepartureTime = LocalDateTime.parse(toChangeVessel.getUnbthgDt());
+        LocalDateTime currentDepartureTime = LocalDateTime.parse(existingVessel.getUnbthgDt());
+        if (!(changedDepartureTime.isEqual(currentDepartureTime))) {
+            return true;
+        }
+        return false;
+    }
+
     public Vessel updateVessel(Vessel existingVessel, VesselDTO toChangeVessel) {
         LocalDateTime firstBerthTime = LocalDateTime.parse(existingVessel.getFirstBerthTime());
         LocalDateTime changedBerthTime = LocalDateTime.parse(toChangeVessel.getBthgDt());
         Duration duration = Duration.between(firstBerthTime, changedBerthTime);
 
+
+        if (checkBerthTime(existingVessel,toChangeVessel)){
             existingVessel.setChangeCount(existingVessel.getChangeCount() + 1);
             double numberOfHours = Math.abs((double) (duration.toHours()));
             existingVessel.setDegreeChange(numberOfHours);
             existingVessel.setBthgDt(toChangeVessel.getBthgDt());
+        }
 
 
         existingVessel.setAbbrVslM(toChangeVessel.getAbbrVslM());
