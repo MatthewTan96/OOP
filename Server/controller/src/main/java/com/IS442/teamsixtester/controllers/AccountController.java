@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @CrossOrigin(origins="*", allowedHeaders = "*")
+
 @RestController
 public class AccountController {
     private final AccountService accountService;

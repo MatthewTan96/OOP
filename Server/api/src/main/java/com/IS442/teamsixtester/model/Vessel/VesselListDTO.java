@@ -8,7 +8,7 @@ public class VesselListDTO {
     private List<VesselDTO> vessels;
 
     public VesselListDTO() {
-        this.vessels = new ArrayList<>();
+
     }
 
     public VesselListDTO(List<VesselDTO> listVesselDTO) {
