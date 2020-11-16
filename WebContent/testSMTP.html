@@ -3,15 +3,17 @@
 
 <script>
     // Find some way to send the email lmao 
-    Email.send({
-            Host: "smtp.gmail.com",
-            Username : "teamsixoop@gmail.com",
-            Password : "thisist6",
-            To : "matthewiantan@gmail.com",
-            From : "teamsixoop@gmail.com",
-            Subject : "OOP Project Verification Code",
-            Body : "what up ",
-        })
+	var url = "localhost:8000/sendVerification";
+    var params = "email=matthewiantan@gmail.com&code=12345";
+    var http = new XMLHttpRequest();
 
-    alert("Message sent");
+    http.open("GET", url+"?"+params, true);
+    http.onreadystatechange = function()
+    {
+        if(http.readyState == 4 && http.status == 200) {
+            alert(http.responseText);
+        }
+    }
+    http.send(null);
+        
 </script>

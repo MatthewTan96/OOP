@@ -56,6 +56,7 @@ public class PullFromAPI {
             br.close();
             // System.out.println(""+sb.toString());
             output = "" + sb.toString();
+            System.out.println(output);
         } else {
             System.out.println(con.getResponseCode());
             System.out.println(con.getResponseMessage());
@@ -63,6 +64,16 @@ public class PullFromAPI {
 
         JsonObject JSONObject = new Gson().fromJson(output, JsonObject.class);
         JsonArray results = JSONObject.get("results").getAsJsonArray(); // returns type object
+        // To return string 
+        // try{
+            // String results = JSONObject.getString("results");
+        // } catch (NullPointerException e){
+        //     e.printStackTrace();
+        // } catch (ClassCastException e){
+        //     e.printStackTrace();
+        // }
+        
+
         //System.out.println(results.size());
         return results;
     }
@@ -72,7 +83,7 @@ public class PullFromAPI {
         for (int i = 0; i < results.size(); i++) {
         //JsonElement result = results.get(i);
             String jsonMessage = results.get(i).toString();
-            System.out.println(jsonMessage); //JSON string you are sending
+            // System.out.println(jsonMessage); //JSON string you are sending
 
         //Sending over to database API
             URL myurl = new URL(targeturl);
