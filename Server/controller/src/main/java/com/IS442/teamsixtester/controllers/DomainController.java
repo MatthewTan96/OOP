@@ -24,7 +24,8 @@ public class DomainController {
 
     @CrossOrigin
     @GetMapping(value="/getDomain")
-    public ResponseEntity getDomain(@RequestBody Domain domain) {
+    public ResponseEntity getDomain(@RequestParam String email) {
+        Domain domain = new Domain(email);
         return ResponseEntity.ok(domainService.getDomain(domain));
     }
 
