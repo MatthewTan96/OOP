@@ -5,9 +5,13 @@ import com.IS442.teamsixtester.services.AccountService;
 import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 import com.IS442.teamsixtester.model.Account.Account;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -20,6 +24,9 @@ public class AccountController {
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @PostMapping(value = "/postAccount")
     public ResponseEntity accountPost(@RequestBody AccountDTO accountDTO) {
@@ -97,7 +104,21 @@ public class AccountController {
         return ResponseEntity.ok("Verification Successfully Changed");
     }
 
+    @GetMapping(value = "/sendVerification")
+    public ResponseEntity<String> verificationSend(@RequestParam String email, @RequestParam String code) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
 
+        //get the email of the user
+        String mailContent = code;
+
+        helper.setTo(email);
+        helper.setText(mailContent);
+        helper.setSubject("Your verification code " + code);
+        mailSender.send(message);
+
+        return ResponseEntity.ok("Verification Code Sent Sucessfully");
+    }
 
 
     //update password
