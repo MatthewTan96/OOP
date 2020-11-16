@@ -138,12 +138,13 @@ public class VesselService {
                         "\n" +
                         "<h2>Vessel Berthing Time Change Notification</h2>\n" +
                         "\n" +
-                        "<h3> Dear user, please note that there is the changes to the berthing time for the following vessels you have subscribed to.</h3> \n" +
+                        "<h3> Dear user, please note that there is changes to the berthing/departure time for the following vessels you have subscribed to.</h3> \n  " +
+                        "<h4> Listed below are the details of the new berthing/departure time </h4>" +
                         "<table>\n" +
                         "  <tr>\n" +
                         "    <th>Vessel Short Name</th>\n" +
-                        "    <th>New Berthing Time</th>\n" +
-                        "    <th>New Departure Time</th>\n" +
+                        "    <th>Berthing Time</th>\n" +
+                        "    <th>Departure Time</th>\n" +
                         "  </tr>";
 
                 // get all vessels subscribed
@@ -174,7 +175,6 @@ public class VesselService {
         if (!(changedBerthTime.isEqual(currentBerthTime))) {
             return true;
         }
-
 
         return false;
     }
