@@ -67,8 +67,8 @@ public class Initializer {
     }
 
     public static String setDomain(String allowedDomain) throws MalformedURLException, IOException{
-        String targeturl = "http://localhost:8080/getDomain";
-        String json = "{\"domain\":\"" + allowedDomain+"}";
+        String targeturl = "http://localhost:8080/postDomain";
+        String json = "{\"domain\":\"" + allowedDomain+"\"}";
         String results = "Failed";
         // Creating empty string
         String output = "";
@@ -126,9 +126,16 @@ public class Initializer {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter restricted account domain >");
         String allowedDomain = sc.nextLine();
-
         
-        // 
+        // Setting the domain
+        try{
+            setDomain(allowedDomain);
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        
 
         System.out.print("Enter time interval to call API >");
         int interval = sc.nextInt();
