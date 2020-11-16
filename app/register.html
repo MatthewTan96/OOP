@@ -23,49 +23,64 @@
         var password = document.getElementById("password").value;  
         var confirmPassword = document.getElementById("confirmPassword").value;  
 
-        if (password != confirmPassword){
-            alert("Passwords need to match!");
-            // window.location.replace("register.html");
-            error_messages.push("Passwords need to match!");
-        }
-
         console.log(email);
         console.log(password);
         console.log(confirmPassword);
 
+
+        if (password != confirmPassword){
+            alert("Passwords need to match!");
+            window.location.replace("register.html");
+            return;
+            // error_messages.push("Passwords need to match!");
+        }
+        
         // Check if email is blank
         if (email == ""){
             alert("Email cannot be blank!");
-            // window.location.replace("register.html");
-            error_messages.push("Email cannot be blank!");
+            window.location.replace("register.html");
+            return;
         }
 
         // Check if password is blank
         if (password == ""){
             alert("Password cannot be blank!");
-            // window.location.replace("register.html");
-            error_messages.push("Password cannot be blank!");
+            window.location.replace("register.html");
+            return;
         }
 
         // Check if confirm password field is blank
         if (confirmPassword == ""){
             alert("Password Confirmation cannot be blank!");
-            // window.location.replace("register.html");
-            error_messages.push("Password Confirmation cannot be blank!");
+            window.location.replace("register.html");
+            return;
+            // error_messages.push("Password Confirmation cannot be blank!");
         }
 
-        /*
-        if (error_messages!=[]){
-            return;
-        } */
+        // AJAX call: Check if domain is allowed 
+        var domain = email.split('@').pop();
+        console.log(domain);
 
-        console.log("Herer");
+        var http = new XMLHttpRequest();
+        var url = 'http://localhost:8080/getDomain';
+        http.open('POST', url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        // CORS error for now 
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+                console.log(http.responseText);
+                    
+            } 
+        }
+        http.send(JSON.stringify({ "domain": domain }));
+        
+        return;
+
         // Validation passed
         addAccount(email,password);
-        
-        
-
-        // Retrieve list of errors 
 
         return false;
       }
