@@ -64,6 +64,7 @@
         var url = "http://localhost:8080/getDomain";
         var params = "email=" + domain;
         var http = new XMLHttpRequest();
+        var haveAlert = false;
 
         http.open("GET", url+"?"+params, true);
         http.onreadystatechange = function()
@@ -71,7 +72,12 @@
             if(http.readyState == 4 && http.status == 200) {
                 console.log(http.responseText);
                 if (http.responseText==""){
-                    alert("Domain not allowed");
+                    if(!haveAlert){
+                        alert("Domain not allowed");
+                    } else {
+                        haveAlert = true;
+                    }
+                    
                 } else {
                     // Validation passed
                     addAccount(email,password);
@@ -88,29 +94,25 @@
         // Check if account email is available 
         console.log("addAccount() triggered");
 
-        var http = new XMLHttpRequest();
-        var url = 'http://localhost:8080/postAccount';
-        http.open('POST', url, true);
-
-        //Send the proper header information along with the request
-        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        // CORS error for now 
-
-        http.onreadystatechange = function() {//Call a function when the state changes.
-            if(http.readyState == 4 && http.status == 200) {
-                console.log(http.responseText);
-                    // console.log("EMAIL!!!!!");
-                    alert("Account has been created!");
-                    window.location.replace("index.html");
+        var haveAlert = false;
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200){
+                alert("Account has been created!");
+                window.location.replace("index.html");
             } else {
-                if (http.status == 400){
-                    alert("Error. Account already exists");
-                    return;
+                if (this.status == 400){
+                    if(!haveAlert){
+                        alert("Error. Account already exists");
+                        haveAlert = true;
+                    } 
                 }
             }
-                return;
         }
-        http.send(JSON.stringify({ "email": email, "password": password }));
+        var data = "http://localhost:8080/postAccount";
+        request.open("POST", data, true);
+        request.setRequestHeader("Content-type", "application/json");
+        request.send(JSON.stringify({ "email": email, "password": password }));
     }
     </script>
 
