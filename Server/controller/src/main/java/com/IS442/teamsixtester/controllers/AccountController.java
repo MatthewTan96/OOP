@@ -75,6 +75,9 @@ public class AccountController {
             @RequestParam String email,
             @RequestParam String password
     ) {
+        if (accountService.getAccountByEmail(email) == null){
+            return ResponseEntity.ok("2"); //no email exist
+        }
         Account accountToCheck = accountService.getAccountByEmail(email);
         String hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         if (accountToCheck.getPassword().equals(hashedPassword)){
