@@ -203,17 +203,6 @@ public class Initializer {
             System.out.println(con.getResponseCode());
             System.out.println(con.getResponseMessage());
         }
-
-        // JsonObject JSONObject = new Gson().fromJson(output, JsonObject.class);
-        // JsonArray results = JSONObject.get("results").getAsJsonArray(); // returns type object
-        // To return string 
-        // try{
-            // String results = JSONObject.getString("results");
-        // } catch (NullPointerException e){
-        //     e.printStackTrace();
-        // } catch (ClassCastException e){
-        //     e.printStackTrace();
-        // }
         
         return results;
     }
@@ -236,7 +225,7 @@ public class Initializer {
         
         System.out.print("Enter time interval to call API >");
         int interval = sc.nextInt();
-        System.out.println(interval);
+        // System.out.println(interval);
         sc.nextLine();
         System.out.print("Enter API Key> ");
         String apiKey = sc.nextLine();
