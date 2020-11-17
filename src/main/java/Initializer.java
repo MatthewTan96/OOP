@@ -250,7 +250,7 @@ public class Initializer {
 
             if (runOnce){
                 try{
-                    sendMessageToday(apiKey);
+                    sendMessageWeek(apiKey);
                 }catch (final MalformedURLException e) {
                     e.printStackTrace();
                 } catch (final IOException e) {
