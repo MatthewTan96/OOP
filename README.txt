@@ -38,4 +38,3 @@ Populate the database with information retrieved from the PSA API
 After that, enter './mac_compile.bat' to compile and './mac_run.bat' to execute the files.
 
 View our backend API on swagger UI: http://localhost:8080/swagger-ui/
-View our API documentation here: https://docs.google.com/document/d/1fhckql2LpTw5Fdc6PbbmIeQEwXTdtgtKuCPRg_p_g7g/edit?usp=sharing
