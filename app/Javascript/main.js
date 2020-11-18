@@ -36,6 +36,7 @@
 
   // reload page
   function reloadPage(){
+    document.getElementById("displayOutputInformationMainPage").innerHTML = "";
     location.reload();
   }
   
@@ -233,7 +234,6 @@ function getVesselByName(){
     if(searchVessel == SelectByVesselName)
     {
       isFound = true;
-      console.log("Found! that Vessel -> without API Call!");
       displayResultsToTable(email, ship);
       document.getElementById("displayOutputInformationMainPage").innerHTML = "";
     } // End of If 
