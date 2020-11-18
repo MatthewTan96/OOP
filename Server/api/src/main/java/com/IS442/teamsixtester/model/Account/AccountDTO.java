@@ -2,10 +2,15 @@ package com.IS442.teamsixtester.model.Account;
 
 import com.IS442.teamsixtester.model.DTO;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class AccountDTO implements Serializable, DTO {
+    @NotBlank
     private String email;
+
+    @NotBlank
     private String password;
 
     public AccountDTO() {

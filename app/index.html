@@ -80,10 +80,13 @@
 
         var url = "http://localhost:8080/authenticate";
         // var params = "email=somevalue&anothervariable=anothervalue";
-        var params = "email=" + email + "&password=" + password;
+        // var params = "email=" + email + "&password=" + password;
         var http = new XMLHttpRequest();
+        const json = {"email" : email, "password": password};
+        // http.open("GET", url+"?"+params, true);
+        http.open("POST", url)
+        http.setRequestHeader('Content-Type', 'application/json');
 
-        http.open("GET", url+"?"+params, true);
         http.onreadystatechange = function()
         {
             if(http.readyState == 4 && http.status == 200) {
@@ -125,7 +128,7 @@
             }
         }
 
-        http.send(null);
+        http.send(JSON.stringify(json));
 
     }
         

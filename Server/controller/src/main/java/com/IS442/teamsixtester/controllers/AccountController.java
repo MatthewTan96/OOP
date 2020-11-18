@@ -12,6 +12,7 @@ import com.IS442.teamsixtester.model.Account.Account;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -70,11 +71,11 @@ public class AccountController {
         return ResponseEntity.ok(accountService.accountGetAll());
     }
 
-    @GetMapping(value = "/authenticate")
-    public ResponseEntity accountCheckAuthenticate(
-            @RequestParam String email,
-            @RequestParam String password
+    @PostMapping(value = "/authenticate")
+    public ResponseEntity accountCheckAuthenticate(@Valid @RequestBody AccountDTO accountDTO
     ) {
+        String email = accountDTO.getEmail();
+        String password = accountDTO.getPassword();
         if (accountService.getAccountByEmail(email) == null){
             return ResponseEntity.ok("2"); //no email exist
         }
@@ -92,9 +93,18 @@ public class AccountController {
         return ResponseEntity.ok(accountService.accountGetAll());
     }
 
+//    @PutMapping(value = "/updatePassword")
+//    public ResponseEntity updatePassword(@RequestParam String email,
+//                                         @RequestParam String newPassword) {
+//        Account accountToChangePw = accountService.getAccountByEmail(email);
+//        String hashedNewPassword = Hashing.sha256().hashString(newPassword, StandardCharsets.UTF_8).toString();
+//        accountService.changePassword(accountToChangePw,hashedNewPassword);
+//        return ResponseEntity.ok("Password Successfully Changed");
+//    }
     @PutMapping(value = "/updatePassword")
-    public ResponseEntity updatePassword(@RequestParam String email,
-                                         @RequestParam String newPassword) {
+    public ResponseEntity updatePassword(@Valid @RequestBody AccountDTO accountToChange) {
+        String email = accountToChange.getEmail();
+        String newPassword = accountToChange.getPassword();
         Account accountToChangePw = accountService.getAccountByEmail(email);
         String hashedNewPassword = Hashing.sha256().hashString(newPassword, StandardCharsets.UTF_8).toString();
         accountService.changePassword(accountToChangePw,hashedNewPassword);
