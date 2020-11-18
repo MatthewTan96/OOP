@@ -3,8 +3,6 @@ package com.IS442.teamsixtester.dao.Vessel;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public interface VesselDAO {
     Vessel insertVessel(Vessel vessel);

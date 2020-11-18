@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/OOP.iml" filepath="$PROJECT_DIR$/.idea/OOP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/api/api.iml" filepath="$PROJECT_DIR$/Server/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/controller/controller.iml" filepath="$PROJECT_DIR$/Server/controller/controller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/entrypoint/entrypoint.iml" filepath="$PROJECT_DIR$/Server/entrypoint/entrypoint.iml" />
       <module fileurl="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-dependencies/2.3.4.RELEASE/spring-boot-dependencies.iml" filepath="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-dependencies/2.3.4.RELEASE/spring-boot-dependencies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/teamsixtester.iml" filepath="$PROJECT_DIR$/Server/teamsixtester.iml" />
     </modules>
   </component>
 </project>

@@ -28,27 +28,15 @@ public class VesselController implements VesselAPI {
     @Autowired
     private VesselService vesselService;
 
-//    @Resource
-//    private VesselTracker VesselTracker;
-
-    @Autowired
-    private JavaMailSender mailSender;
-
-
     @Override
     @PostMapping(value = "/postVessel")
     public ResponseEntity<Vessel> vesselPost(
             @Valid @RequestBody VesselDTO vesselDTO) {
         Vessel checkIfExist1 = vesselService.getVesselByOutgoing(vesselDTO.getAbbrVslM(), vesselDTO.getOutVoyN());
-
-//        Vessel checkIfExist2 = vesselService.getVesselByIncoming(vesselDTO.getAbbrVslM(), vesselDTO.getInVoyN());
-
-        //take in list of vesselDTO instead
-
         if (checkIfExist1 != null) {
             Vessel newVessel = vesselService.updateVessel(checkIfExist1, vesselDTO);
 //            Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
-
+//
 //            for (Account account : AccountsSubscribed) {
 //                VesselTracker.addVessel(account.getEmail(), newVessel);
 //            }
@@ -74,25 +62,6 @@ public class VesselController implements VesselAPI {
         }
 
         return ResponseEntity.ok("OK");
-    }
-
-    //test
-    @GetMapping(value = "/hello")
-    public ResponseEntity<?> getTracker(){
-        return ResponseEntity.ok("VesselTracker.getUserAndSubscribedVessels().asMap()");
-    }
-
-    //another test
-//    @RequestMapping(value = "/test/admin", method = RequestMethod.GET)
-//    public ResponseEntity<String> getAdmin(@RequestHeader String Authorization) {
-//        return ResponseEntity.ok("Hello Admin");
-//    }
-
-    @GetMapping("/test/admin")
-    public ResponseEntity<String> getAdmin(
-            @RequestHeader String Authorization
-    ) {
-        return ResponseEntity.ok("Hello Admin");
     }
 
     @Override
