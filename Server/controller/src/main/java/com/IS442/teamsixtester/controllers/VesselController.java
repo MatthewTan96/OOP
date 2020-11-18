@@ -2,24 +2,17 @@ package com.IS442.teamsixtester.controllers;
 
 
 import com.IS442.teamsixtester.api.VesselAPI;
-import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.IS442.teamsixtester.model.Vessel.VesselDTO;
-import com.IS442.teamsixtester.model.Vessel.VesselListDTO;
 import com.IS442.teamsixtester.model.Vessel.VesselQueryDTO;
 import com.IS442.teamsixtester.services.VesselService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
-
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @RestController
@@ -61,7 +54,7 @@ public class VesselController implements VesselAPI {
             return ResponseEntity.badRequest().body("JsonProcessingError");
         }
 
-        return ResponseEntity.ok("OK");
+        return ResponseEntity.ok("Vessels Update Successfully");
     }
 
     @Override

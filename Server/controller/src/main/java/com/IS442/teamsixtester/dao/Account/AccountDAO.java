@@ -1,7 +1,7 @@
 package com.IS442.teamsixtester.dao.Account;
 
 import com.IS442.teamsixtester.model.Account.Account;
-import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
