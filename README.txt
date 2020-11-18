@@ -36,3 +36,6 @@ Populate the database with information retrieved from the PSA API
 
 **Before you can run .bat files in macbook, go to the directory .bat files is located at and enter 'chmod 755 mac_compile.bat' and 'chmod 755 mac_run.bat'. 
 After that, enter './mac_compile.bat' to compile and './mac_run.bat' to execute the files.
+
+View our backend API on swagger UI:
+> http://localhost:8080/swagger-ui/
