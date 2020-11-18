@@ -17,7 +17,7 @@ Your database has been initialised on Ubuntu.
 Using Springboot to populate your database 
 
 1) Open the Project file on Intellij
-2) Navigate to Server > entrypoint > pom.xml
+2) Navigate to Server > pom.xml
 3) Use Maven to download dependencies 
 4) Build the application 
 5) Navigate to entrypoint > src > main > java > com.IS442.teamsixtester > Boot 
