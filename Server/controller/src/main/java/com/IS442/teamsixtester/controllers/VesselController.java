@@ -21,27 +21,6 @@ public class VesselController implements VesselAPI {
     @Autowired
     private VesselService vesselService;
 
-    @Override
-    @PostMapping(value = "/postVessel")
-    public ResponseEntity<Vessel> vesselPost(
-            @Valid @RequestBody VesselDTO vesselDTO) {
-        Vessel checkIfExist1 = vesselService.getVesselByOutgoing(vesselDTO.getAbbrVslM(), vesselDTO.getOutVoyN());
-        if (checkIfExist1 != null) {
-            Vessel newVessel = vesselService.updateVessel(checkIfExist1, vesselDTO);
-//            Set<Account> AccountsSubscribed = newVessel.getSubscribedByAccounts();
-//
-//            for (Account account : AccountsSubscribed) {
-//                VesselTracker.addVessel(account.getEmail(), newVessel);
-//            }
-            return ResponseEntity.ok(newVessel);
-        }
-
-        Vessel newVessel = vesselService.addVessel(vesselDTO.toTrueClass());
-
-        return ResponseEntity.ok(newVessel);
-    }
-
-
     @PostMapping(value = "/bulkUpdate")
     public ResponseEntity bulkUpdateVessel(
             @Valid @RequestBody String json) {
@@ -54,7 +33,7 @@ public class VesselController implements VesselAPI {
             return ResponseEntity.badRequest().body("JsonProcessingError");
         }
 
-        return ResponseEntity.ok("Vessels Update Successfully");
+        return ResponseEntity.ok("Vessels Updated Successfully");
     }
 
     @Override
@@ -103,7 +82,6 @@ public class VesselController implements VesselAPI {
     public ResponseEntity vesselUpdate(Vessel vessel) throws JsonProcessingException {
         return null;
     }
-
 
 
 }
