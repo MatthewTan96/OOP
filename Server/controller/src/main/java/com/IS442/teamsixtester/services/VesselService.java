@@ -198,7 +198,7 @@ public class VesselService {
 
         if (checkBerthTime(existingVessel,toChangeVessel)){
             existingVessel.setChangeCount(existingVessel.getChangeCount() + 1);
-            double numberOfHours = Math.abs((double) (duration.toHours()));
+            double numberOfHours = Math.abs((double) (duration.toMinutes() / 60.0));
             existingVessel.setDegreeChange(numberOfHours);
             existingVessel.setBthgDt(toChangeVessel.getBthgDt());
         }
