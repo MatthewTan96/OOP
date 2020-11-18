@@ -114,19 +114,19 @@ public class AccountController {
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         //get the email of the user
-        String mailContent = code;
+        String mailContent =  "<body>\n" +
+                "\n" +
+                "<h3> Dear user, here is the verification code to verify your account for the first time. </h3> \n  "
+                + "<h5> Verification code: " + code + "</h5></body>";
 
         helper.setTo(email);
-        helper.setText(mailContent);
-        helper.setSubject("Your verification code " + code);
+        helper.setText(mailContent,true);
+        helper.setSubject("Verification code for PSA");
         mailSender.send(message);
 
         return ResponseEntity.ok("Verification Code Sent Sucessfully");
     }
 
 
-    //update password
-    //check password
-    //hash password
-    //check authenicated - if verified 1, if not verified 0, wrong credential 2
+
 }
