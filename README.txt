@@ -33,3 +33,6 @@ Populate the database with information retrieved from the PSA API
 	- The API security key 
 4) Copy the WebContent file into your WAMP web root 
 5) Run the file by typing localhost/app in the URL of your browser
+
+**Before you can run .bat files in macbook, go to the directory .bat files is located at and enter 'chmod 755 mac_compile.bat' and 'chmod 755 mac_run.bat'. 
+After that, enter './mac_compile.bat' to compile and './mac_run.bat' to execute the files.
