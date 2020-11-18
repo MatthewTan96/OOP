@@ -3,7 +3,6 @@ package com.IS442.teamsixtester.controllers;
 
 import com.IS442.teamsixtester.api.VesselAPI;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
-import com.IS442.teamsixtester.model.Vessel.VesselDTO;
 import com.IS442.teamsixtester.model.Vessel.VesselQueryDTO;
 import com.IS442.teamsixtester.services.VesselService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,7 +20,8 @@ public class VesselController implements VesselAPI {
     @Autowired
     private VesselService vesselService;
 
-    @PostMapping(value = "/bulkUpdate")
+    @Override
+    @PostMapping(value = VESSEL_PATH_BULK_UPDATE)
     public ResponseEntity bulkUpdateVessel(
             @Valid @RequestBody String json) {
         try{
@@ -37,13 +37,13 @@ public class VesselController implements VesselAPI {
     }
 
     @Override
-    @GetMapping(value = "/getAllVessels")
+    @GetMapping(value = VESSEL_PATH_GET_ALL)
     public ResponseEntity<List<Vessel>> vesselGetAll() {
         return ResponseEntity.ok(vesselService.getAllVessels());
     }
 
     @Override
-    @GetMapping(value = "/getVessel")
+    @GetMapping(value = VESSEL_PATH_GET_ONE)
     public ResponseEntity vesselGet(@Valid @RequestBody VesselQueryDTO vesselQueryDTO) {
         String name = vesselQueryDTO.getAbbrVslM();
         String incoming = vesselQueryDTO.getInVoyN();
@@ -58,7 +58,7 @@ public class VesselController implements VesselAPI {
     }
 
     @Override
-    @DeleteMapping(value = "/deleteVessel")
+    @DeleteMapping(value = VESSEL_PATH_DELETE)
     public ResponseEntity vesselDelete(@Valid @RequestBody VesselQueryDTO vesselQueryDTO) {
         String name = vesselQueryDTO.getAbbrVslM();
         String incoming = vesselQueryDTO.getInVoyN();
@@ -76,11 +76,6 @@ public class VesselController implements VesselAPI {
         }
         Vessel deletedVessel = vesselService.deleteVessel(vesselToDelete);
         return ResponseEntity.ok(deletedVessel);
-    }
-
-    @Override
-    public ResponseEntity vesselUpdate(Vessel vessel) throws JsonProcessingException {
-        return null;
     }
 
 

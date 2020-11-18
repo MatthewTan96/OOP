@@ -1,5 +1,6 @@
 package com.IS442.teamsixtester.controllers;
 
+import com.IS442.teamsixtester.api.AccountAPI;
 import com.IS442.teamsixtester.model.Account.AccountDTO;
 import com.IS442.teamsixtester.services.AccountService;
 import com.google.common.hash.Hashing;
@@ -19,7 +20,7 @@ import java.util.List;
 @CrossOrigin(origins="*", allowedHeaders = "*")
 
 @RestController
-public class AccountController {
+public class AccountController implements AccountAPI {
     private final AccountService accountService;
 
     @Autowired
@@ -30,7 +31,8 @@ public class AccountController {
     @Autowired
     private JavaMailSender mailSender;
 
-    @PostMapping(value = "/postAccount")
+    @Override
+    @PostMapping(value = ACCOUNT_PATH_CREATE)
     public ResponseEntity accountPost(@RequestBody AccountDTO accountDTO) {
         String email = accountDTO.getEmail();
         String password = accountDTO.getPassword();
@@ -45,12 +47,14 @@ public class AccountController {
         return ResponseEntity.ok(newAccount);
     }
 
-    @GetMapping(value = "/getAccountByEmail")
-    public Account getAccountByEmail(@RequestParam String email) {
-        return accountService.getAccountByEmail(email);
+    @Override
+    @GetMapping(value = ACCOUNT_PATH_GET_ONE)
+    public ResponseEntity getAccountByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(accountService.getAccountByEmail(email));
     }
 
-    @DeleteMapping(value = "/deleteAccount")
+    @Override
+    @DeleteMapping(value = ACCOUNT_PATH_DELETE)
     public ResponseEntity accountDelete(@RequestBody AccountDTO accountDTO) {
         String email = accountDTO.getEmail();
         String password = accountDTO.getPassword();
@@ -66,12 +70,14 @@ public class AccountController {
         return ResponseEntity.ok(accountToDelete);
     }
 
-    @GetMapping(value = "/getAllAccounts")
+    @Override
+    @GetMapping(value = ACCOUNT_PATH_GET_ALL)
     public ResponseEntity<List<Account>> accountGetAll() {
         return ResponseEntity.ok(accountService.accountGetAll());
     }
 
-    @PostMapping(value = "/authenticate")
+    @Override
+    @PostMapping(value = ACCOUNT_PATH_AUTHENTICATE)
     public ResponseEntity accountCheckAuthenticate(@Valid @RequestBody AccountDTO accountDTO
     ) {
         String email = accountDTO.getEmail();
@@ -93,15 +99,8 @@ public class AccountController {
         return ResponseEntity.ok(accountService.accountGetAll());
     }
 
-//    @PutMapping(value = "/updatePassword")
-//    public ResponseEntity updatePassword(@RequestParam String email,
-//                                         @RequestParam String newPassword) {
-//        Account accountToChangePw = accountService.getAccountByEmail(email);
-//        String hashedNewPassword = Hashing.sha256().hashString(newPassword, StandardCharsets.UTF_8).toString();
-//        accountService.changePassword(accountToChangePw,hashedNewPassword);
-//        return ResponseEntity.ok("Password Successfully Changed");
-//    }
-    @PutMapping(value = "/updatePassword")
+    @Override
+    @PutMapping(value = ACCOUNT_PATH_UPDATE_PW)
     public ResponseEntity updatePassword(@Valid @RequestBody AccountDTO accountToChange) {
         String email = accountToChange.getEmail();
         String newPassword = accountToChange.getPassword();
@@ -111,14 +110,16 @@ public class AccountController {
         return ResponseEntity.ok("Password Successfully Changed");
     }
 
-    @PutMapping(value = "/setVerification")
+    @Override
+    @PutMapping(value = ACCOUNT_PATH_SET_VERIFICATION)
     public ResponseEntity setVerification(@RequestParam String email) {
         Account accountToChangeVerification = accountService.getAccountByEmail(email);
         accountService.changeVerified(accountToChangeVerification);
         return ResponseEntity.ok("Verification Successfully Changed");
     }
 
-    @GetMapping(value = "/sendVerification")
+    @Override
+    @GetMapping(value = ACCOUNT_PATH_SEND_VERIFICATION)
     public ResponseEntity<String> verificationSend(@RequestParam String email, @RequestParam String code) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
