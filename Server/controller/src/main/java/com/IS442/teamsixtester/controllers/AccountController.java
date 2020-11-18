@@ -116,8 +116,8 @@ public class AccountController {
         //get the email of the user
         String mailContent =  "<body>\n" +
                 "\n" +
-                "<h3> Dear user, here is the verification code to verify your account for the first time. </h3> \n  "
-                + "<h5> Verification code: " + code + "</h5></body>";
+                "<h3> Dear user, here is the verification code to verify your account. </h3> \n  "
+                + "<h4> Verification code: " + code + "</h4></body>";
 
         helper.setTo(email);
         helper.setText(mailContent,true);
@@ -126,7 +126,5 @@ public class AccountController {
 
         return ResponseEntity.ok("Verification Code Sent Sucessfully");
     }
-
-
-
+    
 }
