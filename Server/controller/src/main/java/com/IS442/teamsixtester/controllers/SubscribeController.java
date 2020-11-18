@@ -1,5 +1,6 @@
 package com.IS442.teamsixtester.controllers;
 
+import com.IS442.teamsixtester.api.SubscribeAPI;
 import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.IS442.teamsixtester.services.AccountService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @Controller
-public class SubscribeController {
+public class SubscribeController implements SubscribeAPI {
     @Autowired
     private SubscribeService subscribeService;
 
@@ -25,7 +26,8 @@ public class SubscribeController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping(value = "/postSubscribe")
+    @Override
+    @PostMapping(value = SUBSCRIBE_PATH_POST)
     public ResponseEntity favouritePost(
             @RequestParam String vesselShortName,
             @RequestParam String incoming,
@@ -43,7 +45,8 @@ public class SubscribeController {
         return ResponseEntity.ok(account);
     }
 
-    @DeleteMapping(value = "/deleteSubscribe")
+    @Override
+    @DeleteMapping(value = SUBSCRIBE_PATH_DELETE)
     public ResponseEntity favouriteDelete(
             @RequestParam String vesselShortName,
             @RequestParam String incoming,

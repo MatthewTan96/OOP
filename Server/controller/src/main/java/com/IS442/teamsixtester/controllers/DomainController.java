@@ -1,5 +1,6 @@
 package com.IS442.teamsixtester.controllers;
 
+import com.IS442.teamsixtester.api.DomainAPI;
 import com.IS442.teamsixtester.model.Domain.Domain;
 import com.IS442.teamsixtester.services.DomainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins="*", allowedHeaders = "*")
 @RestController
-public class DomainController {
+public class DomainController implements DomainAPI {
     private final DomainService domainService;
 
     @Autowired
@@ -17,13 +18,15 @@ public class DomainController {
     }
 
     @CrossOrigin
-    @PostMapping(value="/postDomain")
+    @Override
+    @PostMapping(value=DOMAIN_PATH_POST)
     public ResponseEntity domainPost(@RequestBody Domain domain) {
         return ResponseEntity.ok(domainService.addDomain(domain));
     }
 
     @CrossOrigin
-    @GetMapping(value="/getDomain")
+    @Override
+    @GetMapping(value=DOMAIN_PATH_GET)
     public ResponseEntity getDomain(@RequestParam String email) {
         Domain domain = new Domain(email);
         return ResponseEntity.ok(domainService.getDomain(domain));

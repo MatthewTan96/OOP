@@ -1,6 +1,7 @@
 package com.IS442.teamsixtester.controllers;
 
 
+import com.IS442.teamsixtester.api.FavouriteAPI;
 import com.IS442.teamsixtester.model.Account.Account;
 import com.IS442.teamsixtester.model.Vessel.Vessel;
 import com.IS442.teamsixtester.services.FavouriteService;
@@ -13,7 +14,7 @@ import com.IS442.teamsixtester.services.AccountService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*") // CrossOrigin allows front end to use data from Java
 @RestController
-public class FavouriteController {
+public class FavouriteController implements FavouriteAPI {
 
     @Autowired
     private FavouriteService favouriteService;
@@ -24,7 +25,8 @@ public class FavouriteController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping(value = "/postFavourite")
+    @Override
+    @PostMapping(value = FAVOURITE_PATH_POST)
     public ResponseEntity favouritePost(
             @RequestParam String vesselShortName,
             @RequestParam String incoming,
@@ -42,7 +44,8 @@ public class FavouriteController {
         return ResponseEntity.ok(account);
     }
 
-    @DeleteMapping(value = "/deleteFavourite")
+    @Override
+    @DeleteMapping(value = FAVOURITE_PATH_DELETE)
     public ResponseEntity favouriteDelete(
             @RequestParam String vesselShortName,
             @RequestParam String incoming,
